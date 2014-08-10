@@ -2,13 +2,13 @@ package collins.solr
 
 import java.util.Date
 import Solr._
-import org.specs2._
 import models.{Asset, AssetFinder, AssetType, AssetMeta, AssetSearchParameters, IpAddresses, IpmiInfo, State, Status, AssetMetaValue}
-import test.ApplicationSpecification
+import helpers.ApplicationSpecification
 import util.views.Formatter
+import org.specs2.mutable.Specification
 
 
-class MultiSetSpec extends mutable.Specification {
+class MultiSetSpec extends Specification {
 
   "MultiSet" should {
     "add a new element" in {

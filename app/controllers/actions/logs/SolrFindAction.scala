@@ -3,12 +3,19 @@ package controllers
 package actions
 package logs
 
-import collins.solr.{AssetLogDocType, TypedSolrExpression, CollinsQueryParser, AssetLogSearchQuery}
+import collins.solr.AssetLogDocType
+import collins.solr.TypedSolrExpression
+import collins.solr.CollinsQueryParser
+import collins.solr.AssetLogSearchQuery
 
-import models.{Asset, AssetLog, Page, PageParams}
+import models.Asset
+import models.AssetLog
+import models.Page
+import models.PageParams
 import models.conversions.AssetLogFormat
 import util.security.SecuritySpecification
-import play.api.libs.json._
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 
 case class SolrFindAction(
   query: String,

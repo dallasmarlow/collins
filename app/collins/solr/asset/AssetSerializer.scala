@@ -1,17 +1,22 @@
 
 package collins.solr
 
-import collins.solr._
-import util.views.Formatter
-
 import java.util.Date
-
-import models.{Asset, AssetMeta, AssetMetaValue, AssetLog, IpAddresses, IpmiInfo, MetaWrapper, Truthy}
-import AssetMeta.ValueType
-import AssetMeta.ValueType._
 
 import Solr._
 import SolrKeyFlag._
+import collins.solr._
+import models.Asset
+import models.AssetMeta
+import models.AssetMeta.ValueType
+import models.AssetMeta.ValueType._
+import models.AssetMetaValue
+import models.IpAddresses
+import models.IpmiInfo
+import models.MetaWrapper
+import models.Truthy
+
+import util.views.Formatter
 
 
 /**

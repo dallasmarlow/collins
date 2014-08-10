@@ -2,7 +2,8 @@ package controllers
 package actions
 package ipaddress
 
-import models.{Asset, IpAddresses}
+import models.Asset
+import models.IpAddresses
 import util.security.SecuritySpecification
 
 // Get the addresses associated with an asset

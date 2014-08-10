@@ -1,8 +1,10 @@
 package util
 package security
 
-import util.config.{Configurable, ConfigValue}
 import collins.validation.File
+
+import util.config.ConfigValue
+import util.config.Configurable
 
 object AuthenticationProviderConfig extends Configurable {
   override val namespace = "authentication"

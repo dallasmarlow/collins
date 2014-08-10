@@ -1,10 +1,13 @@
 package util
 package power
 
-import PowerConfiguration.Messages.{ValidationMissingRequired, ValidationNonUnique}
-import models.{Asset, AssetMetaValue}
-import collection.immutable.SortedSet
-import collection.mutable.HashSet
+import scala.collection.immutable.SortedSet
+import scala.collection.mutable.HashSet
+
+import PowerConfiguration.Messages.ValidationMissingRequired
+import PowerConfiguration.Messages.ValidationNonUnique
+import models.Asset
+import models.AssetMetaValue
 
 object PowerUnits extends Iterable[PowerUnit] {
   def apply(): PowerUnits = apply(None)

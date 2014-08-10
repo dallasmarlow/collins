@@ -1,13 +1,16 @@
 package collins.provisioning
 
-import collins.cache.ConfigCache
-import collins.shell.{Command, CommandResult}
-import models.Asset
-
-import play.api.{Application, Plugin}
-
-import com.twitter.util.{Future, FuturePool}
 import java.util.concurrent.Executors
+
+import com.twitter.util.Future
+import com.twitter.util.FuturePool
+
+import collins.cache.ConfigCache
+import collins.shell.Command
+import collins.shell.CommandResult
+import models.Asset
+import play.api.Application
+import play.api.Plugin
 
 class ProvisionerPlugin(app: Application) extends Plugin with Provisioner {
 

@@ -1,15 +1,18 @@
 package util
 
-import config.AppConfig
-import models.{Asset, IpmiInfo}
-import concurrent.BackgroundProcess
+import java.util.concurrent.TimeUnit
+
+import scala.collection.mutable.StringBuilder
+import scala.sys.process.Process
+import scala.sys.process.ProcessLogger
+
 import collins.shell.CommandResult
 
 import akka.util.Duration
-import play.api.{Logger, Mode}
-import java.util.concurrent.TimeUnit
-import scala.collection.mutable.StringBuilder
-import scala.sys.process._
+import concurrent.BackgroundProcess
+import config.AppConfig
+import models.IpmiInfo
+import play.api.Logger
 
 object IpmiCommand {
   type BackgroundResult = Tuple2[Option[Throwable], Option[Option[CommandResult]]]

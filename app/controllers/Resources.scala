@@ -1,16 +1,17 @@
 package controllers
 
-import actions.asset.{CreateAction, FindSimilarAction}
-import actions.resources.{FindAction, IntakeStage1Action, IntakeStage2Action, IntakeStage3Action}
-
-import models._
-import views._
-
-import play.api._
-import play.api.mvc._
-import play.api.data._
-import play.api.data.Forms._
+import actions.asset.CreateAction
+import actions.asset.FindSimilarAction
+import actions.resources.IntakeStage2Action
+import actions.resources.IntakeStage3Action
 import collins.solr.Solr
+import models.PageParams
+import actions.resources.IntakeStage1Action
+import actions.resources.FindAction
+import models.AssetMeta
+import models.AssetType
+import play.api.mvc.Controller
+import views.html
 
 trait Resources extends Controller {
   this: SecureController =>

@@ -2,18 +2,15 @@ package collins.solr
 
 import java.util.Date
 
-import models.Asset
-
 import org.apache.solr.client.solrj.SolrServer
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
-import org.apache.solr.common.SolrInputDocument
+import org.apache.solr.client.solrj.impl.HttpSolrServer
+import org.apache.solr.client.solrj.impl.XMLResponseParser
 import org.apache.solr.core.CoreContainer
-import org.apache.solr.client.solrj.impl.{HttpSolrServer, XMLResponseParser}
 
-import play.api.{Logger, Play}
-import play.api.Play.current
-
-import java.net.URL
+import models.Asset
+import play.api.Logger
+import play.api.Play
 
 object Solr {
 

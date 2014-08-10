@@ -1,9 +1,16 @@
 package models
 
-import play.api.libs.json._
+import org.squeryl.PrimitiveTypeMode.__thisDsl
+import org.squeryl.PrimitiveTypeMode.from
+import org.squeryl.PrimitiveTypeMode.int2ScalarInt
+import org.squeryl.PrimitiveTypeMode.select
+import org.squeryl.PrimitiveTypeMode.string2ScalarString
+import org.squeryl.Schema
 
-import org.squeryl.PrimitiveTypeMode._
-import org.squeryl.{Schema, Table}
+import play.api.libs.json.Format
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 
 case class AssetType(name: String, label: String, id: Int = 0) extends ValidatedEntity[Int] {
   def getId(): Int = id

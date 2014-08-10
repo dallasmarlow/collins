@@ -2,20 +2,25 @@ package controllers
 package actions
 package resources
 
-import asset.ActionAttributeHelper
-import models.AssetLifecycle
-import models.AssetMeta.Enum.{ChassisTag, RackPosition}
-import collins.intake.IntakeConfig
-import util.MessageHelperI
-import util.security.SecuritySpecification
-import util.power.{InvalidPowerConfigurationException, PowerUnits}
-import validators.ParamValidation
-
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
-
 import java.util.concurrent.atomic.AtomicReference
-import scala.util.control.Exception.allCatch
+
+import scala.annotation.implicitNotFound
+
+import collins.intake.IntakeConfig
+
+import asset.ActionAttributeHelper
+import controllers.SecureController
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
+import models.AssetLifecycle
+import models.AssetMeta.Enum.ChassisTag
+import models.AssetMeta.Enum.RackPosition
+import play.api.data.Form
+import play.api.data.FormError
+import play.api.data.Forms.tuple
+import util.power.PowerUnits
+import util.security.SecuritySpecification
+import validators.ParamValidation
 
 trait IntakeStage3Form extends ParamValidation {
 

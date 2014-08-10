@@ -1,6 +1,11 @@
 package models
 
-import play.api.libs.json._
+import scala.math.BigDecimal.int2bigDecimal
+import scala.math.BigDecimal.long2bigDecimal
+
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
 
 sealed trait SortDirection {
   import SortDirection._
@@ -13,6 +18,7 @@ sealed trait SortDirection {
     case SortDesc => SortAsc
   }
 }
+
 object SortDirection {
 
   case object SortAsc extends SortDirection {
@@ -29,8 +35,6 @@ object SortDirection {
   def op(dir: SortDirection): (Int, Int) => Boolean = if (dir == SortAsc) _ < _ else _ > _ 
 }
 
-import SortDirection._
-
 case class PageParams(page: Int, size: Int, sort: SortDirection, sortField: String) {
   def offset: Int = page * size
   def validate() {
@@ -40,18 +44,15 @@ case class PageParams(page: Int, size: Int, sort: SortDirection, sortField: Stri
 
   def toSeq = List("page" -> page.toString, "size" -> size.toString, "sort" -> sort.toString, "sortField" -> sortField)
 }
+
 object PageParams {
 
   /**
    * Currently if sort is invalid it will just default to Asc
    */
   def apply(page: Int, size: Int, sort: String, sortField: String): PageParams = 
-    PageParams(page, size, SortDirection.withName(sort.toUpperCase).getOrElse(SortAsc), sortField)
+    PageParams(page, size, SortDirection.withName(sort.toUpperCase).getOrElse(SortDirection.SortAsc), sortField)
 }
-
-
-
-
 
 case class Page[+A](items: Seq[A], page: Int, offset: Long, total: Long) {
   lazy val prev: Option[Int] = Option(page - 1).filter(_ >= 0)

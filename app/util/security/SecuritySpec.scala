@@ -1,6 +1,8 @@
 package util
 package security
 
+import scala.annotation.implicitNotFound
+
 case class SecuritySpec(
   isSecure: Boolean,
   requiredCredentials: Set[String],

@@ -1,8 +1,12 @@
 package controllers
 
+import scala.annotation.implicitNotFound
+
 import models.User
-import util._
-import util.security._
+import util.security.AuthenticationProvider
+import util.security.AuthenticationProviderConfig
+import util.security.SecuritySpec
+import util.security.SecuritySpecification
 
 object Permissions {
   val LoggedIn = SecuritySpec.fromConfig("controllers.Api", SecuritySpec(true))

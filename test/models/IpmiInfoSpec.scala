@@ -1,11 +1,10 @@
 package models
 
-import test.ApplicationSpecification
-import util.IpAddress
+import org.specs2.specification._
 import util.config.IpmiConfig
+import util.IpAddress
 import play.api.Configuration
-import org.specs2._
-import specification._
+import helpers.ApplicationSpecification
 
 class IpmiInfoSpec extends ApplicationSpecification {
   

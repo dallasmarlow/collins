@@ -1,6 +1,9 @@
 package collins.graphs
 
-import util.config.{ConfigAccessor, ConfigSource, ConfigValue, TypesafeConfiguration}
+import util.config.ConfigAccessor
+import util.config.ConfigSource
+import util.config.ConfigValue
+import util.config.TypesafeConfiguration
 
 case class CustomMetricConfig(
   override val source: TypesafeConfiguration

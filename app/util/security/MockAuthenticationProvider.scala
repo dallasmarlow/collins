@@ -1,7 +1,8 @@
 package util
 package security
 
-import models.{User, UserImpl}
+import models.User
+import models.UserImpl
 
 class MockAuthenticationProvider extends AuthenticationProvider {
   override val authType = "default"

@@ -1,15 +1,20 @@
 package util
 package concurrent
 
-import akka.actor._
+import java.util.concurrent.TimeoutException
+
+import akka.actor.Actor
+import akka.actor.Props
+import akka.actor.actorRef2Scala
 import akka.pattern.ask
 import akka.routing.RoundRobinRouter
 import akka.util.Duration
-
-import play.api.libs.concurrent._
-
-import java.util.concurrent.TimeoutException
-//import scala.collection.immutable.Vector
+import akka.util.Timeout.durationToTimeout
+import play.api.Play.current
+import play.api.libs.concurrent.Akka
+import play.api.libs.concurrent.Redeemed
+import play.api.libs.concurrent.Thrown
+import play.api.libs.concurrent.akkaToPlay
 
 class BackgroundProcessorActor extends Actor {
   def receive = {

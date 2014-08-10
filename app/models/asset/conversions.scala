@@ -1,9 +1,21 @@
 package models.asset
 
-import models.{Asset, AssetType, State, Status}
-import models.conversions._
-import play.api.libs.json._
 import java.sql.Timestamp
+
+import scala.math.BigDecimal.long2bigDecimal
+
+import models.Asset
+import models.AssetType
+import models.State
+import models.State.StateFormat
+import models.Status
+import models.conversions.TimestampFormat
+import play.api.libs.json.Format
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 
 object conversions {
   import models.State.StateFormat

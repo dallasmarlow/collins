@@ -1,19 +1,23 @@
 package controllers
 
-import play.api.Logger
-import play.api.http.HeaderNames
-import play.api.mvc._
-import play.api.mvc.Results._
-import play.api.mvc.Security._
-import play.api.templates.Txt
-import play.api.libs.iteratee._
-
-import models.User
-import util._
-import util.config.AppConfig
-import util.security._
+import scala.annotation.implicitNotFound
 
 import org.apache.commons.codec.binary.Base64
+
+import models.User
+import play.api.Logger
+import play.api.http.HeaderNames
+import play.api.mvc.Action
+import play.api.mvc.AnyContent
+import play.api.mvc.Controller
+import play.api.mvc.Request
+import play.api.mvc.RequestHeader
+import play.api.mvc.Result
+import play.api.mvc.Results
+import play.api.templates.Txt
+import util.config.AppConfig
+import util.security.AuthenticationProvider
+import util.security.SecuritySpecification
 
 /**
  * Provide a secure controller implementation.

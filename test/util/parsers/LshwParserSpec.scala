@@ -1,14 +1,12 @@
 package util
 package parsers
 
-import test.util.parsers.CommonParserSpec
 import util.config.LshwConfig
+import org.specs2.mutable.Specification
+import org.specs2.matcher.Matcher
+import org.specs2.specification.Scope
 
-import org.specs2._
-import specification._
-import matcher.Matcher
-
-class LshwParserSpec extends mutable.Specification {
+class LshwParserSpec extends Specification {
 
   def beNonEmptyStringSeq: Matcher[Seq[String]] = have(s => s.nonEmpty && s.size >= 5)
 

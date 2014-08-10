@@ -1,9 +1,10 @@
 package util
 package concurrent
 
-import akka.util.Duration
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.ReentrantLock
+
+import akka.util.Duration
 
 trait RateLimit {
   def rate: Int

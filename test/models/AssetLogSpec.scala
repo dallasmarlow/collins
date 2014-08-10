@@ -1,10 +1,9 @@
 package models
 
-import models.logs._
-import test.ApplicationSpecification
-
-import org.specs2._
-import specification._
+import helpers.ApplicationSpecification
+import models.logs.LogFormat
+import models.logs.LogSource
+import org.specs2.specification.Scope
 
 class AssetLogSpec extends ApplicationSpecification {
 

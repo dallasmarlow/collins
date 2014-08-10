@@ -1,14 +1,19 @@
 package util
 package security
 
-import models.{User, UserImpl}
-import collins.cache.ConfigCache
-import collins.validation.File
-
-import play.api.Logger
-import com.google.common.cache._
 import java.util.concurrent.TimeUnit
-import collins.permissions.{PermissionsHelper, Privileges}
+
+import scala.annotation.implicitNotFound
+
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
+import com.google.common.cache.LoadingCache
+
+import collins.cache.ConfigCache
+import collins.permissions.Privileges
+
+import models.User
+import play.api.Logger
 
 trait AuthenticationProvider {
   protected val logger = Logger.logger

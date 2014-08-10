@@ -2,9 +2,12 @@ package controllers
 package actions
 package asset
 
-import models.AssetMeta.Enum.{ChassisTag, RackPosition}
-
-import play.api.mvc._
+import controllers.actions.SecureAction
+import models.AssetMeta.Enum.ChassisTag
+import models.AssetMeta.Enum.RackPosition
+import play.api.mvc.Action
+import play.api.mvc.AnyContent
+import play.api.mvc.Request
 
 /**
  * Determines if a request is for modifying status or not

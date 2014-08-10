@@ -1,7 +1,8 @@
 package util.plugins
 
-import play.api.Play
 import collins.provisioning.ProvisionerPlugin
+
+import play.api.Play
 
 object Provisioner {
   def pluginEnabled: Option[ProvisionerPlugin] = {

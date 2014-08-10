@@ -2,7 +2,8 @@ package controllers
 package actors
 
 import akka.util.Duration
-import play.api.mvc.{AnyContent, Request}
+import play.api.mvc.AnyContent
+import play.api.mvc.Request
 import util.concurrent.BackgroundProcess
 import util.plugins.SoftLayer
 

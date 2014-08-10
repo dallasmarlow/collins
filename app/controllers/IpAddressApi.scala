@@ -1,9 +1,13 @@
 package controllers
 
-import actions.ipaddress.{CreateAction, UpdateAction, DeleteAction}
-import actions.ipaddress.{FindAssetAction, FindAssetsByPoolAction, FindByAssetAction, GetPoolsAction}
-
 import models.Truthy
+import controllers.actions.ipaddress.FindAssetAction
+import controllers.actions.ipaddress.FindAssetsByPoolAction
+import controllers.actions.ipaddress.FindByAssetAction
+import controllers.actions.ipaddress.GetPoolsAction
+import controllers.actions.ipaddress.UpdateAction
+import controllers.actions.ipaddress.DeleteAction
+import controllers.actions.ipaddress.CreateAction
 
 trait IpAddressApi {
   this: Api with SecureController =>

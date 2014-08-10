@@ -2,13 +2,16 @@ package controllers
 package actions
 package resources
 
+import scala.annotation.implicitNotFound
+
+import controllers.SecureController
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
 import models.AssetMeta.Enum.ChassisTag
-import util.MessageHelperI
+import play.api.data.Form
+import play.api.data.Forms.single
 import util.security.SecuritySpecification
 import validators.ParamValidation
-
-import play.api.data.Form
-import play.api.data.Forms._
 
 trait IntakeStage2Form extends ParamValidation {
   val dataForm = Form(single(

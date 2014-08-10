@@ -1,8 +1,12 @@
 package util
 package config
 
-import models.{Asset, User}
-import play.api.{Logger, Mode, Play}
+import models.Asset
+import models.User
+import play.api.Logger
+import play.api.Mode
+import play.api.Play
+import play.api.Play.current
 
 object AppConfig {
   var globalConfig: Option[PlayConfiguration] = None

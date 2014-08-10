@@ -1,17 +1,15 @@
 package controllers
 
-import models._
-import util._
-
-import org.specs2._
-import specification._
-
-import play.api.libs.json._
-import play.api.libs.Files._
-import play.api.mvc._
-import play.api.mvc.MultipartFormData._
-
-import test._
+import helpers.ApplicationSpecification
+import helpers.FakeRequestHeader
+import helpers.ResponseMatcher
+import play.api.libs.json.JsArray
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.Json
+import util.BashOutput
+import util.JsonOutput
+import util.TextOutput
 
 class ApiSpec extends ApplicationSpecification with ControllerSpec {
 

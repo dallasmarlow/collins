@@ -1,7 +1,15 @@
 package util
 
-import models.lshw._
-import play.api.libs.json._
+import models.lshw.Cpu
+import models.lshw.Disk
+import models.lshw.Memory
+import models.lshw.Nic
+import models.lshw.ServerBase
+import play.api.libs.json.Format
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJson
 
 object LshwRepresentation {
   def empty(): LshwRepresentation = {

@@ -1,7 +1,8 @@
 package collins.provisioning
 
-import org.specs2.mutable._
 import java.io.File
+
+import org.specs2.mutable.Specification
 
 class ProfileLoaderSpec extends Specification {
   val profiles = {

@@ -1,13 +1,14 @@
 package controllers
 
-import play.api._
-import play.api.data._
-import play.api.data.Forms._
-import play.api.mvc._
-
-import models._
+import models.User
+import play.api.data.Form
+import play.api.data.Forms.nonEmptyText
+import play.api.data.Forms.optional
+import play.api.data.Forms.text
+import play.api.data.Forms.tuple
+import play.api.mvc.Action
 import util.security.SecuritySpec
-import views._
+import views.html
 
 object Application extends SecureWebController {
  

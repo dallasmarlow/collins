@@ -3,10 +3,10 @@ package actions
 package asset
 
 import models.Asset
+import play.api.mvc.Result
 import util.RemoteCollinsHost
 import util.security.SecuritySpecification
 import views.html
-import play.api.mvc.Result
 
 case class GetAction(
   assetTag: String,

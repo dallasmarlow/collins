@@ -1,12 +1,21 @@
 package models
 
-import collins.validation.Pattern.{isAlphaNumericString, isNonEmptyString}
-
-import play.api.libs.json._
-import play.api.libs.json.Json.toJson
-import org.squeryl.PrimitiveTypeMode._
-import org.squeryl.Schema
 import scala.math.Ordering
+
+import org.squeryl.PrimitiveTypeMode.__thisDsl
+import org.squeryl.PrimitiveTypeMode.from
+import org.squeryl.PrimitiveTypeMode.int2ScalarInt
+import org.squeryl.PrimitiveTypeMode.select
+import org.squeryl.PrimitiveTypeMode.string2ScalarString
+import org.squeryl.Schema
+
+import collins.validation.Pattern.isAlphaNumericString
+import collins.validation.Pattern.isNonEmptyString
+
+import play.api.libs.json.Format
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json.toJson
 
 object State extends Schema with AnormAdapter[State] {
 

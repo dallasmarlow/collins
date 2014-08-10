@@ -1,9 +1,8 @@
 package controllers
 
-import util._
-
 import play.api.libs.json._
 import play.api.mvc._
+import util._
 
 object ApiResponse extends ApiResponse {
   import Results._

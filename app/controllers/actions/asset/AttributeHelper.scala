@@ -2,8 +2,12 @@ package controllers
 package actions
 package asset
 
-import collection.immutable.DefaultMap
-import play.api.mvc._
+import scala.Option.option2Iterable
+import scala.collection.immutable.DefaultMap
+
+import controllers.actions.SecureAction
+import play.api.mvc.AnyContent
+import play.api.mvc.Request
 
 case class AttributeMap(underlying: Map[String,String]) extends DefaultMap[String,String] {
   override def get(key: String): Option[String] = underlying.get(key)

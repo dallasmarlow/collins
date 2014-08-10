@@ -1,10 +1,12 @@
 package models
 
 import asset.AssetView
-import shared.{AddressPool, IpAddressConfig}
+import shared.AddressPool
+import shared.IpAddressConfig
 
-import play.api.libs.json._
-import util.{IpAddress, IpAddressCalc}
+import play.api.libs.json.Json
+import util.IpAddress
+import util.IpAddressCalc
 import util.plugins.Callback
 import org.squeryl.dsl.ast.LogicalBoolean
 

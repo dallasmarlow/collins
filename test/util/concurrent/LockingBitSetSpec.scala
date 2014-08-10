@@ -1,14 +1,13 @@
 package util
 package concurrent
 
-import org.specs2.specification.Scope
-import org.specs2.mutable._
-import org.specs2.mock._
-
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.CountDownLatch
+import scala.collection.JavaConverters._
 import scala.collection.parallel.immutable.ParRange
 import scala.util.Random.nextBoolean
-import scala.collection.JavaConverters._
-import java.util.concurrent.{ArrayBlockingQueue, CountDownLatch, ConcurrentHashMap}
+import org.specs2.specification.Scope
+import org.specs2.mutable.Specification
 
 class LockingBitSetSpec extends Specification {
   class BitSetScope(val initSize: Int) extends Scope {

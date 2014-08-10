@@ -1,13 +1,21 @@
 package models
 
-import conversions._
+import conversions.dateToTimestamp
 import AssetMeta.Enum.RackPosition
 import models.{Status => AStatus}
-import models.logs._
+import models.logs.LogFormat
+import models.logs.LogSource
 
-import util.{ApiTattler, AssetStateMachine, InternalTattler, LldpRepresentation, LshwRepresentation, SystemTattler}
-import util.config.{Feature, LshwConfig}
-import util.parsers.{LldpParser, LshwParser}
+import util.ApiTattler
+import util.AssetStateMachine
+import util.InternalTattler
+import util.LldpRepresentation
+import util.LshwRepresentation
+import util.SystemTattler
+import util.config.Feature
+import util.config.LshwConfig
+import util.parsers.LldpParser
+import util.parsers.LshwParser
 import collins.solr.Solr
 import util.power.PowerUnits
 

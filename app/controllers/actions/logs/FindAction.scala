@@ -2,10 +2,14 @@ package controllers
 package actions
 package logs
 
-import models.{Asset, AssetLog, Page, PageParams}
+import models.Asset
+import models.AssetLog
+import models.Page
+import models.PageParams
 import models.conversions.AssetLogFormat
 import util.security.SecuritySpecification
-import play.api.libs.json._
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 
 case class FindAction(
   assetTag: Option[String],

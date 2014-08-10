@@ -1,6 +1,9 @@
 package util
 
-import collection.immutable.SortedSet
+import scala.collection.immutable.SortedSet
+
+import util.power.PowerComponent
+import util.power.PowerUnit
 
 package object power {
   type PowerComponents = Set[PowerComponent]

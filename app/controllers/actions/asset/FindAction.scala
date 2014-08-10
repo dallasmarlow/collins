@@ -4,14 +4,20 @@ package asset
 
 import forms._
 
-import models.{Asset, AssetType, AssetFinder, Page, PageParams, State, Status => AssetStatus, Truthy}
+import models.Asset
+import models.AssetType
+import models.AssetFinder
+import models.Page
+import models.PageParams
+import models.State
+import models.{Status => AssetStatus}
+import models.Truthy
 import models.asset.AssetView
 
 import util.AttributeResolver
 import util.config.MultiCollinsConfig
 import util.security.SecuritySpecification
 
-import play.api.libs.json._
 import play.api.mvc.Result
 
 import java.util.concurrent.TimeoutException

@@ -1,13 +1,11 @@
 package models
 
-import test.ApplicationSpecification
-import org.specs2._
-import specification._
-
-import AssetSortType._
-import SortDirection._
-
 import java.sql.Timestamp
+import AssetSortType.Name
+import SortDirection.SortAsc
+import SortDirection.SortDesc
+import helpers.ApplicationSpecification
+import org.specs2.specification.Scope
 
 class AssetDistanceSorterSpec extends ApplicationSpecification {
 
@@ -123,8 +121,6 @@ class AssetDistanceSorterSpec extends ApplicationSpecification {
                                assets,
                                Name,
                                SortDesc)
-    }
-        
-  } // AssetDistanceSorter should
-  
+    }   
+  }
 }

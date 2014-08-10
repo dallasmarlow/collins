@@ -2,12 +2,20 @@ package controllers
 package actions
 package asset
 
-import collins.validation.StringUtil
-import models.{Asset, AssetLifecycle, Status => AssetStatus}
-import util.security.SecuritySpecification
+import scala.annotation.implicitNotFound
 
+import collins.validation.StringUtil
+
+import controllers.Api
+import controllers.SecureController
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
+import models.AssetLifecycle
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.number
+import play.api.data.Forms.optional
+import util.security.SecuritySpecification
 
 case class DeleteAttributeAction(
   _assetTag: String,

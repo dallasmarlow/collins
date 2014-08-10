@@ -1,14 +1,15 @@
 package models
 
-import util.plugins.Cache
-import shared.QueryLogConfig
+import org.squeryl.KeyedEntity
+import org.squeryl.PrimitiveTypeMode
+import org.squeryl.Query
+import org.squeryl.Schema
+import org.squeryl.Table
+import org.squeryl.internals.PosoLifecycleEvent
 
 import play.api.Logger
-import org.squeryl.{KeyedEntity, Query, Schema, Table}
-import org.squeryl.dsl.QueryDsl
-import org.squeryl.dsl.ast.LogicalBoolean
-import org.squeryl.internals.PosoLifecycleEvent
-import scala.transient
+import shared.QueryLogConfig
+import util.plugins.Cache
 
 trait ValidatedEntity[T] extends KeyedEntity[T] {
   def validate(): Unit
@@ -102,7 +103,6 @@ trait BasicModel[T <: AnyRef] { self: Schema =>
       }
     }(m)
   }
-
 }
 
 trait AnormAdapter[T <: ValidatedEntity[_]] extends BasicModel[T] { self: Schema =>

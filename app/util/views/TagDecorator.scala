@@ -2,7 +2,6 @@ package util
 package views
 
 import models.MetaWrapper
-
 import play.api.mvc.Content
 import play.api.templates.Html
 

@@ -1,7 +1,10 @@
 package util
 package views
 
-import config.{Configurable, ConfigAccessor, ConfigSource, TypesafeConfiguration}
+import config.ConfigAccessor
+import config.ConfigSource
+import config.Configurable
+import config.TypesafeConfiguration
 
 case class DecoratorConfig(val name: String, override val source: TypesafeConfiguration)
   extends ConfigAccessor with ConfigSource

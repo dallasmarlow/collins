@@ -3,8 +3,6 @@ package models
 import util.CryptoCodec
 import util.config.Feature
 
-import conversions._
-import java.util.Date
 /**
  * Provide a convenience wrapper on top of a row of meta/value data
  */

@@ -1,6 +1,6 @@
 package models.lshw
 
-import play.api.libs.json._
+import play.api.libs.json.JsValue
 
 abstract class LshwAsset {
   val description: String

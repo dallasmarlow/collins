@@ -1,8 +1,9 @@
 package util
 package concurrent
 
-import akka.util.Duration
 import java.util.concurrent.TimeUnit
+
+import akka.util.Duration
 
 trait BackgroundProcess[T] {
   val timeout: Duration

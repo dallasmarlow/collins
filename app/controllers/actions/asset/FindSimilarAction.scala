@@ -4,7 +4,14 @@ package asset
 
 import forms._
 
-import models.{Asset, AssetFinder, AssetType, Page, PageParams, SortDirection, Status => AssetStatus, Truthy}
+import models.Asset
+import models.AssetFinder
+import models.AssetType
+import models.Page
+import models.PageParams
+import models.SortDirection
+import models.{Status => AssetStatus}
+import models.Truthy
 import models.asset.AssetView
 import models.AssetSortType._
 import models.SortDirection._
@@ -13,7 +20,9 @@ import play.api.mvc.Result
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.Logger
-import play.api.mvc.{AnyContent, Request, Result}
+import play.api.mvc.AnyContent
+import play.api.mvc.Request
+import play.api.mvc.Result
 
 import util.MessageHelper
 import util.security.SecuritySpecification

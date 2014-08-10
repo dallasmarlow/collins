@@ -1,12 +1,16 @@
 package util
 
-import power._
-
-import org.specs2.specification.Scope
-import org.specs2.mutable._
 import org.specs2.matcher.DataTables
+import org.specs2.specification.Scope
 
-class PowerUnitSpec extends test.ApplicationSpecification with DataTables {
+import helpers.ApplicationSpecification
+import util.power.InvalidPowerConfigurationException
+import util.power.PowerConfiguration
+import util.power.PowerUnit
+import util.power.PowerUnits
+import util.power.PowerUnits
+
+class PowerUnitSpec extends ApplicationSpecification with DataTables {
 
   val DefaultUnitsRequired = 2
   val Strip = 'STRIP

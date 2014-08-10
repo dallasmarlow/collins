@@ -1,9 +1,10 @@
 package controllers
 package actors
 
+import com.twitter.util.Future
+
 import akka.util.Duration
 import util.concurrent.BackgroundProcess
-import com.twitter.util.Future
 
 case class TestProcessor(sleepMs: Long, userTimeout: Option[Duration] = None)
   extends BackgroundProcess[Boolean]

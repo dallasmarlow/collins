@@ -1,13 +1,9 @@
 package controllers
 
+import collins.solr.Solr
 import util.Stats
 import util.plugins.Cache
-import collins.solr.Solr
-import util.security.AuthenticationProviderConfig
-import views._
-
-import play.api.Play
-import play.api.db._
+import views.html
 
 object Admin extends SecureWebController {
 

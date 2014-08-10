@@ -1,8 +1,9 @@
 package controllers
 
-import actions.asset.{
-  PowerManagementAction, PowerStatusAction, ProvisionAction, GetProvisioningProfilesAction
-}
+import actions.asset.GetProvisioningProfilesAction
+import actions.asset.PowerManagementAction
+import actions.asset.PowerStatusAction
+import actions.asset.ProvisionAction
 
 trait AssetManagementApi {
   this: Api with SecureController =>

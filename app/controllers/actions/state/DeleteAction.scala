@@ -2,14 +2,20 @@ package controllers
 package actions
 package state
 
+import scala.annotation.implicitNotFound
+
 import collins.validation.StringUtil
-import models.{Asset, State, Status => AStatus}
+
+import controllers.Api
+import controllers.SecureController
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
+import models.Asset
+import models.State
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
 import util.MessageHelper
 import util.security.SecuritySpecification
-
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.libs.json.{JsNumber, JsObject}
 
 object DeleteAction {
   object Messages extends MessageHelper("controllers.AssetStateApi.deleteState") {

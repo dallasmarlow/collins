@@ -1,10 +1,13 @@
 package util
 package views
 
-import models.{Asset, Page}
+import models.Asset
+import models.Page
 import models.asset.AssetView
 import util.plugins.SoftLayer
-import util.power.{PowerComponent, PowerUnits}
+import util.power.PowerComponent
+import util.power.PowerUnits
+import util.power.PowerUnits
 
 // Mostly used with views/asset/list, also for comprehensions
 object ListHelper {

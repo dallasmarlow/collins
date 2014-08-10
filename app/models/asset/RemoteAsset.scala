@@ -1,6 +1,6 @@
 package models.asset
 
-import play.api.libs.json._
+import play.api.libs.json.JsObject
 
 trait RemoteAsset extends AssetView {
   val json: JsObject

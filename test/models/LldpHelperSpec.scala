@@ -1,11 +1,12 @@
 package models
 
-import util._
 import util.parsers.LldpParser
-import org.specs2._
-import specification._
+import helpers.ApplicationSpecification
+import util.parsers.LldpParser
+import util.LldpRepresentation
+import org.specs2.specification.Scope
 
-class LldpHelperSpec extends test.ApplicationSpecification {
+class LldpHelperSpec extends ApplicationSpecification {
 
   "LLDP Helper Specification".title
 
@@ -38,7 +39,7 @@ class LldpHelperSpec extends test.ApplicationSpecification {
     }
   }
 
-  class LldpCommonHelper(txt: String) extends Scope with test.models.CommonHelperSpec[LldpRepresentation] {
+  class LldpCommonHelper(txt: String) extends Scope with models.CommonHelperSpec[LldpRepresentation] {
     def getParser(str: String) = new LldpParser(str)
     override def parsed(): LldpRepresentation = getParsed(txt)
   }

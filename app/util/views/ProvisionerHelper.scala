@@ -1,11 +1,16 @@
 package util
 package views
 
-import models.{AssetMeta, AssetMetaValue}
-import util.plugins.Provisioner
-import com.tumblr.play._
-import play.api.libs.json._
+import models.AssetMeta
+import models.AssetMetaValue
+import play.api.libs.json.JsArray
+import play.api.libs.json.JsBoolean
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 import play.api.templates.Html
+import util.plugins.Provisioner
 
 object ProvisionerHelper {
   def profilesAsJson(): Html = {

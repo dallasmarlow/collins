@@ -1,14 +1,12 @@
 package collins.graphs
 
-import models.asset.AssetView
-
 import java.net.URLEncoder
-import play.api.libs.json._
-import com.codahale.jerkson.Json._
 
+import com.codahale.jerkson.Json.generate
+
+import models.asset.AssetView
 import play.api.Application
 import play.api.mvc.Content
-import play.api.templates.Html
 
 case class GangliaGraphs(override val app: Application) extends GraphView {
 

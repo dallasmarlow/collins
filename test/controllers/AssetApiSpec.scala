@@ -1,19 +1,19 @@
 package controllers
 
-import util.power.PowerUnits
+import org.specs2.specification.Scope
+
+import helpers.ApplicationSpecification
+import helpers.FakeRequest
+import helpers.ResponseMatchHelpers
+import helpers.ResponseScope
+import models.AssetMeta
 import models.AssetMeta.Enum.RackPosition
-
-import models._
-import test._
-
-import play.api.libs.json._
 import play.api.libs.Files.TemporaryFile
-import play.api.mvc._
-import play.api.mvc.MultipartFormData._
-
-import org.specs2._
-import specification._
-import matcher.Matcher
+import play.api.mvc.AnyContentAsFormUrlEncoded
+import play.api.mvc.AnyContentAsMultipartFormData
+import play.api.mvc.MultipartFormData
+import play.api.mvc.MultipartFormData.FilePart
+import util.power.PowerUnits
 
 class AssetApiSpec extends ApplicationSpecification with ControllerSpec {
 

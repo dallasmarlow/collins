@@ -1,8 +1,11 @@
 package util
 package config
 
-import models.{Asset, AssetMeta, Status}
+import models.Asset
+import models.AssetMeta
+import models.Status
 import models.logs.LogMessageType
+import util.MessageHelper
 
 /**
  * Describes general features for collins, not tied to particular pieces of functionality

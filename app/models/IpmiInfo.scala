@@ -2,11 +2,15 @@ package models
 
 import asset.AssetView
 import shared.{AddressPool,IpAddressConfig}
-import util._
-import util.config.{Configurable, IpmiConfig, SimpleAddressConfig}
-import org.squeryl.dsl.ast.{BinaryOperatorNodeLogicalBoolean, LogicalBoolean}
+import util.CryptoCodec
+import util.IpAddress
+import util.config.Configurable
+import util.config.IpmiConfig
+import util.config.SimpleAddressConfig
+import org.squeryl.dsl.ast.BinaryOperatorNodeLogicalBoolean
+import org.squeryl.dsl.ast.LogicalBoolean
 
-import play.api.libs.json._
+import play.api.libs.json.Json
 
 case class IpmiInfo(
   asset_id: Long,

@@ -1,17 +1,10 @@
 package collins.solr
 
-import models.{Asset, AssetFinder, AssetMeta, AssetMetaValue, AssetType, IpAddresses, MetaWrapper, Page, PageParams, State, Status, Truthy}
-import models.asset.AssetView
+import models.AssetMeta
+import models.AssetMeta.ValueType
+import models.AssetMeta.ValueType._
 import models.IpmiInfo.Enum._
-
-
-import Solr.AssetSolrDocument
-import AssetMeta.ValueType
-import AssetMeta.ValueType._
-
-import play.api.Logger
-
-
+import models.Truthy
 
 /**
  * The top-level object parsed from a CQL expression

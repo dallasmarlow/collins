@@ -1,16 +1,22 @@
 package models
 
-import util.views.Formatter.{dateFormat, ISO_8601_FORMAT}
-import util.IpAddress
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+
+import org.squeryl.dsl.NonNumericalExpression
+import org.squeryl.dsl.StringExpression
+import org.squeryl.dsl.ast.BinaryOperatorNodeLogicalBoolean
+import org.squeryl.dsl.ast.ExpressionNode
+import org.squeryl.dsl.ast.LogicalBoolean
+import org.squeryl.dsl.ast.OrderByArg
+import org.squeryl.dsl.ast.TypedExpressionNode
 
 import play.api.libs.json._
-import Json.toJson
-
-import java.util.Date
-import java.sql.Timestamp
-import org.squeryl.dsl.{NonNumericalExpression, StringExpression}
-import org.squeryl.dsl.ast.{BinaryOperatorNodeLogicalBoolean, ExpressionNode, LogicalBoolean, OrderByArg, TypedExpressionNode}
-import java.text.SimpleDateFormat
+import play.api.libs.json.Json.toJson
+import util.IpAddress
+import util.views.Formatter.ISO_8601_FORMAT
+import util.views.Formatter.dateFormat
 
 object conversions {
   implicit def dateToTimestamp(date: Date) = new DateToTimestamp(date)

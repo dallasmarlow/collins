@@ -1,7 +1,10 @@
 package controllers
 package actions
 
-import play.api.mvc._
+import play.api.mvc.AnyContent
+import play.api.mvc.AnyContentAsEmpty
+import play.api.mvc.Headers
+import play.api.mvc.Request
 
 object ActionHelper {
   val DummyRequest = new Request[AnyContent] {

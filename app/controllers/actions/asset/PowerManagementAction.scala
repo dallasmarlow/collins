@@ -2,8 +2,8 @@ package controllers
 package actions
 package asset
 
-import collins.power.PowerAction
 import forms._
+import collins.power.PowerAction
 
 import util.security.SecuritySpecification
 

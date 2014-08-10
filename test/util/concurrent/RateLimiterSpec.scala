@@ -1,13 +1,15 @@
 package util
 package concurrent
 
-import org.specs2.specification.Scope
-import org.specs2.mutable._
-import org.specs2.mock._
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CountDownLatch
 
-import scala.collection.parallel.immutable.ParRange
 import scala.collection.JavaConverters._
-import java.util.concurrent.{ArrayBlockingQueue, CountDownLatch, ConcurrentHashMap}
+import scala.collection.parallel.immutable.ParRange
+
+import org.specs2.mutable.Specification
+import org.specs2.specification.Scope
 
 class RateLimiterSpec extends Specification {
 

@@ -1,21 +1,32 @@
 package models
 
-import conversions._
-import logs._
-import LogFormat.LogFormat
-import LogMessageType.LogMessageType
-import LogSource.LogSource
-import util.views.Formatter.dateFormat
-
-import play.api.libs.json._
-import Json.toJson
-
-import org.squeryl.PrimitiveTypeMode._
-import org.squeryl.{Schema, Table}
-import org.squeryl.dsl.ast.{BinaryOperatorNodeLogicalBoolean, LogicalBoolean}
-
+import conversions.AssetLogFormat
 import java.sql.Timestamp
 import java.util.Date
+import org.squeryl.PrimitiveTypeMode.__thisDsl
+import org.squeryl.PrimitiveTypeMode.count
+import org.squeryl.PrimitiveTypeMode.enum2EnumNode
+import org.squeryl.PrimitiveTypeMode.from
+import org.squeryl.PrimitiveTypeMode.long2ScalarLong
+import org.squeryl.PrimitiveTypeMode.optionLong2ScalarLong
+import org.squeryl.PrimitiveTypeMode.orderByArg2OrderByExpression
+import org.squeryl.PrimitiveTypeMode.singleColComputeQuery2Scalar
+import org.squeryl.PrimitiveTypeMode.traversableOfEnumerationValue2ListEnumerationValue
+import org.squeryl.PrimitiveTypeMode.where
+import org.squeryl.Schema
+import org.squeryl.dsl.ast.LogicalBoolean
+import logs.LogFormat
+import logs.LogFormat.LogFormat
+import logs.LogMessageType
+import logs.LogMessageType.LogMessageType
+import logs.LogSource
+import logs.LogSource.LogSource
+import models.conversions.dateToTimestamp
+import models.conversions.orderByString2oba
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJson
 
 case class AssetLog(
   asset_id: Long,

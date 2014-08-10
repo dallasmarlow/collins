@@ -1,6 +1,5 @@
 package collins.solr
 
-
 import play.api.Logger
 
 

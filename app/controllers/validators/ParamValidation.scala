@@ -2,9 +2,9 @@ package controllers
 package validators
 
 import collins.validation.StringUtil
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.data.validation.Constraints._
+
+import play.api.data.Forms.optional
+import play.api.data.Forms.text
 
 trait ParamValidation {
   protected def validatedText(minLen: Int, maxLen: Int = Int.MaxValue) = text(minLen,maxLen).verifying { txt =>

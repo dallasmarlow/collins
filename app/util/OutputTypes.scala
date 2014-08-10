@@ -1,7 +1,10 @@
 package util
 
-import play.api.mvc._
 import play.api.http.HeaderNames
+import play.api.mvc.AnyContent
+import play.api.mvc.AnyContentAsFormUrlEncoded
+import play.api.mvc.Request
+import play.api.mvc.RequestHeader
 
 sealed trait OutputType {
   val fileExtension: String

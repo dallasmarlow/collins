@@ -1,13 +1,17 @@
-package test
+package helpers
 
-import org.specs2._
-import specification._
-import matcher._
+import org.specs2.matcher.Expectable
+import org.specs2.matcher.Matcher
+import org.specs2.specification.Scope
 
-import play.api.mvc._
 import play.api.http.HeaderNames
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
+import play.api.mvc.AnyContent
+import play.api.mvc.AnyContentAsEmpty
+import play.api.mvc.RequestHeader
+import play.api.test.FakeHeaders
 import play.api.test.{FakeRequest => PlayFakeRequest}
-import play.api.test._
 
 object FakeRequestHeader {
   def apply[A](req: PlayFakeRequest[A]) = new FakeRequestHeader(

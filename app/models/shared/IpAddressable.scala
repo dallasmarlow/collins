@@ -1,12 +1,19 @@
 package models
 
-import shared.AddressPool
-
-import util.{IpAddress, IpAddressCalc}
-import org.squeryl.Schema
-import play.api.Logger
 import java.sql.SQLException
-import collection.immutable.SortedSet
+
+import org.squeryl.PrimitiveTypeMode.__thisDsl
+import org.squeryl.PrimitiveTypeMode.from
+import org.squeryl.PrimitiveTypeMode.long2ScalarLong
+import org.squeryl.PrimitiveTypeMode.orderByArg2OrderByExpression
+import org.squeryl.PrimitiveTypeMode.typedExpression2OrderByArg
+import org.squeryl.PrimitiveTypeMode.where
+import org.squeryl.Schema
+
+import play.api.Logger
+import shared.AddressPool
+import util.IpAddress
+import util.IpAddressCalc
 
 trait IpAddressable extends ValidatedEntity[Long] {
 

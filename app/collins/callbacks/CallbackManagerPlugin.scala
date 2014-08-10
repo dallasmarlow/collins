@@ -1,11 +1,14 @@
 package collins
 package callbacks
 
-import java.beans.{PropertyChangeEvent, PropertyChangeListener, PropertyChangeSupport}
-import play.api.{Application, Configuration, Logger, Plugin}
-import play.api.Play.current
-import play.api.libs.concurrent._
+import java.beans.PropertyChangeEvent
+
 import akka.actor.Props
+import play.api.Application
+import play.api.Logger
+import play.api.Play.current
+import play.api.Plugin
+import play.api.libs.concurrent.Akka
 
 class CallbackManagerPlugin(app: Application) extends Plugin with AsyncCallbackManager {
   override protected val logger = Logger("CallbackManagerPlugin")

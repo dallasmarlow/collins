@@ -1,7 +1,7 @@
 package util
 package parsers
 
-import play.api._
+import play.api.Logger
 
 case class AttributeNotFoundException(msg: String) extends Exception(msg)
 

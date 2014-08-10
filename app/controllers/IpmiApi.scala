@@ -1,13 +1,14 @@
 package controllers
 
-import models.{Asset, IpmiInfo}
-import util.IpAddress
-
+import models.Asset
+import models.IpmiInfo
 import play.api.data._
 import play.api.data.Forms._
-import play.api.http.{Status => StatusValues}
-import play.api.libs.json.{JsBoolean, JsObject}
 import play.api.mvc.Results
+import util.IpAddress
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsBoolean
+import play.api.http.{Status => StatusValues}
 import java.sql.SQLException
 
 trait IpmiApi {

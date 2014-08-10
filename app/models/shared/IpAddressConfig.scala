@@ -1,12 +1,20 @@
 package models
 package shared
 
-import util.{IpAddress, IpAddressCalc, MessageHelper}
-import util.config.{Configurable, ConfigAccessor, ConfigValue, SimpleAddressConfig}
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedQueue
 
+import scala.collection.JavaConverters.asScalaSetConverter
+import scala.collection.JavaConverters.collectionAsScalaIterableConverter
+import scala.collection.JavaConverters.enumerationAsScalaIteratorConverter
+import scala.collection.JavaConverters.mapAsJavaMapConverter
+
+import AddressPool.poolName
 import play.api.Logger
-import scala.collection.JavaConverters._
-import java.util.concurrent.{ConcurrentHashMap, ConcurrentLinkedQueue}
+import util.MessageHelper
+import util.config.Configurable
+import util.config.SimpleAddressConfig
+import util.config.TypesafeConfiguration
 
 /**
  * Represents an IP Address configuration.

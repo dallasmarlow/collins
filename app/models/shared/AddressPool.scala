@@ -1,7 +1,9 @@
 package models
 package shared
 
-import util.{IpAddress, IpAddressCalc, MessageHelper}
+import util.IpAddress
+import util.IpAddressCalc
+import util.MessageHelper
 import util.concurrent.LockingBitSet
 import util.config.SimpleAddressConfig
 

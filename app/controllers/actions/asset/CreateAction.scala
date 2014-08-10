@@ -3,15 +3,18 @@ package actions
 package asset
 
 import forms._
-
 import collins.validation.StringUtil
-import models.{Asset, AssetLifecycle, AssetType, IpmiInfo, Status => AssetStatus, Truthy}
-import util.OutputType
-import util.security.SecuritySpecification
 
+import models.Asset
+import models.AssetLifecycle
+import models.AssetType
+import models.IpmiInfo
+import models.{Status => AssetStatus}
+import models.Truthy
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.Result
+import util.security.SecuritySpecification
 
 case class CreateAction(
   _assetTag: Option[String],

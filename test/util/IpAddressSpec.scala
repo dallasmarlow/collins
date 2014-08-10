@@ -1,6 +1,6 @@
 package util
 
-import org.specs2.mutable._
+import org.specs2.mutable.Specification
 import org.specs2.matcher.DataTables
 
 class IpAddressSpec extends Specification with DataTables {

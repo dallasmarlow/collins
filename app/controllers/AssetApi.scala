@@ -1,21 +1,23 @@
 package controllers
 
-import actions.asset.{CreateAction, DeleteAction, DeleteAttributeAction, FindAction, FindSimilarAction, GetAction}
-import actions.asset.{UpdateAction, UpdateForMaintenanceAction, UpdateRequestRouter, UpdateStatusAction}
-import actions.asset.UpdateRequestRouter.Matcher._
-
+import actions.asset.UpdateRequestRouter.Matcher.StatusOnly
 import views.html
 import models.{Status => AStatus}
-import models._
-import util._
-
-import play.api.data._
-import play.api.data.Forms._
 import play.api.http.{Status => StatusValues}
-import play.api.mvc._
-import play.api.libs.json._
-
 import java.util.Date
+import controllers.actions.asset.FindSimilarAction
+import controllers.actions.asset.UpdateForMaintenanceAction
+import controllers.actions.asset.DeleteAttributeAction
+import controllers.actions.asset.GetAction
+import controllers.actions.asset.DeleteAction
+import controllers.actions.asset.CreateAction
+import controllers.actions.asset.FindAction
+import controllers.actions.asset.UpdateAction
+import controllers.actions.asset.UpdateForMaintenanceAction
+import controllers.actions.asset.UpdateRequestRouter
+import controllers.actions.asset.UpdateStatusAction
+import models.PageParams
+
 
 trait AssetApi {
   this: Api with SecureController =>

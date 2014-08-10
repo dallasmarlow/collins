@@ -1,8 +1,9 @@
 package collins.solr
 
-import util.config.Configurable
-import util.MessageHelper
 import java.io.File
+
+import util.MessageHelper
+import util.config.Configurable
 
 object SolrConfig extends Configurable {
   override val namespace = "solr"

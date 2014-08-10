@@ -1,6 +1,9 @@
 package models
 
-import play.api.libs.json._
+import play.api.libs.json.Json
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsString
 
 import org.squeryl.PrimitiveTypeMode._
 import org.squeryl.{Schema, Table}

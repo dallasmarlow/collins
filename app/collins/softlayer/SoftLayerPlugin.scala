@@ -1,20 +1,25 @@
 package collins.softlayer
 
-import collins.power._
-import collins.power.management._
-import models.Asset
+import scala.util.control.Exception.allCatch
 
-import play.api.{Application, Plugin}
-import play.api.libs.json._
+import org.jboss.netty.buffer.ChannelBuffers
+import org.jboss.netty.util.CharsetUtil.UTF_8
+import org.jboss.netty.handler.codec.http.HttpRequest
+import org.jboss.netty.handler.codec.http.HttpResponse
+import org.jboss.netty.handler.codec.http.QueryStringEncoder
 
 import com.twitter.finagle.Service
 import com.twitter.finagle.builder.ClientBuilder
-import com.twitter.finagle.http.{Http, RequestBuilder, Response}
+import com.twitter.finagle.http.Http
+import com.twitter.finagle.http.RequestBuilder
+import com.twitter.finagle.http.Response
 import com.twitter.util.Future
-import org.jboss.netty.buffer.ChannelBuffers
-import org.jboss.netty.handler.codec.http.{HttpRequest, HttpResponse, QueryStringEncoder}
-import org.jboss.netty.util.CharsetUtil.UTF_8
-import scala.util.control.Exception.allCatch
+
+import collins.power.management._
+import models.Asset
+import play.api.Application
+import play.api.Plugin
+import play.api.libs.json._
 
 class SoftLayerPlugin(app: Application) extends Plugin with SoftLayer {
   type ClientSpec = ClientBuilder.Complete[HttpRequest, HttpResponse]

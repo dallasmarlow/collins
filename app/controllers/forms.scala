@@ -1,18 +1,21 @@
 package controllers
 
-import models.{AssetType,State,Status,Truthy}
-import util.views.Formatter.camelCase
+import scala.util.control.Exception.allCatch
 
 import collins.power.PowerAction
-import collins.solr.{AssetDocType, CollinsQueryParser, SolrExpression}
-
-import play.api.data.FormError
-import play.api.data.format._
-
-import scala.util.control.Exception.allCatch
+import collins.solr.AssetDocType
+import collins.solr.CollinsQueryParser
+import collins.solr.SolrExpression
 
 import models.AssetSortType
 import models.AssetSortType._
+import models.AssetType
+import models.State
+import models.Status
+import models.Truthy
+import play.api.data.FormError
+import play.api.data.format._
+import util.views.Formatter.camelCase
 
 package object forms {
 

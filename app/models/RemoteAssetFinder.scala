@@ -1,20 +1,27 @@
 package models
 
-import asset.{AssetView, BasicRemoteAsset, DetailedRemoteAsset, RemoteAsset}
-import util.RemoteCollinsHost
-
-import play.api.Logger
-import play.api.libs.json._
-import play.api.libs.ws.WS
-import play.api._
-import play.api.cache.Cache
-import play.api.mvc._
-import play.api.Play.current
-
 import java.net.URLEncoder
 import java.util.concurrent.TimeoutException
 
-import collins.solr._
+import collins.solr.SolrExpression
+import collins.solr.SolrKeyVal
+import collins.solr.SolrOrOp
+import collins.solr.SolrAndOp
+import collins.solr.EmptySolrQuery
+import collins.solr.StringValueFormat
+
+import asset.AssetView
+import asset.BasicRemoteAsset
+import asset.DetailedRemoteAsset
+import play.api.Logger
+import play.api.Play.current
+import play.api.cache.Cache
+import play.api.libs.json.Json
+import play.api.libs.json.JsArray
+import play.api.libs.json.JsValue
+import play.api.libs.json.JsObject
+import play.api.libs.ws.WS
+import util.RemoteCollinsHost
 
 /**
  * Just a combination of everything needed to do a search.  Probably should

@@ -1,8 +1,9 @@
 package util.plugins
 
 import collins.validation.File
-import util.config.Configurable
+
 import util.config.ConfigValue
+import util.config.Configurable
 
 
 object MetricsReporterConfig extends Configurable {

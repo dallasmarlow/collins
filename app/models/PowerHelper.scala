@@ -1,7 +1,13 @@
 package models
 
-import util.power._
-import collection.immutable.SortedSet
+import scala.collection.immutable.SortedSet
+
+import util.power.PowerComponent
+import util.power.PowerComponentValue
+import util.power.PowerConfiguration
+import util.power.PowerUnit
+import util.power.PowerUnits
+import util.power.PowerUnits
 
 object PowerHelper extends CommonHelper[PowerUnits] {
   def Config = PowerConfiguration.get()

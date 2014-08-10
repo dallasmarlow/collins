@@ -1,8 +1,12 @@
 package util
 
-import config.{AppConfig, Feature}
-import models._
-import models.logs._
+import config.AppConfig
+import config.Feature
+import models.Asset
+import models.AssetLog
+import models.User
+import models.logs.LogFormat
+import models.logs.LogSource
 
 trait TattlerHelper {
   val pString: Option[String] = None

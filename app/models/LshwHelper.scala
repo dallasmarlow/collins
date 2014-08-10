@@ -1,7 +1,32 @@
 package models
 
-import util._
-import lshw._
+import AssetMeta.DynamicEnum.BaseDescription
+import AssetMeta.DynamicEnum.BaseProduct
+import AssetMeta.DynamicEnum.BaseVendor
+import AssetMeta.Enum.CpuCores
+import AssetMeta.Enum.CpuCount
+import AssetMeta.Enum.CpuDescription
+import AssetMeta.Enum.CpuSpeedGhz
+import AssetMeta.Enum.CpuThreads
+import AssetMeta.Enum.DiskDescription
+import AssetMeta.Enum.DiskSizeBytes
+import AssetMeta.Enum.DiskStorageTotal
+import AssetMeta.Enum.DiskType
+import AssetMeta.Enum.MacAddress
+import AssetMeta.Enum.MemoryBanksTotal
+import AssetMeta.Enum.MemoryDescription
+import AssetMeta.Enum.MemorySizeBytes
+import AssetMeta.Enum.MemorySizeTotal
+import AssetMeta.Enum.NicDescription
+import AssetMeta.Enum.NicSpeed
+import lshw.Cpu
+import lshw.Disk
+import lshw.Memory
+import lshw.Nic
+import lshw.ServerBase
+import util.BitStorageUnit
+import util.ByteStorageUnit
+import util.LshwRepresentation
 
 object LshwHelper extends CommonHelper[LshwRepresentation] {
   import AssetMeta.Enum._

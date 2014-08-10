@@ -1,11 +1,10 @@
-package test
 package models
 
-import _root_.models.conversions._
-import _root_.models.{Asset, AssetMeta, AssetMetaValue, AssetType, MetaWrapper, Status}
+import conversions._
 import java.util.Date
+import helpers.ResourceFinder
 
-trait CommonHelperSpec[REP] extends test.ResourceFinder {
+trait CommonHelperSpec[REP] extends ResourceFinder {
 
   def getParser(txt: String): _root_.util.parsers.CommonParser[REP]
 

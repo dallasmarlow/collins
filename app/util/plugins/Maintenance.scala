@@ -1,7 +1,10 @@
 package util
 package plugins
 
-import models.{Asset, AssetLifecycle, State, Status}
+import models.Asset
+import models.AssetLifecycle
+import models.State
+import models.Status
 
 object Maintenance {
   def toMaintenance(asset: Asset, reason: String, state: State): Boolean = {

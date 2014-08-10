@@ -1,7 +1,8 @@
 package controllers
 
-import actions.logs.{CreateAction, FindAction, SolrFindAction}
-
+import actions.logs.CreateAction
+import actions.logs.FindAction
+import actions.logs.SolrFindAction
 import models.PageParams
 
 trait AssetLogApi {

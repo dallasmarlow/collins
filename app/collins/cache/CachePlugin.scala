@@ -1,7 +1,8 @@
 package collins
 package cache
 
-import play.api.{Application, PlayException, Plugin}
+import play.api.Application
+import play.api.Plugin
 
 class CachePlugin(app: Application, override val timeoutInSeconds: java.lang.Integer) extends Plugin with Cache {
   def this(app: Application) = this(app, -1)

@@ -1,9 +1,18 @@
 package util
 package parsers
 
-import models.lldp._
+import scala.xml.Elem
+import scala.xml.NodeSeq
+import scala.xml.XML
+
 import config.LldpConfig
-import scala.xml.{Elem, MalformedAttributeException, Node, NodeSeq, XML}
+import models.lldp.Chassis
+import models.lldp.ChassisId
+import models.lldp.Interface
+import models.lldp.Port
+import models.lldp.PortId
+import models.lldp.Vlan
+import util.LldpRepresentation
 
 class LldpParser(txt: String) extends CommonParser[LldpRepresentation](txt) {
   override def parse(): Either[Throwable,LldpRepresentation] = {

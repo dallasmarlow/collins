@@ -1,15 +1,14 @@
 package models
 
-import play.api.db._
-import play.api.{Play, Logger}
+import org.squeryl.Session
+import org.squeryl.SessionFactory
+import org.squeryl.adapters.H2Adapter
+import org.squeryl.adapters.MySQLInnoDBAdapter
+
+import play.api.Logger
+import play.api.Play
 import play.api.Play.current
-
-import org.squeryl.{PrimitiveTypeMode, Session, SessionFactory}
-import org.squeryl.adapters.{H2Adapter, MySQLInnoDBAdapter}
-import org.squeryl.logging.{LocalH2SinkStatisticsListener, StatsSchema}
-
-import java.io.File
-import java.sql.{Connection, DriverManager}
+import play.api.db.DB
 
 /**
  * Wrapper on Play DB object so models don't need an implicit application

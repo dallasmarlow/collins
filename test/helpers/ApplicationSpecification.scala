@@ -1,11 +1,12 @@
-package test
+package helpers
 
-import org.specs2._
-import specification._
+import org.specs2.mutable
+import org.specs2.specification.Fragments
+import org.specs2.specification.Step
 
 import play.api.Play
 import play.api.test.FakeApplication
-import play.api.test.Helpers._
+import play.api.test.Helpers.evolutionFor
 
 trait ApplicationSpecification extends mutable.Specification with ResourceFinder {
 

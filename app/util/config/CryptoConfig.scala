@@ -1,6 +1,8 @@
 package util
 package config
 
+import util.MessageHelper
+
 object CryptoConfig extends MessageHelper("crypto") with Configurable {
   override val namespace = parentKey
   override val referenceConfigFilename = "crypto_reference.conf"

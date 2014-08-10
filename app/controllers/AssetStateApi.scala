@@ -1,6 +1,9 @@
 package controllers
 
-import actions.state.{CreateAction, DeleteAction, GetAction, UpdateAction}
+import actions.state.CreateAction
+import actions.state.DeleteAction
+import actions.state.GetAction
+import actions.state.UpdateAction
 
 trait AssetStateApi {
   this: Api with SecureController =>

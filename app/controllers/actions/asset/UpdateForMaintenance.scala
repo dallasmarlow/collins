@@ -3,14 +3,15 @@ package actions
 package asset
 
 import forms._
-import collins.validation.StringUtil
-import models.{Asset, State, Status => AssetStatus}
-import util.MessageHelper
-import util.security.SecuritySpecification
-import util.plugins.Maintenance
-
+import models.Asset
+import models.State
+import models.{Status => AssetStatus}
 import play.api.data.Form
 import play.api.data.Forms._
+import util.MessageHelper
+import util.plugins.Maintenance
+import util.security.SecuritySpecification
+import collins.validation.StringUtil
 
 object UpdateForMaintenance {
   object Messages extends MessageHelper("controllers.updateForMaintenance") {

@@ -1,8 +1,8 @@
 package util
 package config
 
-import models.AssetType
 import models.AssetSortType
+import models.AssetType
 
 object NodeclassifierConfig extends Configurable {
   override val namespace = "nodeclassifier"

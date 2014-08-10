@@ -1,14 +1,14 @@
 package models
 package shared
 
-import org.specs2._
-import specification._
-import org.specs2.matcher._
-
 import play.api.Configuration
 import com.typesafe.config.ConfigFactory
+import helpers.ResourceFinder
+import org.specs2.mutable.Specification
+import org.specs2.specification.Scope
+import org.specs2.matcher.Matcher
 
-class IpAddressConfigSpec extends mutable.Specification with test.ResourceFinder {
+class IpAddressConfigSpec extends Specification with ResourceFinder {
 
   "IpAddressConfig" should {
 

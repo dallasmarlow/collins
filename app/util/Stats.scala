@@ -1,15 +1,16 @@
 package util
 
-import com.yammer.metrics.scala.Instrumented
-import com.yammer.metrics.core.Timer
-import com.yammer.metrics.scala.{Timer => ScalaTimer}
-import com.yammer.metrics.stats.Snapshot
-
 import java.util.Date
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
-import scala.collection.JavaConverters._
+
+import scala.collection.JavaConverters.mapAsScalaMapConverter
 import scala.collection.immutable.SortedMap
+
+import com.yammer.metrics.core.Timer
+import com.yammer.metrics.scala.Instrumented
+import com.yammer.metrics.scala.{Timer => ScalaTimer}
+import com.yammer.metrics.stats.Snapshot
 
 sealed trait AppStats {
   val name: String

@@ -1,8 +1,9 @@
 package collins
 package database
 
-import play.api.{Application, Logger, Play, Plugin}
 import models.Model
+import play.api.Application
+import play.api.Plugin
 
 class DatabasePlugin(app: Application) extends Plugin {
   override def enabled = true

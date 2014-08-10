@@ -1,8 +1,10 @@
 package util.plugins
 
-import play.api.{Application, Logger, Play, Plugin}
-
 import com.addthis.metrics.reporter.config.ReporterConfig
+
+import play.api.Application
+import play.api.Logger
+import play.api.Plugin
 
 class MetricsReporterPlugin(app: Application) extends Plugin
 {

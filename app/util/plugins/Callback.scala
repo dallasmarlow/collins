@@ -1,9 +1,13 @@
 package util
 package plugins
 
-import play.api.{Play, Plugin}
-import collins.callbacks.{CallbackActionHandler, CallbackManagerPlugin, CallbackManager}
 import java.beans.PropertyChangeEvent
+
+import collins.callbacks.CallbackActionHandler
+import collins.callbacks.CallbackManager
+import collins.callbacks.CallbackManagerPlugin
+
+import play.api.Play
 
 object Callback extends CallbackManager {
   def pluginEnabled: Option[CallbackManagerPlugin] = {

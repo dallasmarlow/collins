@@ -2,14 +2,22 @@ package controllers
 package actions
 package asset
 
+import scala.annotation.implicitNotFound
+
 import collins.validation.StringUtil
+
+import controllers.Api
+import controllers.SecureController
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
 import models.AssetLifecycle
 import models.asset.AssetDeleter
+import play.api.data.Form
+import play.api.data.Forms.optional
+import play.api.data.Forms.text
 import util.SystemTattler
 import util.security.SecuritySpecification
-
-import play.api.data.Form
-import play.api.data.Forms._
 
 case class DeleteAction(
   _assetTag: String,

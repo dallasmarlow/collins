@@ -2,10 +2,14 @@ package controllers
 package actions
 package ipaddress
 
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
 import models.IpAddresses
+import models.conversions.IpAddressFormat
 import models.shared.IpAddressConfig
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 import util.IpAddress
-import play.api.libs.json._
 
 trait AddressActionHelper { self: SecureAction =>
   class AddressDecorator(addresses: Seq[IpAddresses]) {

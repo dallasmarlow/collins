@@ -1,13 +1,13 @@
 package util
 package security
 
-import play.api._
-import play.api.Configuration
-import models.User
-import org.specs2.mutable._
-import java.io.File
+import org.specs2.mutable.Specification
 
-object AuthenticationProviderSpec extends Specification with _root_.test.ResourceFinder {
+import helpers.ResourceFinder
+import models.User
+import play.api.Configuration
+
+object AuthenticationProviderSpec extends Specification with ResourceFinder {
 
   "Authentication Providers" should {
     "work with default authentication" >> {

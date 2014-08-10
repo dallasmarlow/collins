@@ -1,8 +1,8 @@
 package models
 
 import util.security.AuthenticationProvider
-import org.specs2.mutable._
 import java.io.File
+import org.specs2.mutable.Specification
 
 object UserSpec extends Specification {
 

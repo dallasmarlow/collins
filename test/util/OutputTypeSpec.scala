@@ -1,14 +1,11 @@
 package util
 
-import test.{FakeRequest, FakeRequestHeader}
+import org.specs2.mutable.Specification
+import helpers.FakeRequestHeader
+import helpers.FakeRequest
+import play.api.mvc.AnyContentAsFormUrlEncoded
 
-import org.specs2._
-import specification._
-import matcher.Matcher
-
-import play.api.mvc._
-
-class OutputTypeSpec extends mutable.Specification {
+class OutputTypeSpec extends Specification {
 
   def isJson(o: OutputType) = o must haveClass[JsonOutput]
   def isBash(o: OutputType) = o must haveClass[BashOutput]

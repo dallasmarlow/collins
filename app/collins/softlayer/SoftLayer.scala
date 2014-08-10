@@ -1,11 +1,12 @@
 package collins.softlayer
 
+import java.net.URL
+
+import com.twitter.util.Future
+
 import collins.power.management.PowerManagement
 import models.Asset
-
 import play.api.Logger
-import com.twitter.util.Future
-import java.net.URL
 
 trait SoftLayer extends PowerManagement {
   val SOFTLAYER_API_HOST = "api.softlayer.com:443"

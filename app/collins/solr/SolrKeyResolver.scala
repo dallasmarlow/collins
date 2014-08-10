@@ -1,14 +1,11 @@
 package collins.solr
 
-import models.{Asset, AssetFinder, AssetMeta, AssetMetaValue, AssetType, IpAddresses, MetaWrapper, Page, PageParams, State, Status, Truthy}
-import models.asset.AssetView
+import SolrKeyFlag._
+import models.AssetMeta
+import models.AssetMeta.ValueType
+import models.AssetMeta.ValueType._
 import models.IpmiInfo.Enum._
-
 import play.api.Logger
-
-import Solr.AssetSolrDocument
-import AssetMeta.ValueType
-import AssetMeta.ValueType._
 
 //some light DSL's for making solr key flags easier to read
 
@@ -44,7 +41,6 @@ object SolrKeyFlag {
     val boolValue = false
   }
 }
-import SolrKeyFlag._
 
 
 /**

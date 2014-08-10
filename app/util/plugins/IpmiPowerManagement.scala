@@ -1,16 +1,30 @@
 package util
 package plugins
 
-import models.{Asset, IpmiInfo}
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+
+import com.twitter.util.FuturePool
+
+import collins.power.Identify
+import collins.power.PowerAction
+import collins.power.PowerOff
+import collins.power.PowerOn
+import collins.power.PowerSoft
+import collins.power.PowerState
+import collins.power.RebootHard
+import collins.power.RebootSoft
+import collins.power.Verify
+import collins.power.management.PowerManagement
+import collins.power.management.PowerManagementConfig
 
 import akka.util.Duration
-import akka.util.duration._
-import play.api.{Application, Plugin}
-
-import collins.power._
-import collins.power.management._
-import com.twitter.util.{Future, FuturePool}
-import java.util.concurrent.{Executors, TimeUnit}
+import akka.util.duration.intToDurationInt
+import models.Asset
+import models.IpmiInfo
+import play.api.Application
+import play.api.Plugin
+import util.IpmiCommand
 
 case class IpmiPowerCommand(
   override val ipmiCommand: String,

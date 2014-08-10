@@ -2,16 +2,16 @@ package controllers
 package actions
 package state
 
-import forms._
-import validators.ParamValidation
-
 import collins.validation.StringUtil
-import models.{State, Status => AStatus}
+
+import models.State
+import models.{Status => AStatus}
+import play.api.data.Form
+import play.api.data.Forms.tuple
+import play.api.data.Forms.ignored
 import util.MessageHelper
 import util.security.SecuritySpecification
-
-import play.api.data.Form
-import play.api.data.Forms._
+import validators.ParamValidation
 
 object CreateAction {
   object Messages extends MessageHelper("controllers.AssetStateApi.createState") {

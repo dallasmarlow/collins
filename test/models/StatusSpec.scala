@@ -1,9 +1,6 @@
 package models
 
-import test.ApplicationSpecification
-
-import org.specs2._
-import specification._
+import helpers.ApplicationSpecification
 
 class StatusSpec extends ApplicationSpecification {
   

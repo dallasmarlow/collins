@@ -1,7 +1,11 @@
 package models.lshw
 
+import play.api.libs.json.Format
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJson
 import util.ByteStorageUnit
-import play.api.libs.json._
 
 object Memory {
   import Json.toJson

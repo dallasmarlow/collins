@@ -1,6 +1,8 @@
-package test
+package helpers
 
-import java.io._
+import java.io.File
+import java.io.FileOutputStream
+
 import scala.util.Random
 
 object FileHelper {

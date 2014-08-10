@@ -1,13 +1,7 @@
 package util
 package config
 
-import org.specs2.specification.Scope
-import org.specs2.mutable._
-
-import java.io.File
-import play.api.Configuration
-import scala.collection.JavaConverters._
-import com.typesafe.config._
+import org.specs2.mutable.Specification
 
 class SampleConfigurable private[config]() extends Configurable {
   override val namespace = "sample"

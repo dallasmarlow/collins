@@ -1,12 +1,10 @@
-package test
 package util
 package parsers
 
+import config.LldpConfig
+import config.LshwConfig
+import helpers.ResourceFinder
 import play.api.Configuration
-import _root_.util.config.LldpConfig
-import _root_.util.config.LshwConfig
-import org.specs2._
-import specification._
 
 trait CommonParserSpec[REP] extends ResourceFinder {
 

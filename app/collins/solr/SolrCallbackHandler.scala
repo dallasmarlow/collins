@@ -1,12 +1,16 @@
 package collins.solr
 
-import collins.callbacks.CallbackActionHandler
-import models.{Asset, AssetMetaValue, AssetLog, IpAddresses}
+import java.beans.PropertyChangeEvent
+
+import org.apache.solr.client.solrj.SolrServer
 
 import akka.actor._
+import collins.callbacks.CallbackActionHandler
+import models.Asset
+import models.AssetLog
+import models.AssetMetaValue
+import models.IpAddresses
 import play.api.Logger
-import org.apache.solr.client.solrj.SolrServer
-import java.beans.PropertyChangeEvent
 
 //TODO: refactor, combine functionality
 

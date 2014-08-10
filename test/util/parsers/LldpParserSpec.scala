@@ -1,12 +1,10 @@
 package util
 package parsers
 
-import test.util.parsers.CommonParserSpec
+import org.specs2.mutable.Specification
+import org.specs2.specification.Scope
 
-import org.specs2._
-import specification._
-
-class LldpParserSpec extends mutable.Specification {
+class LldpParserSpec extends Specification {
 
   class LldpParserHelper(val filename: String) extends Scope with CommonParserSpec[LldpRepresentation] {
     override def getParser(txt: String) = new LldpParser(txt)

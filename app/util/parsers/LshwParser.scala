@@ -1,9 +1,18 @@
 package util
 package parsers
 
-import models.lshw._
-import config.LshwConfig
-import scala.xml.{Elem, MalformedAttributeException, Node, NodeSeq, XML}
+import models.lshw.ServerBase
+import models.lshw.Disk
+import models.lshw.Cpu
+import scala.xml.Elem
+import models.lshw.Nic
+import scala.xml.NodeSeq
+import scala.xml.MalformedAttributeException
+import util.config.LshwConfig
+import models.lshw.Memory
+import scala.xml.XML
+import models.lshw.LshwAsset
+
 
 object SpeedConversions {
   private val ghz = (1000*1000*1000).toDouble

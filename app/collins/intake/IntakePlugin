@@ -1,7 +1,8 @@
 package collins.intake
 
 import collins.cache.ConfigCache
-import collins.shell.{Command, CommandResult}
+import collins.shell.Command
+import collins.shell.CommandResult
 import models.Asset
 
 import play.api.{Application, Plugin}

@@ -1,4 +1,6 @@
-package test
+package helpers
+
+import java.io.File
 
 trait ResourceFinder {
   def findResource(filename: String) = {

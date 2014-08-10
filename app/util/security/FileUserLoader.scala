@@ -1,12 +1,15 @@
 package util.security
 
-import collins.validation.File
-import models.{User, UserImpl}
-
-import play.api.Logger
-import com.google.common.cache.CacheLoader
-import io.Source
 import java.io.{File => IoFile}
+
+import scala.io.Source
+
+import com.google.common.cache.CacheLoader
+
+import collins.validation.File
+
+import models.UserImpl
+import play.api.Logger
 
 case class FileUserLoader(users: FileUserMap) extends CacheLoader[String,FileUserMap] {
 

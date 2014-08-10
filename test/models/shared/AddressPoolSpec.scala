@@ -1,11 +1,10 @@
 package models
 package shared
 
-import org.specs2._
-import specification._
-import org.specs2.matcher._
+import org.specs2.mutable.Specification
+import org.specs2.specification.Scope
 
-class AddressPoolSpec extends mutable.Specification {
+class AddressPoolSpec extends Specification {
 
   class AddressPoolScope(network: String, startAddress: Option[String]) extends Scope {
     val pool = AddressPool("TEST", network, startAddress, None)

@@ -1,9 +1,12 @@
 package controllers
 
-import models.{User, UserImpl}
-import play.api.mvc._
+import models.User
+import models.UserImpl
 import play.api.http.HeaderNames
 import play.api.templates.Txt
+import play.api.mvc.Action
+import play.api.mvc.RequestHeader
+import play.api.mvc.Results
 
 trait ControllerSpec {
   def getApi(user: Option[User]) = new Api with SecureController {

@@ -1,6 +1,6 @@
 package util
 
-import org.specs2.mutable._
+import org.specs2.mutable.Specification
 
 object CodecSpec extends Specification {
   val username = "host-xyz123456-1937-1955-1394.dfw01.tumblr.net"

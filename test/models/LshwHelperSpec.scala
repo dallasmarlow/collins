@@ -1,12 +1,13 @@
 package models
 
-import util._
+
+import helpers.ApplicationSpecification
 import util.parsers.LshwParser
+import util.parsers.LshwParser
+import org.specs2.specification.Scope
+import util.LshwRepresentation
 
-import org.specs2._
-import specification._
-
-class LshwHelperSpec extends test.ApplicationSpecification {
+class LshwHelperSpec extends ApplicationSpecification {
 
   "LSHW Helper Specification".title
 
@@ -93,7 +94,7 @@ class LshwHelperSpec extends test.ApplicationSpecification {
     }
   }
 
-  class LshwCommonHelper(txt: String) extends Scope with test.models.CommonHelperSpec[LshwRepresentation] {
+  class LshwCommonHelper(txt: String) extends Scope with models.CommonHelperSpec[LshwRepresentation] {
     def getParser(str: String) = new LshwParser(str)
     override def parsed(): LshwRepresentation = getParsed(txt)
   }

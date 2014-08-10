@@ -2,14 +2,19 @@ package controllers
 package actions
 package asset
 
+import scala.annotation.implicitNotFound
+
+import collins.power.PowerAction
+import collins.power.PowerState
+import collins.shell.CommandResult
+
+import controllers.ResponseData
+import controllers.SecureController
 import models.Asset
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
 import util.config.AppConfig
 import util.security.SecuritySpecification
-
-import play.api.libs.json._
-
-import collins.power.{PowerAction, PowerState}
-import collins.shell.CommandResult
 
 case class PowerStatusAction(
   assetTag: String,

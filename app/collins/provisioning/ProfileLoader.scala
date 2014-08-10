@@ -1,12 +1,16 @@
 package collins.provisioning
 
-import collins.validation.File
-import com.tumblr.play.interop.{JProfile, ProvisionerProfileHelper}
-
-import play.api.Logger
-import com.google.common.cache.CacheLoader
-import scala.collection.immutable.SortedSet
 import java.io.{File => IoFile}
+
+import scala.collection.JavaConverters.asScalaBufferConverter
+import scala.collection.JavaConverters.mapAsScalaMapConverter
+import scala.collection.immutable.SortedSet
+
+import com.google.common.cache.CacheLoader
+import com.tumblr.play.interop.ProvisionerProfileHelper
+
+import collins.validation.File
+import play.api.Logger
 
 case class ProfileLoader(profiles: Set[ProvisionerProfile])
   extends CacheLoader[String, Set[ProvisionerProfile]]

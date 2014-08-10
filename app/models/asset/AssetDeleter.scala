@@ -1,9 +1,16 @@
 package models
 package asset
 
-import util.plugins.{Cache, Callback}
+import org.squeryl.PrimitiveTypeMode.__thisDsl
+import org.squeryl.PrimitiveTypeMode.long2ScalarLong
 
-import org.squeryl.PrimitiveTypeMode._
+import models.Asset
+import models.AssetLog
+import models.AssetMetaValue
+import models.IpAddresses
+import models.IpmiInfo
+import util.plugins.Cache
+import util.plugins.Callback
 
 object AssetDeleter {
   def purge(asset: Asset): Boolean = {

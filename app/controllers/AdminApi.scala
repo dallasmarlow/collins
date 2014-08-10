@@ -1,17 +1,10 @@
 package controllers
 
-import models.{Asset, Truthy}
-
-import util.Stats
-import util.plugins.Cache
 import collins.solr.Solr
-import util.security.AuthenticationProviderConfig
-import views._
-
-import play.api.Play
-import play.api.db._
-import play.api.libs.json._
+import models.Asset
+import models.Truthy
 import play.api.mvc._
+import play.api.libs.json.JsString
 
 trait AdminApi {
   this: Api with SecureController =>

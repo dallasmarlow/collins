@@ -1,7 +1,7 @@
 package util
 package security
 
-import annotation.implicitNotFound
+import scala.annotation.implicitNotFound
 
 @implicitNotFound(msg = "Didn't find an implicit SecuritySpecification but expected one")
 trait SecuritySpecification {

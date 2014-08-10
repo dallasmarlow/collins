@@ -1,8 +1,8 @@
 package collins
 package callbacks
 
-import util.config.Configurable
 import play.api.Logger
+import util.config.Configurable
 
 object CallbackConfig extends Configurable {
   private[this] val logger = Logger("CallbackConfig")

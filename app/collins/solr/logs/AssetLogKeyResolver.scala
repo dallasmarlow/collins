@@ -1,10 +1,13 @@
 package collins.solr
 
-import SolrKeyFlag._
-
-
-import Solr.AssetSolrDocument
-import models.AssetMeta.ValueType._
+import SolrKeyFlag.NotSortable
+import SolrKeyFlag.SingleValued
+import SolrKeyFlag.Sortable
+import SolrKeyFlag.Static
+import collins.solr.SolrKeyFlag.namedboolean2boolean
+import collins.solr.UpperCaseString.string2UpperCaseString
+import models.AssetMeta.ValueType.Integer
+import models.AssetMeta.ValueType.String
 import models.logs.LogMessageType
 
 object AssetLogKeyResolver extends SolrKeyResolver {

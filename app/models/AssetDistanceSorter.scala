@@ -2,7 +2,6 @@ package models
 
 import scala.math
 import util.config.NodeclassifierConfig
-import play.api.Logger
 
 trait AssetDistanceEval {
 

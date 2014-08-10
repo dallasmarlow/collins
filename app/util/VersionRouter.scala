@@ -1,8 +1,11 @@
 package util
 
-import play.api.mvc._
 import controllers.ApiResponse
 import controllers.actions.SecureAction
+import play.api.mvc.Action
+import play.api.mvc.AnyContent
+import play.api.mvc.Headers
+import play.api.mvc.Results
 
 
 /**
@@ -30,7 +33,6 @@ object ApiVersion {
 
   def safeWithName(name: String): Option[ApiVersion] = versions.find(_.stringName == name)
 }
-import ApiVersion._
 
 class VersionException(message: String) extends Exception(message)
 

@@ -2,21 +2,24 @@ package controllers
 package actions
 package logs
 
-import models.{Asset, AssetLog}
-import models.logs.{LogMessageType, LogFormat, LogSource}
-import util.{MessageHelper, TattlerHelper}
-import util.config.Feature
-import util.security.SecuritySpecification
-import validators.ParamValidation
-
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.libs.json._
+import scala.util.control.Exception.allCatch
 
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
 
-import scala.util.control.Exception.allCatch
+import models.Asset
+import models.AssetLog
+import models.logs.LogFormat
+import models.logs.LogMessageType
+import models.logs.LogSource
+import play.api.data.Form
+import play.api.data.Forms._
+import play.api.libs.json._
+import util.MessageHelper
+import util.TattlerHelper
+import util.config.Feature
+import util.security.SecuritySpecification
+import validators.ParamValidation
 
 object CreateAction {
   val DefaultMessageType = Feature.defaultLogType

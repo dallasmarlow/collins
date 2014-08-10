@@ -1,9 +1,14 @@
 package util
 package plugins
 
-import collins.cache.{Cache => CacheInterface, CachePlugin}
-import play.api.{Application, Mode, Play}
 import java.io.File
+
+import collins.cache.{Cache => CacheInterface}
+import collins.cache.CachePlugin
+
+import play.api.Application
+import play.api.Mode
+import play.api.Play.current
 
 object Cache {
 

@@ -1,5 +1,7 @@
 package util.security
 
+import scala.Option.option2Iterable
+
 import models.User
 
 

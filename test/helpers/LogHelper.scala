@@ -1,8 +1,8 @@
-package test
+package helpers
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
 import play.api.{Logger => PlayLogger}
-import org.slf4j.LoggerFactory
-import ch.qos.logback.classic._
 
 object LogHelper extends LogHelper
 trait LogHelper {

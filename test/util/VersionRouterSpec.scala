@@ -1,12 +1,9 @@
 package util
 
 import play.api.mvc.Headers
+import org.specs2.mutable.Specification
 
-import ApiVersion._
-
-import org.specs2._
-
-class VersionRouterSpec extends mutable.Specification {
+class VersionRouterSpec extends Specification {
 
   val map: PartialFunction[ApiVersion,String] = {
     case `1.1` => "A"

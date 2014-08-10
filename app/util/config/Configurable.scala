@@ -1,10 +1,12 @@
 package util
 package config
 
-import com.typesafe.config.{ConfigException, ConfigFactory, ConfigObject}
-import play.api.Logger
-import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
+
+import com.typesafe.config.ConfigFactory
+
+import play.api.Logger
+import util.SystemTattler
 
 trait Configurable extends ConfigAccessor with AppConfig { self =>
 

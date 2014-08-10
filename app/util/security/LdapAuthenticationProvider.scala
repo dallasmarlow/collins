@@ -1,13 +1,17 @@
 package util
 package security
 
-import models.{User, UserImpl}
-
-import scala.collection.JavaConversions._
-import scala.collection.JavaConverters._
 import java.util.{Hashtable => JHashTable}
-import javax.naming._
-import javax.naming.directory._
+
+import scala.collection.JavaConversions.enumerationAsScalaIterator
+import scala.collection.JavaConverters.mapAsJavaMapConverter
+
+import javax.naming.Context
+import javax.naming.directory.InitialDirContext
+import javax.naming.directory.SearchControls
+import javax.naming.directory.SearchResult
+import models.User
+import models.UserImpl
 
 class LdapAuthenticationProvider() extends AuthenticationProvider {
 

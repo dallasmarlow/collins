@@ -2,7 +2,13 @@ package controllers
 package actions
 package ipaddress
 
-import models.{Asset, IpAddresses}
+import scala.annotation.implicitNotFound
+
+import controllers.SecureController
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
+import models.IpAddresses
 import util.security.SecuritySpecification
 
 // Find the asset associated with an address

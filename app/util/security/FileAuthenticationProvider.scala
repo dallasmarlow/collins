@@ -1,13 +1,13 @@
 package util
 package security
 
-import collins.cache.ConfigCache
-import models.{User, UserImpl}
-
-import sun.misc.BASE64Encoder
-import java.io.File
 import java.security.MessageDigest
-import io.Source
+
+import collins.cache.ConfigCache
+
+import models.User
+import models.UserImpl
+import sun.misc.BASE64Encoder
 
 class FileAuthenticationProvider() extends AuthenticationProvider {
 

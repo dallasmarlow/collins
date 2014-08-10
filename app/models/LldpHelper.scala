@@ -1,6 +1,21 @@
 package models
 
-import lldp._
+import AssetMeta.Enum.LldpChassisDescription
+import AssetMeta.Enum.LldpChassisIdType
+import AssetMeta.Enum.LldpChassisIdValue
+import AssetMeta.Enum.LldpChassisName
+import AssetMeta.Enum.LldpInterfaceName
+import AssetMeta.Enum.LldpPortDescription
+import AssetMeta.Enum.LldpPortIdType
+import AssetMeta.Enum.LldpPortIdValue
+import AssetMeta.Enum.LldpVlanId
+import AssetMeta.Enum.LldpVlanName
+import lldp.Chassis
+import lldp.ChassisId
+import lldp.Interface
+import lldp.Port
+import lldp.PortId
+import lldp.Vlan
 import util.LldpRepresentation
 
 object LldpHelper extends CommonHelper[LldpRepresentation] {

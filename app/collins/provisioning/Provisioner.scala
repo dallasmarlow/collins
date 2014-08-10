@@ -1,9 +1,10 @@
 package collins.provisioning
 
+import com.twitter.util.Future
+
+import collins.shell.CommandResult
 import models.Asset
 import play.api.Logger
-import com.twitter.util.Future
-import collins.shell.CommandResult
 
 trait Provisioner {
   protected[this] val logger = Logger(getClass)

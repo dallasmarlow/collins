@@ -1,7 +1,9 @@
 package util.views
 
-import models.{State, Status}
-import play.api.libs.json._
+import models.State
+import models.Status
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 import play.api.libs.json.Json.toJson
 import play.api.templates.Html
 

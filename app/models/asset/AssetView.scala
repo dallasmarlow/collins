@@ -1,8 +1,11 @@
 package models.asset
 
-import models.{AssetType, State, Status}
-import play.api.libs.json.JsValue
 import java.sql.Timestamp
+
+import models.AssetType
+import models.State
+import models.Status
+import play.api.libs.json.JsValue
 
 /**
  * An AssetView can be either a regular Asset or a RemoteAsset from another

@@ -1,14 +1,18 @@
 package controllers
 
+import scala.math.BigDecimal.long2bigDecimal
+
 import actions.asset.DeleteAction
 import actors.AssetCancelProcessor
 import models.Asset
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
+import play.api.mvc.Action
+import play.api.mvc.AsyncResult
+import play.api.mvc.Results
 import util.UserTattler
-import util.config.AppConfig
 import util.concurrent.BackgroundProcessor
-
-import play.api.mvc._
-import play.api.libs.json._
+import util.config.AppConfig
 
 trait AssetWebApi {
   this: Api with SecureController =>

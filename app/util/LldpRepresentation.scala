@@ -1,7 +1,11 @@
 package util
 
-import play.api.libs.json._
-import models.lldp._
+import models.lldp.Interface
+import models.lldp.LldpAttribute
+import play.api.libs.json.Format
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
 
 object LldpRepresentation {
   import Interface._

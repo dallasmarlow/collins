@@ -1,8 +1,7 @@
 package models.asset
 
-import models.{Asset, Status}
-import conversions._
-import play.api.libs.json._
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
 
 /**
  * An asset controlled by another collins instance, used during multi-collins

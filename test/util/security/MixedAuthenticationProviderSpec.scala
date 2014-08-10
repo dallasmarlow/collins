@@ -2,14 +2,16 @@ package util.security
 
 import org.specs2.Specification
 import org.specs2.specification.Fragments
-import play.api.Configuration
+
+import helpers.ResourceFinder
 import models.User
+import play.api.Configuration
 import util.config.ConfigurationException
 
 /**
  * Please provide a concise description
  */
-class MixedAuthenticationProviderSpec extends Specification with _root_.test.ResourceFinder {
+class MixedAuthenticationProviderSpec extends Specification with ResourceFinder {
   def is: Fragments =
     "The " + classOf[MixedAuthenticationProviderSpec] + " should" ^
       "Authenticate users in htaccess type files" ! authUser() ^

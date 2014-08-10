@@ -1,14 +1,23 @@
 package models
 
-import asset.{AssetView, AllAttributes}
+import asset.AssetView
+import asset.AllAttributes
 import asset.conversions._
 import conversions._
-import util.{AttributeResolver, LldpRepresentation, LshwRepresentation, MessageHelper, Stats}
-import util.config.{Feature, MultiCollinsConfig, NodeclassifierConfig}
+import util.AttributeResolver
+import util.LldpRepresentation
+import util.LshwRepresentation
+import util.MessageHelper
+import util.Stats
+import util.config.Feature
+import util.config.MultiCollinsConfig
+import util.config.NodeclassifierConfig
 import util.plugins.Cache
 import util.power.PowerUnits
 import util.views.Formatter.dateFormat
-import collins.solr._
+import collins.solr.CQLQuery
+import collins.solr.AssetDocType
+import collins.solr.AssetSearchQuery
 import shared.QueryLogConfig
 import AssetSortType.AssetSortType
 
@@ -25,7 +34,7 @@ import org.squeryl.Schema
 import java.sql.Timestamp
 import java.util.Date
 
-import SortDirection._
+import SortDirection.SortDesc
 
 case class Asset(tag: String, status: Int, asset_type: Int,
     created: Timestamp, updated: Option[Timestamp], deleted: Option[Timestamp],

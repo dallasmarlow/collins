@@ -2,15 +2,20 @@ package models
 
 import asset.AssetView
 import conversions._
-import util.{CryptoCodec, InternalTattler}
+import util.CryptoCodec
+import util.InternalTattler
 import util.config.Feature
 import play.api.Logger
 import java.sql.Timestamp
 import java.util.Date
 
 import org.squeryl.PrimitiveTypeMode._
-import org.squeryl.{Query, Schema}
-import org.squeryl.dsl.ast.{BinaryOperatorNodeLogicalBoolean, ExistsExpression, ExpressionNode, LogicalBoolean}
+import org.squeryl.Query
+import org.squeryl.Schema
+import org.squeryl.dsl.ast.BinaryOperatorNodeLogicalBoolean
+import org.squeryl.dsl.ast.ExistsExpression
+import org.squeryl.dsl.ast.ExpressionNode
+import org.squeryl.dsl.ast.LogicalBoolean
 
 case class AssetMetaValue(asset_id: Long, asset_meta_id: Long, group_id: Int, value: String) {
 

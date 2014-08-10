@@ -2,7 +2,11 @@ package util
 package power
 
 import models.AssetMeta
-import play.api.libs.json._
+import play.api.libs.json.Json
+import play.api.libs.json.Format
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json.toJson
 
 /** A power related component (distribution unit, strip, outlet, etc) */
 sealed trait PowerComponent extends Ordered[PowerComponent] {

@@ -1,11 +1,10 @@
 package controllers
 
-import play.api.mvc._
+import scala.collection.immutable.DefaultMap
 
+import play.api.mvc.Controller
 import util.MessageHelper
-import views._
-
-import collection.immutable.DefaultMap
+import views.html
 
 object Help extends MessageHelper("help") with DefaultMap[String,String] {
 

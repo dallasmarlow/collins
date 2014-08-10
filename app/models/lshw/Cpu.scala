@@ -1,6 +1,10 @@
 package models.lshw
 
-import play.api.libs.json._
+import play.api.libs.json.Format
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJson
 
 object Cpu {
   import Json._

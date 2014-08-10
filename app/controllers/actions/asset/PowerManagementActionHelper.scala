@@ -2,20 +2,22 @@ package controllers
 package actions
 package asset
 
-import models.Asset
-
-import util.{IpmiCommand, UserTattler}
-import util.config.AppConfig
-import util.concurrent.BackgroundProcessor
-import util.plugins.{IpmiPowerCommand, PowerManagement}
-import util.security.SecuritySpecification
-
-import play.api.libs.json._
-import play.api.mvc._
-
-import collins.power.{PowerAction, PowerState, Verify, Identify}
+import collins.power.Identify
+import collins.power.PowerAction
+import collins.power.PowerState
+import collins.power.Verify
 import collins.power.management.PowerManagementConfig
 import collins.shell.CommandResult
+
+import models.Asset
+import play.api.mvc._
+import util.IpmiCommand
+import util.UserTattler
+import util.concurrent.BackgroundProcessor
+import util.config.AppConfig
+import util.plugins.IpmiPowerCommand
+import util.plugins.PowerManagement
+import util.security.SecuritySpecification
 
 abstract class PowerManagementActionHelper(
   assetTag: String,

@@ -1,10 +1,8 @@
 package collins.graphs
 
 import models.asset.AssetView
-
 import play.api.Application
 import play.api.mvc.Content
-import play.api.templates.Html
 
 case class FibrGraphs(override val app: Application) extends GraphView {
 

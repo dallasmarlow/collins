@@ -1,9 +1,10 @@
 package models
 
-import asset.{AssetView, RemoteAsset}
-import play.api.libs.json._
-
+import asset.AssetView
+import asset.RemoteAsset
 import java.sql.Timestamp
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
  
 case class MockRemoteAsset( 
   tag: String, 

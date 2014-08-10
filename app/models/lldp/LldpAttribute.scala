@@ -1,6 +1,6 @@
 package models.lldp
 
-import play.api.libs.json._
+import play.api.libs.json.JsValue
 
 trait LldpAttribute {
   def toJsValue(): JsValue

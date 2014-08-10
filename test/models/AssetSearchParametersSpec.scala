@@ -1,13 +1,8 @@
-
 package models
 
-import test.ApplicationSpecification
+import org.specs2.mutable.Specification
 
-import org.specs2._
-import specification._
-import play.api.libs.json._
-
-class AssetSearchParametersSpec extends mutable.Specification {
+class AssetSearchParametersSpec extends Specification {
 
   val EMPTY_RESULT_TUPLE = (Nil, Nil, Nil)
 

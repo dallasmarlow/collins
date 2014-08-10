@@ -1,11 +1,24 @@
 package models.asset
 
-import models._
-import util.{LldpRepresentation, LshwRepresentation}
-import util.config.{Feature, MultiCollinsConfig, NodeclassifierConfig}
+import models.Asset
+import models.AssetMetaValue
+import models.IpAddresses
+import models.IpmiInfo
+import models.LldpHelper
+import models.LshwHelper
+import models.MetaWrapper
+import models.PowerHelper
+import models.conversions.IpAddressFormat
+import models.conversions.IpmiFormat
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import util.LldpRepresentation
+import util.LshwRepresentation
+import util.config.Feature
 import util.power.PowerUnits
-
-import play.api.libs.json._
+import util.power.PowerUnits
 
 object AllAttributes {
   def get(asset: Asset): AllAttributes = {

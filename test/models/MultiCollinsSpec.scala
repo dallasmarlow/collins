@@ -1,10 +1,8 @@
 package models
 
-import test.ApplicationSpecification
-import org.specs2._ /** check up on this */
-import specification._
+import org.specs2.mutable.Specification
 
-class MultiCollinsSpec extends mutable.Specification {
+class MultiCollinsSpec extends Specification {
 
   //TODO, same thing exists in AssetSearchParameterSpec, unify
   val EMPTY_RESULT_TUPLE = (Nil, Nil, Nil)
