@@ -43,8 +43,7 @@ object conversions {
       IpAddress.toLong((json \ IpmiGateway.toString).as[String]),
       IpAddress.toLong((json \ IpmiAddress.toString).as[String]),
       IpAddress.toLong((json \ IpmiNetmask.toString).as[String]),
-      (json \ "ID").asOpt[Long].getOrElse(0L)
-    )
+      (json \ "ID").asOpt[Long].getOrElse(0L))
     override def writes(ipmi: IpmiInfo) = JsObject(Seq(
       "ASSET_ID" -> toJson(ipmi.asset_id),
       "ASSET_TAG" -> toJson(Asset.findById(ipmi.asset_id).map(_.tag).getOrElse("Unknown")),
@@ -53,8 +52,7 @@ object conversions {
       IpmiGateway.toString -> toJson(ipmi.dottedGateway),
       IpmiAddress.toString -> toJson(ipmi.dottedAddress),
       IpmiNetmask.toString -> toJson(ipmi.dottedNetmask),
-      "ID" -> toJson(ipmi.id)
-    ))
+      "ID" -> toJson(ipmi.id)))
   }
   implicit object IpAddressFormat extends Format[IpAddresses] {
     override def reads(json: JsValue) = IpAddresses(
@@ -63,8 +61,7 @@ object conversions {
       IpAddress.toLong((json \ "ADDRESS").as[String]),
       IpAddress.toLong((json \ "NETMASK").as[String]),
       (json \ "POOL").asOpt[String].getOrElse(shared.IpAddressConfig.DefaultPoolName),
-      (json \ "ID").asOpt[Long].getOrElse(0L)
-    )
+      (json \ "ID").asOpt[Long].getOrElse(0L))
     override def writes(ip: IpAddresses) = JsObject(Seq(
       "ASSET_ID" -> toJson(ip.asset_id),
       "ASSET_TAG" -> toJson(Asset.findById(ip.asset_id).map(_.tag).getOrElse("Unknown")),
@@ -72,8 +69,7 @@ object conversions {
       "ADDRESS" -> toJson(ip.dottedAddress),
       "NETMASK" -> toJson(ip.dottedNetmask),
       "POOL" -> toJson(ip.pool),
-      "ID" -> toJson(ip.id)
-    ))
+      "ID" -> toJson(ip.id)))
   }
   implicit object AssetLogFormat extends Format[AssetLog] {
     override def reads(json: JsValue) = AssetLog(
@@ -83,8 +79,7 @@ object conversions {
       logs.LogSource.withName((json \ "SOURCE").as[String]),
       logs.LogMessageType.withName((json \ "TYPE").as[String]),
       (json \ "MESSAGE").as[String],
-      (json \ "ID").asOpt[Long].getOrElse(0L)
-    )
+      (json \ "ID").asOpt[Long].getOrElse(0L))
     override def writes(log: AssetLog) = JsObject(Seq(
       "ID" -> toJson(log.id),
       "ASSET_TAG" -> toJson(Asset.findById(log.asset_id).map(_.tag).getOrElse("Unknown")),
@@ -100,8 +95,7 @@ object conversions {
         }
       } else {
         toJson(log.message)
-      })
-    ))
+      })))
   }
 }
 
@@ -110,9 +104,9 @@ sealed private[models] class OrderByFromString(o: TypedExpressionNode[_]) {
 
   def withSort(s: String, default: String = "DESC") = {
     val sortOrder = Seq(s, default)
-                      .map(_.toUpperCase.trim)
-                      .find(s => s == "DESC" || s == "ASC")
-                      .getOrElse("DESC")
+      .map(_.toUpperCase.trim)
+      .find(s => s == "DESC" || s == "ASC")
+      .getOrElse("DESC")
     sortOrder match {
       case "DESC" => o desc
       case "ASC" => o asc
@@ -134,7 +128,7 @@ sealed private[models] class LogicalBooleanFromString(s: Option[String]) {
 }
 
 sealed private[models] class PossibleRegex(left: StringExpression[String]) {
-  protected val RegexChars = List('[','\\','^','$','.','|','?','*','+','(',')')
+  protected val RegexChars = List('[', '\\', '^', '$', '.', '|', '?', '*', '+', '(', ')')
   import org.squeryl.PrimitiveTypeMode._
 
   def withPossibleRegex(pattern: String): LogicalBoolean = {
@@ -180,5 +174,4 @@ sealed private[models] class PossibleRegex(left: StringExpression[String]) {
       .getOrElse(withPrefix)
   }
 }
-
 

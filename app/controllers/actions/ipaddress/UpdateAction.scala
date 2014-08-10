@@ -21,20 +21,17 @@ import controllers.Api
 case class UpdateAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction with AddressActionHelper with ParamValidation {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction with AddressActionHelper with ParamValidation {
 
   case class ActionDataHolder(
     asset: Asset, oldAddress: Option[Long], address: Option[Long],
-    gateway: Option[Long], netmask: Option[Long], pool: Option[String]
-  ) extends RequestDataHolder {
+    gateway: Option[Long], netmask: Option[Long], pool: Option[String]) extends RequestDataHolder {
     def merge(ipAddress: Option[IpAddresses]): IpAddresses = ipAddress.map { ip =>
       ip.copy(
         address = address.getOrElse(ip.address),
         gateway = gateway.getOrElse(ip.gateway),
         netmask = netmask.getOrElse(ip.netmask),
-        pool = pool.map(convertPoolName(_)).getOrElse(ip.pool)
-      )
+        pool = pool.map(convertPoolName(_)).getOrElse(ip.pool))
     }.getOrElse {
       if (address.isDefined && gateway.isDefined && netmask.isDefined) {
         val p = convertPoolName(pool.getOrElse(IpAddressConfig.DefaultPoolName))
@@ -47,26 +44,24 @@ case class UpdateAction(
 
   val optionalIpAddress = validatedOptionalText(7)
 
-  type DataForm = Tuple5[Option[String],Option[String],Option[String],Option[String],Option[String]]
+  type DataForm = Tuple5[Option[String], Option[String], Option[String], Option[String], Option[String]]
   val dataForm = Form(tuple(
     "old_address" -> optionalIpAddress,
     "address" -> optionalIpAddress,
     "gateway" -> optionalIpAddress,
     "netmask" -> optionalIpAddress,
-    "pool" -> validatedOptionalText(1)
-  ))
+    "pool" -> validatedOptionalText(1)))
 
   override def validate(): Validation = withValidAsset(assetTag) { asset =>
     dataForm.bindFromRequest()(request).fold(
       e => Left(RequestDataHolder.error400(fieldError(e))),
-      f => normalizeForm(asset, f)
-    )
+      f => normalizeForm(asset, f))
   }
 
   override def execute(rd: RequestDataHolder) = rd match {
-    case adh@ActionDataHolder(asset, old, address, gateway, netmask, pool) =>
+    case adh @ ActionDataHolder(asset, old, address, gateway, netmask, pool) =>
       val addressInfo = IpAddresses.findAllByAsset(asset)
-                                    .find(_.address == old.getOrElse(0L))
+        .find(_.address == old.getOrElse(0L))
       val newAddress = adh.merge(addressInfo)
       validateUpdatedAddress(newAddress) match {
         case Left(err) => handleError(err)
@@ -79,8 +74,7 @@ case class UpdateAction(
               handleError(RequestDataHolder.error409("Possible duplicate IP address"))
             case e =>
               handleError(
-                RequestDataHolder.error500("Unable to update address: %s".format(e.getMessage), e)
-              )
+                RequestDataHolder.error500("Unable to update address: %s".format(e.getMessage), e))
           }
       }
   }
@@ -97,8 +91,7 @@ case class UpdateAction(
         (Status.Ok, true)
       case _ =>
         ApiTattler.warning(asset, userOption, "Failed to update address %s".format(
-          address.dottedAddress
-        ))
+          address.dottedAddress))
         (Status.InternalServerError, false)
     }
   }
@@ -107,8 +100,7 @@ case class UpdateAction(
     IpAddresses.create(address).id match {
       case fail if fail <= 0 =>
         ApiTattler.warning(asset, userOption, "Failed to create address %s".format(
-          address.dottedAddress
-        ))
+          address.dottedAddress))
         (Status.InternalServerError, false)
       case success =>
         ApiTattler.notice(asset, userOption, "Created IP address %s".format(address.dottedAddress))
@@ -139,10 +131,10 @@ case class UpdateAction(
   /**
    * Do some basic pre validation with the data we have available to us
    */
-  type NormalizedForm = Either[RequestDataHolder,ActionDataHolder]
+  type NormalizedForm = Either[RequestDataHolder, ActionDataHolder]
   protected def normalizeForm(asset: Asset, form: DataForm): NormalizedForm = {
-    val (old,add,gate,net,pool) = form
-    val seq = Seq(old,add,gate,net,pool)
+    val (old, add, gate, net, pool) = form
+    val seq = Seq(old, add, gate, net, pool)
     if (!IpAddresses.AddressConfig.isDefined)
       return Left(RequestDataHolder.error500("No address pools have been setup to allocate from"))
     val addressConfig = IpAddresses.AddressConfig.get
@@ -160,14 +152,13 @@ case class UpdateAction(
       if (trimmed.get != opt)
         return Left(RequestDataHolder.error400("Invalid (padded) value '%s'".format(opt)))
     }
-    Seq(old,add,gate,net).filter(_.isDefined).map(_.get).foreach { opt =>
+    Seq(old, add, gate, net).filter(_.isDefined).map(_.get).foreach { opt =>
       if (!IpAddress.toOptLong(opt).isDefined)
         return Left(RequestDataHolder.error400("'%s' is not a valid IP address".format(opt)))
     }
     Right(ActionDataHolder(
       asset, old.map(IpAddress.toLong(_)), add.map(IpAddress.toLong(_)),
-      gate.map(IpAddress.toLong(_)), net.map(IpAddress.toLong(_)), pool
-    ))
+      gate.map(IpAddress.toLong(_)), net.map(IpAddress.toLong(_)), pool))
   }
 
   protected def fieldError(form: Form[DataForm]): String = form match {

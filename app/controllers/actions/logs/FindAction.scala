@@ -19,8 +19,7 @@ case class FindAction(
   pageParams: PageParams,
   filter: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
   case class ActionDataHolder(asset: Option[Asset], params: PageParams, filter: String) extends RequestDataHolder
 
@@ -33,12 +32,11 @@ case class FindAction(
   }
 
   override def execute(rd: RequestDataHolder) = rd match {
-    case adh@ActionDataHolder(asset, params, filter) =>
+    case adh @ ActionDataHolder(asset, params, filter) =>
       val logs = getLogs(adh)
       val pageMap = getPaginationMap(logs)
       ResponseData(Status.Ok, JsObject(pageMap ++ Seq(
-        "Data" -> Json.toJson(logs.items)
-      )), logs.getPaginationHeaders)
+        "Data" -> Json.toJson(logs.items))), logs.getPaginationHeaders)
   }
 
   protected def getLogs(adh: ActionDataHolder): Page[AssetLog] = {

@@ -9,12 +9,10 @@ object ChassisId {
   implicit object ChassisIdFormat extends Format[ChassisId] {
     override def reads(json: JsValue) = ChassisId(
       (json \ "TYPE").as[String],
-      (json \ "VALUE").as[String]
-    )
+      (json \ "VALUE").as[String])
     override def writes(cid: ChassisId) = JsObject(Seq(
       "TYPE" -> Json.toJson(cid.idType),
-      "VALUE" -> Json.toJson(cid.value)
-    ))
+      "VALUE" -> Json.toJson(cid.value)))
   }
 }
 

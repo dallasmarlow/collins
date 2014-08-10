@@ -31,12 +31,10 @@ import util.RemoteCollinsHost
  * instance is different from the pagination of the overall request
  */
 case class AssetSearchParameters(
-  params: util.AttributeResolver.ResultTuple, 
-  afinder: AssetFinder, 
+  params: util.AttributeResolver.ResultTuple,
+  afinder: AssetFinder,
   operation: Option[String] = None, //"and" or "or"
-  details: Boolean = false
-
-) {
+  details: Boolean = false) {
 
   /**
    * serializes the search parameters to send as a query string.
@@ -45,29 +43,28 @@ case class AssetSearchParameters(
    */
   def toSeq: Seq[(String, String)] = {
     val q1: Seq[(String, String)] = (
-      params._1.map{case (enum, value) => (enum.toString, value)} ++ 
-      params._2.map{case (assetMeta,value) => ("attribute" -> "%s;%s".format(assetMeta.name, URLEncoder.encode(value, "UTF-8")))} ++ 
-      params._3.map{i => ("attribute" -> ("ip_address;" + URLEncoder.encode(i, "UTF-8")))}
-    ) ++ afinder.toSeq :+ ("details" -> (if (details) "true" else "false"))
-    operation.map{op => q1 :+ ("operation" -> op)}.getOrElse(q1)
+      params._1.map { case (enum, value) => (enum.toString, value) } ++
+      params._2.map { case (assetMeta, value) => ("attribute" -> "%s;%s".format(assetMeta.name, URLEncoder.encode(value, "UTF-8"))) } ++
+      params._3.map { i => ("attribute" -> ("ip_address;" + URLEncoder.encode(i, "UTF-8"))) }) ++ afinder.toSeq :+ ("details" -> (if (details) "true" else "false"))
+    operation.map { op => q1 :+ ("operation" -> op) }.getOrElse(q1)
   }
 
   def toQueryString: Option[String] = {
     val seq = toSeq
     if (seq.size > 0) {
-      Some(seq.map{case (k,v) => "%s=%s".format(k,v)}.mkString("&"))
+      Some(seq.map { case (k, v) => "%s=%s".format(k, v) }.mkString("&"))
     } else {
       None
     }
   }
 
   def toSolrExpression: SolrExpression = {
-    val p = params._1.map{case (enum, value) => SolrKeyVal(enum.toString, StringValueFormat.createValueFor(value))} ++ 
-      params._2.map{case (assetMeta,value) => SolrKeyVal(assetMeta.name, StringValueFormat.createValueFor(value))} ++ 
-      params._3.map{i => SolrKeyVal("ip_address", StringValueFormat.createValueFor(i))}
+    val p = params._1.map { case (enum, value) => SolrKeyVal(enum.toString, StringValueFormat.createValueFor(value)) } ++
+      params._2.map { case (assetMeta, value) => SolrKeyVal(assetMeta.name, StringValueFormat.createValueFor(value)) } ++
+      params._3.map { i => SolrKeyVal("ip_address", StringValueFormat.createValueFor(i)) }
     val allkeyvals = (p ++ afinder.toSolrKeyVals).toSet
     if (allkeyvals.size > 0) {
-      operation.map{_.toUpperCase} match {
+      operation.map { _.toUpperCase } match {
         case Some("OR") => SolrOrOp(allkeyvals)
         case _ => SolrAndOp(allkeyvals)
 
@@ -110,8 +107,7 @@ class HttpRemoteAssetClient(val tag: String, val remoteHost: RemoteCollinsHost) 
     val queryString = RemoteAssetClient.createQueryString(params.toSeq ++ page.toSeq)
 
     val request = WS.url(queryUrl + queryString).copy(
-      auth = Some(authenticationTuple)
-    )
+      auth = Some(authenticationTuple))
 
     val result = try request.get.await.get catch {
       case t: TimeoutException => throw new TimeoutException("Timed out in remote query to %s".format(queryUrl))
@@ -143,14 +139,14 @@ class HttpRemoteAssetClient(val tag: String, val remoteHost: RemoteCollinsHost) 
 
 }
 
-object RemoteAssetClient{
+object RemoteAssetClient {
 
   /**
    * Takes a sequence of string -> string tuples and builds them into a valid
    * URL query string
    */
   def createQueryString(items: Seq[(String, String)]): String = if (items.size > 0) {
-    "?" + items.map{case (k,v) => "%s=%s".format(k,v)}.mkString("&")
+    "?" + items.map { case (k, v) => "%s=%s".format(k, v) }.mkString("&")
   } else {
     ""
   }
@@ -171,7 +167,6 @@ object LocalAssetClient extends RemoteAssetClient {
   def getTotal = total
 }
 
-
 /**
  * A peek-able queue of assets from a remote location.  Assets are read from
  * the queue one at a time, but it will fetch remote assets in pages
@@ -187,7 +182,7 @@ class RemoteAssetQueue(val client: RemoteAssetClient, val params: AssetSearchPar
   val cachedAssets = new collection.mutable.Queue[AssetView]
   var nextRetrievedPage: Option[Int] = None
   var eof = false
-  
+
   /**
    * Retrieve the next item in the cached queue.  If there are no items, get
    * some more from the remote client, and if the client returns None, set eof
@@ -218,17 +213,16 @@ class RemoteAssetQueue(val client: RemoteAssetClient, val params: AssetSearchPar
   /**
    * returns the next asset and removes it from the stream
    */
-  def get: Option[AssetView] = retrieveHead.map{h => cachedAssets.dequeue}
+  def get: Option[AssetView] = retrieveHead.map { h => cachedAssets.dequeue }
 }
-
 
 /**
  * A stream of assets pulled from multiple collins instances and combined using
  * merge-sort.  Backed using a Scala Stream for memoization
  */
 class RemoteAssetStream(clients: Seq[RemoteAssetClient], searchParams: AssetSearchParameters) {
-  
-  val queues = clients.map{client => new RemoteAssetQueue(client, searchParams)}
+
+  val queues = clients.map { client => new RemoteAssetQueue(client, searchParams) }
 
   /**
    * Returns the ordering to merge-sort assets.  currently you cannot specify a
@@ -247,11 +241,11 @@ class RemoteAssetStream(clients: Seq[RemoteAssetClient], searchParams: AssetSear
    * uses merge-sort to grab the next item
    */
   private[this] def getNextAsset: Option[AssetView] = queues
-    .map{ s => s.peek.map{p => (s,p)}}
+    .map { s => s.peek.map { p => (s, p) } }
     .flatten
     .sortBy(_._2)
     .headOption
-    .flatMap{_._1.get}
+    .flatMap { _._1.get }
 
   /**
    * Create an infinite stream of assets
@@ -262,9 +256,9 @@ class RemoteAssetStream(clients: Seq[RemoteAssetClient], searchParams: AssetSear
     n(getNextAsset)
   }
 
-  def aggregateTotal: Long = clients.map{_.getTotal}.sum
+  def aggregateTotal: Long = clients.map { _.getTotal }.sum
 
-  /** 
+  /**
    * NOTE - this will not scale past a few thousand total assets when doing
    * searches that return large numbers of assets and requests are made for
    * high offsets in the result set, after that we'll need some kind of search
@@ -276,15 +270,14 @@ class RemoteAssetStream(clients: Seq[RemoteAssetClient], searchParams: AssetSear
 
 object RemoteAssetFinder {
 
-
   /**
    */
   def apply(clients: Seq[RemoteAssetClient], pageParams: PageParams, searchParams: AssetSearchParameters): (Seq[AssetView], Long) = {
-    val key = searchParams.paginationKey + clients.map{_.tag}.mkString("_")
+    val key = searchParams.paginationKey + clients.map { _.tag }.mkString("_")
     val stream = Cache.getAs[RemoteAssetStream](key).getOrElse(new RemoteAssetStream(clients, searchParams))
-    val results = stream.slice(pageParams.page * pageParams.size, (pageParams.page +1) * (pageParams.size))
+    val results = stream.slice(pageParams.page * pageParams.size, (pageParams.page + 1) * (pageParams.size))
     Cache.set(key, stream, 30)
     (results, stream.aggregateTotal)
   }
-    
+
 }

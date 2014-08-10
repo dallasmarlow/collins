@@ -5,7 +5,6 @@ import collins.validation.File
 import util.config.ConfigValue
 import util.config.Configurable
 
-
 object MetricsReporterConfig extends Configurable {
 
   override val namespace = "metricsreporter"
@@ -16,7 +15,7 @@ object MetricsReporterConfig extends Configurable {
 
   override def validateConfig() = enabled match {
     case true => File.requireFileIsReadable(configFile)
-    case _    => false
+    case _ => false
   }
 
 }

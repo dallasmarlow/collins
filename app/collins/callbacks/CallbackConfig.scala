@@ -11,8 +11,9 @@ object CallbackConfig extends Configurable {
 
   def enabled = getBoolean("enabled", true)
   def className = getString("class", "collins.callbacks.CallbackManagerPlugin")
-  def registry: Set[CallbackDescriptor] = getObjectMap("registry").map { case(k,v) =>
-    CallbackDescriptor(k, v.toConfig)
+  def registry: Set[CallbackDescriptor] = getObjectMap("registry").map {
+    case (k, v) =>
+      CallbackDescriptor(k, v.toConfig)
   }.toSet
 
   override def validateConfig() {

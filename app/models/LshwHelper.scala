@@ -49,8 +49,7 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
     DiskSizeBytes,
     DiskType,
     DiskDescription,
-    DiskStorageTotal
-  )
+    DiskStorageTotal)
 
   def construct(asset: Asset, lshw: LshwRepresentation): Seq[AssetMetaValue] = {
     collectCpus(asset, lshw) ++
@@ -62,11 +61,11 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
 
   def reconstruct(asset: Asset, assetMeta: Seq[MetaWrapper]): Reconstruction = {
     val metaMap = assetMeta.groupBy { _.getGroupId }
-    val (cpus,postCpuMap) = reconstructCpu(metaMap)
-    val (memory,postMemoryMap) = reconstructMemory(postCpuMap)
-    val (nics,postNicMap) = reconstructNics(postMemoryMap)
-    val (disks,postDiskMap) = reconstructDisks(postNicMap)
-    val (base,postBaseMap) = reconstructBase(postDiskMap)
+    val (cpus, postCpuMap) = reconstructCpu(metaMap)
+    val (memory, postMemoryMap) = reconstructMemory(postCpuMap)
+    val (nics, postNicMap) = reconstructNics(postMemoryMap)
+    val (disks, postDiskMap) = reconstructDisks(postNicMap)
+    val (base, postBaseMap) = reconstructBase(postDiskMap)
     (LshwRepresentation(cpus, memory, nics, disks, base.headOption.getOrElse(ServerBase())), postBaseMap.values.flatten.toSeq)
   }
 
@@ -81,12 +80,12 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
         Cpu(cpuCores, cpuThreads, cpuSpeed, cpuDescription, "", "")
       }.toSeq
     }.getOrElse(Nil)
-    val filteredMeta = meta.map { case(groupId, metaSeq) =>
-      val newSeq = filterNot(
-        metaSeq,
-        Set(CpuCount.id, CpuCores.id, CpuThreads.id, CpuSpeedGhz.id, CpuDescription.id)
-      )
-      groupId -> newSeq
+    val filteredMeta = meta.map {
+      case (groupId, metaSeq) =>
+        val newSeq = filterNot(
+          metaSeq,
+          Set(CpuCount.id, CpuCores.id, CpuThreads.id, CpuSpeedGhz.id, CpuDescription.id))
+        groupId -> newSeq
     }
     (cpuSeq, filteredMeta)
   }
@@ -100,8 +99,7 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
       AssetMetaValue(asset, CpuCores.id, cpu.cores.toString),
       AssetMetaValue(asset, CpuThreads.id, cpu.threads.toString),
       AssetMetaValue(asset, CpuSpeedGhz.id, cpu.speedGhz.toString),
-      AssetMetaValue(asset, CpuDescription.id, "%s %s".format(cpu.product, cpu.vendor))
-    )
+      AssetMetaValue(asset, CpuDescription.id, "%s %s".format(cpu.product, cpu.vendor)))
   }
 
   protected def reconstructMemory(meta: Map[Int, Seq[MetaWrapper]]): FilteredSeq[Memory] = {
@@ -120,12 +118,12 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
         }
       }.getOrElse(Memory(ByteStorageUnit(0L), bankId, "Empty Memory Bank", "", ""))
     }.toSeq
-    val filteredMeta = meta.map { case(groupId, metaSeq) =>
-      val newSeq = filterNot(
-        metaSeq,
-        Set(MemorySizeBytes.id, MemoryDescription.id, MemorySizeTotal.id, MemoryBanksTotal.id)
-      )
-      groupId -> newSeq
+    val filteredMeta = meta.map {
+      case (groupId, metaSeq) =>
+        val newSeq = filterNot(
+          metaSeq,
+          Set(MemorySizeBytes.id, MemoryDescription.id, MemorySizeTotal.id, MemoryBanksTotal.id))
+        groupId -> newSeq
     }
     (memSeq, filteredMeta)
   }
@@ -133,40 +131,39 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
     if (lshw.memoryBanksTotal < 1) {
       return Seq()
     }
-    lshw.memory.filter { _.size.bytes > 0 }.foldLeft(Seq[AssetMetaValue]()) { case(total, current) =>
-      val memory = current
-      val groupId = memory.bank
-      total ++ Seq(
-        AssetMetaValue(asset, MemorySizeBytes.id, groupId, memory.size.bytes.toString),
-        AssetMetaValue(asset, MemoryDescription.id, groupId, "%s - %s %s".format(
-          memory.description, memory.vendor, memory.product
-        ))
-      )
+    lshw.memory.filter { _.size.bytes > 0 }.foldLeft(Seq[AssetMetaValue]()) {
+      case (total, current) =>
+        val memory = current
+        val groupId = memory.bank
+        total ++ Seq(
+          AssetMetaValue(asset, MemorySizeBytes.id, groupId, memory.size.bytes.toString),
+          AssetMetaValue(asset, MemoryDescription.id, groupId, "%s - %s %s".format(
+            memory.description, memory.vendor, memory.product)))
     } ++ Seq(
       AssetMetaValue(asset, MemorySizeTotal.id, lshw.totalMemory.bytes.toString),
-      AssetMetaValue(asset, MemoryBanksTotal.id, lshw.memoryBanksTotal.toString)
-    )
+      AssetMetaValue(asset, MemoryBanksTotal.id, lshw.memoryBanksTotal.toString))
   }
 
   protected def reconstructNics(meta: Map[Int, Seq[MetaWrapper]]): FilteredSeq[Nic] = {
-    val nicSeq = meta.foldLeft(Seq[Nic]()) { case (seq, map) =>
-      val groupId = map._1
-      val wrapSeq = map._2
-      val nicSpeed = finder(wrapSeq, NicSpeed, _.toLong, 0L)
-      val macAddress = finder(wrapSeq, MacAddress, _.toString, "")
-      val descr = finder(wrapSeq, NicDescription, _.toString, "")
-      if (nicSpeed == 0L && macAddress.isEmpty && descr.isEmpty) {
-        seq
-      } else {
-        Nic(BitStorageUnit(nicSpeed), macAddress, descr, "", "") +: seq
-      }
+    val nicSeq = meta.foldLeft(Seq[Nic]()) {
+      case (seq, map) =>
+        val groupId = map._1
+        val wrapSeq = map._2
+        val nicSpeed = finder(wrapSeq, NicSpeed, _.toLong, 0L)
+        val macAddress = finder(wrapSeq, MacAddress, _.toString, "")
+        val descr = finder(wrapSeq, NicDescription, _.toString, "")
+        if (nicSpeed == 0L && macAddress.isEmpty && descr.isEmpty) {
+          seq
+        } else {
+          Nic(BitStorageUnit(nicSpeed), macAddress, descr, "", "") +: seq
+        }
     }
-    val filteredMeta = meta.map { case(groupId, metaSeq) =>
-      val newSeq = filterNot(
-        metaSeq,
-        Set(NicSpeed.id, MacAddress.id, NicDescription.id)
-      )
-      groupId -> newSeq
+    val filteredMeta = meta.map {
+      case (groupId, metaSeq) =>
+        val newSeq = filterNot(
+          metaSeq,
+          Set(NicSpeed.id, MacAddress.id, NicDescription.id))
+        groupId -> newSeq
     }
     (nicSeq, filteredMeta)
   }
@@ -174,38 +171,39 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
     if (lshw.nicCount < 1) {
       return Seq()
     }
-    lshw.nics.foldLeft((0,Seq[AssetMetaValue]())) { case (run,nic) =>
-      val groupId = run._1
-      val total = run._2
-      val res: Seq[AssetMetaValue] = Seq(
-        AssetMetaValue(asset, NicSpeed.id, groupId, nic.speed.inBits.toString),
-        AssetMetaValue(asset, MacAddress.id, groupId, nic.macAddress),
-        AssetMetaValue(asset, NicDescription.id, groupId, "%s - %s".format(nic.product, nic.vendor))
-      )
-      (groupId + 1, total ++ res)
+    lshw.nics.foldLeft((0, Seq[AssetMetaValue]())) {
+      case (run, nic) =>
+        val groupId = run._1
+        val total = run._2
+        val res: Seq[AssetMetaValue] = Seq(
+          AssetMetaValue(asset, NicSpeed.id, groupId, nic.speed.inBits.toString),
+          AssetMetaValue(asset, MacAddress.id, groupId, nic.macAddress),
+          AssetMetaValue(asset, NicDescription.id, groupId, "%s - %s".format(nic.product, nic.vendor)))
+        (groupId + 1, total ++ res)
     }._2
   }
 
   protected def reconstructDisks(meta: Map[Int, Seq[MetaWrapper]]): FilteredSeq[Disk] = {
-    val diskSeq = meta.foldLeft(Seq[Disk]()) { case (seq, map) =>
-      val groupId = map._1
-      val wrapSeq = map._2
-      val diskSize = finder(wrapSeq, DiskSizeBytes, _.toLong, 0L)
-      val diskType = finder(wrapSeq, DiskType, {s => Some(Disk.Type.withName(s))}, None)
-      val descr = finder(wrapSeq, DiskDescription, _.toString, "")
-      if (diskSize == 0L && diskType.isEmpty && descr.isEmpty) {
-        seq
-      } else {
-        val size = ByteStorageUnit(diskSize)
-        Disk(size, diskType.get, descr, "", "") +: seq
-      }
+    val diskSeq = meta.foldLeft(Seq[Disk]()) {
+      case (seq, map) =>
+        val groupId = map._1
+        val wrapSeq = map._2
+        val diskSize = finder(wrapSeq, DiskSizeBytes, _.toLong, 0L)
+        val diskType = finder(wrapSeq, DiskType, { s => Some(Disk.Type.withName(s)) }, None)
+        val descr = finder(wrapSeq, DiskDescription, _.toString, "")
+        if (diskSize == 0L && diskType.isEmpty && descr.isEmpty) {
+          seq
+        } else {
+          val size = ByteStorageUnit(diskSize)
+          Disk(size, diskType.get, descr, "", "") +: seq
+        }
     }
-    val filteredMeta = meta.map { case(groupId, metaSeq) =>
-      val newSeq = filterNot(
-        metaSeq,
-        Set(DiskSizeBytes.id, DiskType.id, DiskDescription.id)
-      )
-      groupId -> newSeq
+    val filteredMeta = meta.map {
+      case (groupId, metaSeq) =>
+        val newSeq = filterNot(
+          metaSeq,
+          Set(DiskSizeBytes.id, DiskType.id, DiskDescription.id))
+        groupId -> newSeq
     }
     (diskSeq, filteredMeta)
   }
@@ -213,14 +211,14 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
     if (lshw.diskCount < 1) {
       return Seq()
     }
-    val physicalDisks = lshw.disks.foldLeft((0,Seq[AssetMetaValue]())) { case (run,disk) =>
-      val groupId = run._1
-      val total = run._2
-      (groupId + 1, total ++ Seq(
-        AssetMetaValue(asset, DiskSizeBytes.id, groupId, disk.size.inBytes.toString),
-        AssetMetaValue(asset, DiskType.id, groupId, disk.diskType.toString),
-        AssetMetaValue(asset, DiskDescription.id, groupId, "%s %s".format(disk.vendor, disk.product))
-      ))
+    val physicalDisks = lshw.disks.foldLeft((0, Seq[AssetMetaValue]())) {
+      case (run, disk) =>
+        val groupId = run._1
+        val total = run._2
+        (groupId + 1, total ++ Seq(
+          AssetMetaValue(asset, DiskSizeBytes.id, groupId, disk.size.inBytes.toString),
+          AssetMetaValue(asset, DiskType.id, groupId, disk.diskType.toString),
+          AssetMetaValue(asset, DiskDescription.id, groupId, "%s %s".format(disk.vendor, disk.product))))
     }._2
     val diskSummary = AssetMetaValue(asset, DiskStorageTotal.id, lshw.totalUsableStorage.inBytes.toString)
     Seq(diskSummary) ++ physicalDisks
@@ -234,12 +232,12 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
       Seq(ServerBase(baseDescription, baseProduct, baseVendor))
     }.getOrElse(Nil)
 
-    val filteredMeta = meta.map { case(groupId, metaSeq) =>
-      val newSeq = filterNot(
-        metaSeq,
-        Set(BaseDescription.id, BaseProduct.id, BaseVendor.id)
-      )
-      groupId -> newSeq
+    val filteredMeta = meta.map {
+      case (groupId, metaSeq) =>
+        val newSeq = filterNot(
+          metaSeq,
+          Set(BaseDescription.id, BaseProduct.id, BaseVendor.id))
+        groupId -> newSeq
     }
     (baseSeq, filteredMeta)
   }
@@ -249,8 +247,7 @@ object LshwHelper extends CommonHelper[LshwRepresentation] {
     Seq(
       AssetMetaValue(asset, BaseDescription.id, base.description),
       AssetMetaValue(asset, BaseProduct.id, base.product),
-      AssetMetaValue(asset, BaseVendor.id, base.vendor)
-    )
+      AssetMetaValue(asset, BaseVendor.id, base.vendor))
   }
 
 }

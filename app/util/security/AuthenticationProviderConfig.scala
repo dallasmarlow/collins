@@ -63,8 +63,7 @@ object LdapAuthenticationProviderConfig extends Configurable {
       host
       if (!ValidSchemas.contains(schema)) {
         throw globalError("%s is not one of %s".format(
-          schema, ValidSchemas.mkString(",")
-        ))
+          schema, ValidSchemas.mkString(",")))
       }
       searchbase
       usersub

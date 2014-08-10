@@ -24,8 +24,7 @@ object PowerManagementConfig extends Configurable {
   val IdentifyKey = "identify"
   val RequiredKeys: Set[String] = Set(
     PowerOffKey, PowerOnKey, PowerSoftKey, PowerStateKey, RebootHardKey, RebootSoftKey, VerifyKey,
-    IdentifyKey
-  )
+    IdentifyKey)
 
   object Messages extends MessageHelper(namespace) {
     def assetStateAllowed(a: Asset) = message("disallowStatus", a.getStatusName)
@@ -79,5 +78,4 @@ object PowerManagementConfig extends Configurable {
     }
   }
 }
-
 

@@ -38,15 +38,10 @@ case class GangliaGraphs(override val app: Application) extends GraphView {
         "items" -> (GangliaGraphConfig.defaultGraphs.map(g =>
           Map(
             "hostname" -> hostKey(hostname),
-            "graph" -> g
-          )) ++ GangliaGraphConfig.defaultMetrics.map(m =>
-            Map(
-              "hostname" -> hostKey(hostname),
-              "metric" -> m
-            )
-        ))
-      )
-    )
+            "graph" -> g)) ++ GangliaGraphConfig.defaultMetrics.map(m =>
+          Map(
+            "hostname" -> hostKey(hostname),
+            "metric" -> m)))))
   }
 
 }

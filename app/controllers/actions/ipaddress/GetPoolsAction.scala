@@ -19,15 +19,14 @@ import controllers.ResponseData
 case class GetPoolsAction(
   allPools: Truthy,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AddressActionHelper {
+  handler: SecureController) extends SecureAction(spec, handler) with AddressActionHelper {
 
   case class ActionDataHolder(all: Boolean) extends RequestDataHolder
 
   override def validate(): Validation = Right(ActionDataHolder(allPools.toBoolean))
 
   override def execute(rd: RequestDataHolder) = rd match {
-    case ActionDataHolder(all) => 
+    case ActionDataHolder(all) =>
       val pools: Set[String] =
         if (all) {
           val set = IpAddresses.AddressConfig.map(_.poolNames).getOrElse(Set())
@@ -55,11 +54,9 @@ case class GetPoolsAction(
         "SPECIFIED_GATEWAY" -> JsString(pool.gateway.getOrElse("Unspecified")),
         "GATEWAY" -> JsString(pool.ipCalc.minAddress),
         "BROADCAST" -> JsString(pool.ipCalc.broadcastAddress),
-        "POSSIBLE_ADDRESSES" -> JsNumber(pool.ipCalc.addressCount)
-      )
+        "POSSIBLE_ADDRESSES" -> JsNumber(pool.ipCalc.addressCount))
       JsObject(seq)
-    }
-  )
+    })
 
   protected def formatNetworkAddress(network: String): String = network match {
     case o if o == AddressPool.MagicNetwork =>

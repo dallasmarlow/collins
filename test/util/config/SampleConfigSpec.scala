@@ -2,7 +2,7 @@ package util.config
 
 import org.specs2.mutable.Specification
 
-class SampleConfigurable private[config]() extends Configurable {
+class SampleConfigurable private[config] () extends Configurable {
   override val namespace = "sample"
   override val referenceConfigFilename = "config/reference_sampleconfig.conf"
 

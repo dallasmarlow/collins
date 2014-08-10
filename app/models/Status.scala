@@ -45,26 +45,22 @@ object Status extends Schema with AnormAdapter[Status] {
     override def reads(json: JsValue) = Status(
       (json \ "NAME").as[String],
       (json \ "DESCRIPTION").as[String],
-      (json \ "ID").as[Int]
-    )
+      (json \ "ID").as[Int])
     override def writes(status: Status) = JsObject(Seq(
       "ID" -> JsNumber(status.id),
       "NAME" -> JsString(status.name),
-      "DESCRIPTION" -> JsString(status.description)
-    ))
+      "DESCRIPTION" -> JsString(status.description)))
   }
 
   override val tableDef = table[Status]("status")
   on(tableDef)(s => declare(
-    s.id is (autoIncremented,primaryKey),
-    s.name is(unique)
-  ))
+    s.id is (autoIncremented, primaryKey),
+    s.name is (unique)))
 
   override protected def cacheKeys(s: Status) = Seq(
     "Status.find",
     "Status.findById(%d)".format(s.id),
-    "Status.findByName(%s)".format(s.name.toLowerCase)
-  )
+    "Status.findByName(%s)".format(s.name.toLowerCase))
 
   def find(): List[Status] = getOrElseUpdate("Status.find") {
     from(tableDef)(s => select(s)).toList
@@ -78,8 +74,7 @@ object Status extends Schema with AnormAdapter[Status] {
   def findByName(name: String): Option[Status] = {
     getOrElseUpdate("Status.findByName(%s)".format(name.toLowerCase)) {
       tableDef.where(s =>
-        s.name.toLowerCase === name.toLowerCase
-      ).headOption
+        s.name.toLowerCase === name.toLowerCase).headOption
     }
   }
 

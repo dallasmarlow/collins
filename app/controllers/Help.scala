@@ -6,7 +6,7 @@ import play.api.mvc.Controller
 import util.MessageHelper
 import views.html
 
-object Help extends MessageHelper("help") with DefaultMap[String,String] {
+object Help extends MessageHelper("help") with DefaultMap[String, String] {
 
   val Default = ""
   val IpmiError = "ipmi.error"
@@ -19,13 +19,12 @@ object Help extends MessageHelper("help") with DefaultMap[String,String] {
     IpmiError -> "An IPMI error occurred. Error was {0}",
     IpmiNoLight -> "No IPMI light",
     IpmiUnreachable -> "An IPMI error occurred and is also unreachable. Original error was {0}.",
-    PowerManagementDisabled -> "Power management is disabled"
-  )
+    PowerManagementDisabled -> "Power management is disabled")
 
   override def get(key: String) = underlying.get(key)
   def getMessage(key: String, args: String*) = contains(key) match {
     case true =>
-      Some(messageWithDefault(key, apply(key), args:_*))
+      Some(messageWithDefault(key, apply(key), args: _*))
     case false =>
       None
   }

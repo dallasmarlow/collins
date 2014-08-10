@@ -4,23 +4,21 @@ import akka.util.Duration
 import models.MetaWrapper
 import models.Asset
 import models.AssetLifecycle
-import models.{Status => AStatus}
-import play.api.mvc.{AnyContent, Request}
+import models.{ Status => AStatus }
+import play.api.mvc.{ AnyContent, Request }
 import util.plugins.SoftLayer
 import util.concurrent.BackgroundProcess
 import util.plugins.SoftLayer
 import controllers.ResponseData
 import controllers.Api
 
-
 case class AssetCancelProcessor(tag: String, userTimeout: Option[Duration] = None)(implicit req: Request[AnyContent])
-  extends BackgroundProcess[Either[ResponseData,Long]]
-{
+  extends BackgroundProcess[Either[ResponseData, Long]] {
   override def defaultTimeout: Duration =
     Duration.parse("10 seconds")
 
   val timeout = userTimeout.getOrElse(defaultTimeout)
-  def run(): Either[ResponseData,Long] = {
+  def run(): Either[ResponseData, Long] = {
     req.body.asFormUrlEncoded.flatMap(_.get("reason")).flatMap(_.headOption).map(_.trim).filter(_.size > 0).map { _reason =>
       val reason = _reason.trim
       Api.withAssetFromTag(tag) { asset =>

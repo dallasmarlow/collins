@@ -3,16 +3,16 @@ package collins.cache
 import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
 
-import com.google.common.cache.{Cache => GuavaCacheImpl}
+import com.google.common.cache.{ Cache => GuavaCacheImpl }
 import com.google.common.cache.CacheBuilder
 
 class GuavaCache(override val timeoutInSeconds: java.lang.Integer) extends Cache {
 
-  lazy private[this] val cache: GuavaCacheImpl[String,AnyRef] =
-      CacheBuilder.newBuilder()
-        .maximumSize(10000)
-        .expireAfterWrite(timeoutMs, TimeUnit.MILLISECONDS)
-        .build()
+  lazy private[this] val cache: GuavaCacheImpl[String, AnyRef] =
+    CacheBuilder.newBuilder()
+      .maximumSize(10000)
+      .expireAfterWrite(timeoutMs, TimeUnit.MILLISECONDS)
+      .build()
   private[this] implicit def f2c[A](f: => A): Callable[A] = new Callable[A] { def call: A = f }
 
   override def stats() = new GuavaCacheStatsAdapter(cache.stats)
@@ -30,8 +30,7 @@ class GuavaCache(override val timeoutInSeconds: java.lang.Integer) extends Cache
     else
       throw new IllegalArgumentException("%s not assignable to %s".format(
         m.erasure.getClass.toString,
-        value.getClass.toString
-      ))
+        value.getClass.toString))
   }
 
   override def get[T <: AnyRef](key: String)(implicit m: Manifest[T]): Option[T] = {

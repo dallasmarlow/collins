@@ -2,7 +2,7 @@ package util.plugins
 
 import java.io.File
 
-import collins.cache.{Cache => CacheInterface}
+import collins.cache.{ Cache => CacheInterface }
 import collins.cache.CachePlugin
 
 import play.api.Application

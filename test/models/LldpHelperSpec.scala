@@ -14,7 +14,7 @@ class LldpHelperSpec extends ApplicationSpecification {
     "Parse and reconstruct data" in {
       "with one network interface" in new LldpCommonHelper("lldpctl-single.xml") {
         val lldp = parsed()
-        lldp.interfaceCount mustEqual(1)
+        lldp.interfaceCount mustEqual (1)
         val stub = getStub()
         val constructed: Seq[AssetMetaValue] = LldpHelper.construct(stub, lldp)
         val reconstructed = LldpHelper.reconstruct(stub, metaValue2metaWrapper(constructed))._1
@@ -22,7 +22,7 @@ class LldpHelperSpec extends ApplicationSpecification {
       }
       "with two network interfaces" in new LldpCommonHelper("lldpctl-two-nic.xml") {
         val lldp = parsed()
-        lldp.interfaceCount mustEqual(2)
+        lldp.interfaceCount mustEqual (2)
         val stub = getStub()
         val constructed: Seq[AssetMetaValue] = LldpHelper.construct(stub, lldp)
         val reconstructed = LldpHelper.reconstruct(stub, metaValue2metaWrapper(constructed))._1
@@ -30,7 +30,7 @@ class LldpHelperSpec extends ApplicationSpecification {
       }
       "with four network interfaces" in new LldpCommonHelper("lldpctl-four-nic.xml") {
         val lldp = parsed()
-        lldp.interfaceCount mustEqual(3)
+        lldp.interfaceCount mustEqual (3)
         val stub = getStub()
         val constructed: Seq[AssetMetaValue] = LldpHelper.construct(stub, lldp)
         val reconstructed = LldpHelper.reconstruct(stub, metaValue2metaWrapper(constructed))._1

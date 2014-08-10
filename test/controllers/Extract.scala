@@ -5,7 +5,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers
 
 object Extract {
-  def from(r: Result): (Int, Map[String,String], String) = {
+  def from(r: Result): (Int, Map[String, String], String) = {
     val newRes = r match {
       case AsyncResult(promise) => Helpers.await(promise)
       case _ => r

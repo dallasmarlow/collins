@@ -64,7 +64,7 @@ class ProvisionerPlugin(app: Application) extends Plugin with Provisioner {
 
   override def test(request: ProvisionerRequest): Future[CommandResult] = {
     val cmd = try command(request, ProvisionerConfig.checkCommand) catch {
-      case _ => return Future(CommandResult(0,"No check command specified"))
+      case _ => return Future(CommandResult(0, "No check command specified"))
     }
     pool[CommandResult] {
       val result = runCommand(cmd)

@@ -14,15 +14,13 @@ case class CallbackAction(command: Seq[String], actionType: CallbackActionType =
 
 case class CallbackDescriptor(name: String, override val source: TypesafeConfiguration)
   extends ConfigAccessor
-    with ConfigSource
-{
+  with ConfigSource {
   private[this] val logger = Logger("CallbackDescriptor.%s".format(name))
 
   def on = getString("on")(ConfigValue.Required).get
   def matchCondition = CallbackConditional(
     MatchConditional(name, previousState, previousStates),
-    MatchConditional(name, currentState, currentStates)
-  )
+    MatchConditional(name, currentState, currentStates))
   def matchAction = {
     val cfg = getStringMap("action")
     if (cfg.isEmpty) {
@@ -34,7 +32,7 @@ case class CallbackDescriptor(name: String, override val source: TypesafeConfigu
   }
 
   def validateConfig() {
-    logger.debug("validateConfig - event - %s".format(getString("on","NONE")))
+    logger.debug("validateConfig - event - %s".format(getString("on", "NONE")))
     on
     logger.debug("validateConfig - matchCondition - %s".format(matchCondition.toString))
     matchCondition

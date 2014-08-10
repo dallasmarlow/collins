@@ -3,7 +3,7 @@ package controllers.actions.asset
 import collins.provisioning.ProvisionerPlugin
 import collins.provisioning.ProvisionerProfile
 import collins.provisioning.ProvisionerRequest
-import collins.provisioning.{ProvisionerRoleData => ProvisionerRole}
+import collins.provisioning.{ ProvisionerRoleData => ProvisionerRole }
 
 import controllers.Api
 import controllers.actions.AssetAction
@@ -16,7 +16,7 @@ import controllers.actors.ProvisionerTest
 import controllers.forms._
 import models.Asset
 import models.AssetLifecycle
-import models.{Status => AStatus}
+import models.{ Status => AStatus }
 import models.Truthy
 import play.api.data.Form
 import play.api.data.Forms._
@@ -31,29 +31,26 @@ import util.plugins.SoftLayer
 
 trait ProvisionUtil { self: SecureAction =>
 
-  type ProvisionForm = Tuple7[
-    String, // profile
-    String, // contact
-    Option[String], // suffix
-    Option[String], // profile role
-    Option[String], // pool
-    Option[String], // secondary_role
-    Option[Truthy] // active
+  type ProvisionForm = Tuple7[String, // profile
+  String, // contact
+  Option[String], // suffix
+  Option[String], // profile role
+  Option[String], // pool
+  Option[String], // secondary_role
+  Option[Truthy] // active
   ]
 
   val provisionForm = Form(tuple(
-        "profile" -> text,
-        "contact" -> text(3),
-        "suffix" -> optional(text(3)),
-        "primary_role" -> optional(text),
-        "pool" -> optional(text),
-        "secondary_role" -> optional(text),
-        "activate" -> optional(of[Truthy])
-      ))
+    "profile" -> text,
+    "contact" -> text(3),
+    "suffix" -> optional(text(3)),
+    "primary_role" -> optional(text),
+    "pool" -> optional(text),
+    "secondary_role" -> optional(text),
+    "activate" -> optional(of[Truthy])))
 
   case class ActionDataHolder(
-    asset: Asset, request: ProvisionerRequest, activate: Boolean, attribs: Map[String,String] = Map.empty
-  ) extends RequestDataHolder
+    asset: Asset, request: ProvisionerRequest, activate: Boolean, attribs: Map[String, String] = Map.empty) extends RequestDataHolder
 
   protected def validate(plugin: ProvisionerPlugin, asset: Asset, form: ProvisionForm): Validation = {
     val activate = form._7
@@ -66,15 +63,12 @@ trait ProvisionUtil { self: SecureAction =>
     else if (!plugin.canProvision(asset))
       return Left(
         RequestDataHolder.error403(
-          "Provisioning prevented by configuration. Asset does not have allowed status"
-        )
-      )
+          "Provisioning prevented by configuration. Asset does not have allowed status"))
     validateProvision(plugin, asset, form)
   }
 
   protected def validateProvision(
-    plugin: ProvisionerPlugin, asset: Asset, form: ProvisionForm
-  ): Validation = {
+    plugin: ProvisionerPlugin, asset: Asset, form: ProvisionForm): Validation = {
     val (profile, contact, suffix, primary_role, pool, secondary_role, activate) = form
     plugin.makeRequest(asset.tag, profile, Some(contact), suffix) match {
       case None =>
@@ -94,8 +88,7 @@ trait ProvisionUtil { self: SecureAction =>
   }
 
   protected def validateActivate(
-    plugin: ProvisionerPlugin, asset: Asset, form: ProvisionForm
-  ): Option[RequestDataHolder] = {
+    plugin: ProvisionerPlugin, asset: Asset, form: ProvisionForm): Option[RequestDataHolder] = {
     if (!asset.isIncomplete)
       Some(RequestDataHolder.error409("Asset status must be 'Incomplete'"))
     else if (!SoftLayer.plugin.isDefined)
@@ -108,7 +101,7 @@ trait ProvisionUtil { self: SecureAction =>
       None
   }
 
-  protected def attribs(request: ProvisionerRequest, form: ProvisionForm): Map[String,String] = {
+  protected def attribs(request: ProvisionerRequest, form: ProvisionForm): Map[String, String] = {
     val build_contact = form._2
     val suffix = form._3
     val role = request.profile.role
@@ -121,8 +114,7 @@ trait ProvisionUtil { self: SecureAction =>
         "PRIMARY_ROLE" -> role.primary_role.getOrElse(""),
         "POOL" -> role.pool.getOrElse(""),
         "SECONDARY_ROLE" -> role.secondary_role.getOrElse(""),
-        "BUILD_CONTACT" -> build_contact
-      )
+        "BUILD_CONTACT" -> build_contact)
     val lowPriorityAttrs = role.attributes
     val clearOnRepurposeAttrs = Feature.deleteSomeMetaOnRepurpose.map(_.name).map(s => (s -> "")).toMap
     val clearProfileAttrs = role.clear_attributes.map(a => (a -> "")).toMap
@@ -146,7 +138,7 @@ trait ProvisionUtil { self: SecureAction =>
 
   private def activeBool(activate: Option[Truthy]) = activate.map(_.toBoolean).getOrElse(false)
 
-  type ValidOption = Either[RequestDataHolder,ProvisionerRole]
+  type ValidOption = Either[RequestDataHolder, ProvisionerRole]
   protected def validatePrimaryRole(role: ProvisionerRole, prole: Option[String]): ValidOption = {
     if (role.primary_role.isDefined)
       Right(role)
@@ -220,8 +212,7 @@ trait Provisions extends ProvisionUtil with AssetAction { self: SecureAction =>
     val slId = plugin.softLayerId(asset).get
     if (attribs.nonEmpty)
       AssetLifecycle.updateAssetAttributes(
-        Asset.findById(asset.getId).get, attribs
-      )
+        Asset.findById(asset.getId).get, attribs)
     BackgroundProcessor.send(ActivationProcessor(slId)(request)) { res =>
       processProvisionAction(res) {
         case true =>
@@ -256,22 +247,19 @@ trait Provisions extends ProvisionUtil with AssetAction { self: SecureAction =>
       case None =>
         if (attribs.nonEmpty) {
           AssetLifecycle.updateAssetAttributes(
-            Asset.findById(asset.getId).get, attribs
-          )
+            Asset.findById(asset.getId).get, attribs)
           setAsset(Asset.findById(asset.getId))
         }
         BackgroundProcessor.send(ProvisionerRun(pRequest)(request)) { res =>
           processProvisionAction(res) { result =>
             processProvision(result).map { err =>
               tattle("Provisioning failed. Exit code %d\n%s".format(result.commandResult.exitCode,
-                result.commandResult.toString
-              ), true)
+                result.commandResult.toString), true)
               onFailure()
               err
             }.orElse {
               tattle(
-                "Successfully provisioned server as %s".format(pRequest.profile.identifier), false
-              )
+                "Successfully provisioned server as %s".format(pRequest.profile.identifier), false)
               None
             }
           }.getOrElse {
@@ -290,8 +278,7 @@ trait Provisions extends ProvisionUtil with AssetAction { self: SecureAction =>
       logger.error("Exception provisioning %s".format(getAsset), ex)
       Some(handleError(RequestDataHolder.error500(
         "There was an exception processing your request: %s".format(ex.getMessage),
-        ex
-      )))
+        ex)))
     case (_, result) => result match {
       case None =>
         tattle("Timeout provisioning asset", true)
@@ -307,9 +294,7 @@ trait Provisions extends ProvisionUtil with AssetAction { self: SecureAction =>
     case failure if failure.commandResult.exitCode != 0 =>
       Some(handleError(RequestDataHolder.error500(
         "There was an error processing your request. Exit Code %d".format(
-          failure.commandResult.exitCode
-        ), new Exception(failure.commandResult.toString)
-      )))
+          failure.commandResult.exitCode), new Exception(failure.commandResult.toString))))
   }
 
 }

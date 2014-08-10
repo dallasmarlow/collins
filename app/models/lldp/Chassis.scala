@@ -11,13 +11,11 @@ object Chassis {
     override def reads(json: JsValue) = Chassis(
       (json \ "NAME").as[String],
       (json \ "ID").as[ChassisId],
-      (json \ "DESCRIPTION").as[String]
-    )
+      (json \ "DESCRIPTION").as[String])
     override def writes(chassis: Chassis) = JsObject(Seq(
       "NAME" -> Json.toJson(chassis.name),
       "ID" -> Json.toJson(chassis.id),
-      "DESCRIPTION" -> Json.toJson(chassis.description)
-    ))
+      "DESCRIPTION" -> Json.toJson(chassis.description)))
   }
 }
 

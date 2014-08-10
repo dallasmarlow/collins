@@ -7,9 +7,9 @@ import controllers.actions.SecureAction
 import play.api.mvc.AnyContent
 import play.api.mvc.Request
 
-case class AttributeMap(underlying: Map[String,String]) extends DefaultMap[String,String] {
+case class AttributeMap(underlying: Map[String, String]) extends DefaultMap[String, String] {
   override def get(key: String): Option[String] = underlying.get(key)
-  override def iterator: Iterator[(String,String)] = underlying.iterator
+  override def iterator: Iterator[(String, String)] = underlying.iterator
 }
 
 object AttributeMap {
@@ -17,9 +17,8 @@ object AttributeMap {
     seq.map(_.split(";", 2))
       .filter(a => a.length > 1)
       .map(s => s(0) -> s(1))
-      .toMap
-  )
-  def fromMap(map: Map[String,Seq[String]]): Option[Seq[String]] = {
+      .toMap)
+  def fromMap(map: Map[String, Seq[String]]): Option[Seq[String]] = {
     map.get("attribute")
   }
 }
@@ -40,7 +39,7 @@ trait AttributeHelper {
 }
 
 object ActionAttributeHelper {
-  def getInputMapFromRequest(request: Request[AnyContent]): Map[String,Seq[String]] = request.queryString ++ (request.body match {
+  def getInputMapFromRequest(request: Request[AnyContent]): Map[String, Seq[String]] = request.queryString ++ (request.body match {
     case b: play.api.mvc.AnyContent if b.asFormUrlEncoded.isDefined => b.asFormUrlEncoded.get
     case b: play.api.mvc.AnyContent if b.asMultipartFormData.isDefined => b.asMultipartFormData.get.asFormUrlEncoded
     case b: Map[_, _] => b.asInstanceOf[Map[String, Seq[String]]]
@@ -54,11 +53,10 @@ trait ActionAttributeHelper extends AttributeHelper {
   protected def getAttributeMap: AttributeMap = {
     val map = mapAttributes(
       AttributeMap.fromMap(getInputMap),
-      AttributeMap.fromMap(request.queryString)
-    )
+      AttributeMap.fromMap(request.queryString))
     AttributeMap(map)
   }
 
-  protected def getInputMap: Map[String,Seq[String]] =
+  protected def getInputMap: Map[String, Seq[String]] =
     ActionAttributeHelper.getInputMapFromRequest(request)
 }

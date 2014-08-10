@@ -9,7 +9,7 @@ import play.api.Application
 
 object Registry {
 
-  private val registered = new ConcurrentHashMap[String,Configurable]()
+  private val registered = new ConcurrentHashMap[String, Configurable]()
   private val initialized = new AtomicBoolean(false)
   private val logger = play.api.Logger(getClass)
 

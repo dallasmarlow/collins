@@ -8,17 +8,17 @@ trait Summarizer[T] {
   type Token = String
   type Tokenizer = T => Token
 
-  val replacementMap: Map[Token,Tokenizer]
+  val replacementMap: Map[Token, Tokenizer]
   val template: String
   val openMustach: String = "{"
   val closeMustach: String = "}"
 
   def get(t: T): Content = Html(
-    replacementMap.foldLeft(template) { case(txt, kv) =>
-      val (key, fn) = kv
-      txt.replace(getKey(key), fn(t))
-    }
-  )
+    replacementMap.foldLeft(template) {
+      case (txt, kv) =>
+        val (key, fn) = kv
+        txt.replace(getKey(key), fn(t))
+    })
   protected def getKey(key: String) = {
     openMustach + key + closeMustach
   }
@@ -27,8 +27,7 @@ trait Summarizer[T] {
 case class AssetSummary(template: String) extends Summarizer[Asset] {
   override val replacementMap = Map(
     "assetType" -> getAssetType _,
-    "hostname" -> getHostname _
-  )
+    "hostname" -> getHostname _)
 
   def getAssetType(asset: Asset): String = {
     asset.isServerNode match {

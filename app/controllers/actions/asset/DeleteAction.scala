@@ -21,19 +21,16 @@ case class DeleteAction(
   _assetTag: String,
   realDelete: Boolean,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
-  case class ActionDataHolder(options: Map[String,String]) extends RequestDataHolder
+  case class ActionDataHolder(options: Map[String, String]) extends RequestDataHolder
 
   lazy val reason: Option[String] = Form(
-    "reason" -> optional(text(1))
-  ).bindFromRequest()(request).fold(
-    err => None,
-    str => str.flatMap(StringUtil.trim(_))
-  )
+    "reason" -> optional(text(1))).bindFromRequest()(request).fold(
+      err => None,
+      str => str.flatMap(StringUtil.trim(_)))
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = {
     withValidAsset(_assetTag) { asset =>
       if (realDelete && !reason.isDefined) {
         Left(RequestDataHolder.error400("reason must be specified"))
@@ -49,13 +46,11 @@ case class DeleteAction(
       AssetLifecycle.decommissionAsset(definedAsset, options) match {
         case Left(throwable) =>
           handleError(
-            RequestDataHolder.error409("Illegal state transition: %s".format(throwable.getMessage))
-          )
+            RequestDataHolder.error409("Illegal state transition: %s".format(throwable.getMessage)))
         case Right(status) =>
           if (realDelete) {
             val errMsg = "User deleted asset %s. Reason: %s".format(
-              definedAsset.tag, options.get("reason").getOrElse("Unspecified")
-            )
+              definedAsset.tag, options.get("reason").getOrElse("Unspecified"))
             SystemTattler.safeError(errMsg)
             Api.statusResponse(AssetDeleter.purge(definedAsset))
           } else {

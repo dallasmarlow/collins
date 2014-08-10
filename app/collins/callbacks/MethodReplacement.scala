@@ -16,8 +16,7 @@ import collins.reflection.MethodHelper
  * @param newValue the result of applying methodName on a class instance
  */
 case class MethodReplacement(
-  originalValue: String, methodName: String, newValue: String = ""
-) extends MethodHelper {
+  originalValue: String, methodName: String, newValue: String = "") extends MethodHelper {
 
   override val chattyFailures = true
 

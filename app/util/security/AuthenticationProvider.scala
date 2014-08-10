@@ -16,18 +16,17 @@ import play.api.Logger
 
 trait AuthenticationProvider {
   protected val logger = Logger.logger
-  type Credentials = Tuple2[String,String]
+  type Credentials = Tuple2[String, String]
   protected lazy val cache: LoadingCache[Credentials, Option[User]] = CacheBuilder.newBuilder()
-                                .maximumSize(100)
-                                .expireAfterWrite(cacheTimeout, TimeUnit.MILLISECONDS)
-                                .build(
-                                  new CacheLoader[Credentials, Option[User]] {
-                                    override def load(creds: Credentials): Option[User] = {
-                                      logger.info("Loading user %s from backend".format(creds._1))
-                                      authenticate(creds._1, creds._2)
-                                    }
-                                  }
-                                )
+    .maximumSize(100)
+    .expireAfterWrite(cacheTimeout, TimeUnit.MILLISECONDS)
+    .build(
+      new CacheLoader[Credentials, Option[User]] {
+        override def load(creds: Credentials): Option[User] = {
+          logger.info("Loading user %s from backend".format(creds._1))
+          authenticate(creds._1, creds._2)
+        }
+      })
   def authType: String
   def authenticate(username: String, password: String): Option[User]
   def useCachedCredentials: Boolean = AuthenticationProviderConfig.cacheCredentials
@@ -50,7 +49,7 @@ trait AuthenticationProvider {
 object AuthenticationProvider {
   val Default = new MockAuthenticationProvider
   val Types = Set("ldap", "file", "default")
-  def filename = AuthenticationProviderConfig.permissionsFile 
+  def filename = AuthenticationProviderConfig.permissionsFile
 
   private val logger = Logger("util.security.AuthenticationProvider")
 

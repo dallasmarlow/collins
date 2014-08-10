@@ -1,6 +1,6 @@
 package util.security
 
-import java.util.{Hashtable => JHashTable}
+import java.util.{ Hashtable => JHashTable }
 
 import scala.collection.JavaConversions.enumerationAsScalaIterator
 import scala.collection.JavaConverters.mapAsJavaMapConverter
@@ -63,7 +63,7 @@ class LdapAuthenticationProvider() extends AuthenticationProvider {
 
     var ctx: InitialDirContext = null
     try {
-      ctx = new InitialDirContext(new JHashTable[String,String](userEnv.asJava))
+      ctx = new InitialDirContext(new JHashTable[String, String](userEnv.asJava))
       val uid = getUid(getPrincipal(username), ctx)
       require(uid > 0, "Unable to find UID for user")
       val groups = getGroups(username, ctx)
@@ -93,18 +93,18 @@ class LdapAuthenticationProvider() extends AuthenticationProvider {
     }
   }
 
-  protected def getGroups(username: String, ctx: InitialDirContext): Seq[(Int,String)] = {
+  protected def getGroups(username: String, ctx: InitialDirContext): Seq[(Int, String)] = {
     val ctrl = new SearchControls
     ctrl.setSearchScope(SearchControls.SUBTREE_SCOPE)
     val query = groupQuery(username)
     val it = for (
-         result <- ctx.search("", query, ctrl);
-         attribs = result.asInstanceOf[SearchResult].getAttributes();
-         if attribs.get("cn") != null;
-         if attribs.get("gidNumber") != null;
-         cn = attribs.get("cn").get.asInstanceOf[String];
-         gidNumber = attribs.get("gidNumber").get.asInstanceOf[String].toInt
-       ) yield(gidNumber, cn)
+      result <- ctx.search("", query, ctrl);
+      attribs = result.asInstanceOf[SearchResult].getAttributes();
+      if attribs.get("cn") != null;
+      if attribs.get("gidNumber") != null;
+      cn = attribs.get("cn").get.asInstanceOf[String];
+      gidNumber = attribs.get("gidNumber").get.asInstanceOf[String].toInt
+    ) yield (gidNumber, cn)
     it.toSeq
   }
 }

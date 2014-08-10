@@ -7,7 +7,7 @@ import models.AssetFinder
 import models.Page
 import models.PageParams
 import models.State
-import models.{Status => AssetStatus}
+import models.{ Status => AssetStatus }
 import models.Truthy
 import models.asset.AssetView
 import util.AttributeResolver
@@ -30,10 +30,9 @@ object FindAction {
 class FindAction(
   pageParams: PageParams,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction with AssetResultsAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction with AssetResultsAction {
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = {
     try {
       pageParams.validate()
       AssetFinderDataHolder.processRequest(request())
@@ -54,18 +53,16 @@ class FindAction(
           logger.debug("Performing local asset find")
           Asset.find(pageParams, ra, af, op)
         }
-        handleSuccess(results, afdh.details.map(_.isTruthy).getOrElse(true)) 
+        handleSuccess(results, afdh.details.map(_.isTruthy).getOrElse(true))
       } catch {
         case timeout: TimeoutException => {
           handleError(RequestDataHolder.error504(
-            "Error executing search: " + timeout.getMessage
-          ))
+            "Error executing search: " + timeout.getMessage))
         }
         case e =>
           logger.error("Error finding assets: %s".format(e.getMessage), e)
           handleError(RequestDataHolder.error500(
-            "Error executing search: " + e.getMessage
-          ))
+            "Error executing search: " + e.getMessage))
       }
   }
 

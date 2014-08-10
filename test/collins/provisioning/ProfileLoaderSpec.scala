@@ -56,11 +56,11 @@ class ProfileLoaderSpec extends Specification {
       addattrs.get("NUMERIC_ATTRIBUTE").get === "123"
       addattrs.get("NODECLASS").get === "shouldnt be set to this"
       val clearattrs = role.clear_attributes
-      clearattrs === Set("NODECLASS","DELETE_ME","SUPER_DANGEROUS_TAG","DUPLICATE_ATTRIBUTE")
+      clearattrs === Set("NODECLASS", "DELETE_ME", "SUPER_DANGEROUS_TAG", "DUPLICATE_ATTRIBUTE")
     }
     "a profile with asset classification restrictions" >> {
       val profile = profiles.find(_.identifier == "databasenode").get
-      profile.role.allowed_classes === Some(Set("io_class","database_class"))
+      profile.role.allowed_classes === Some(Set("io_class", "database_class"))
     }
   }
 }

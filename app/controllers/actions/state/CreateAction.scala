@@ -2,7 +2,7 @@ package controllers.actions.state
 
 import collins.validation.StringUtil
 import models.State
-import models.{Status => AStatus}
+import models.{ Status => AStatus }
 import play.api.data.Form
 import play.api.data.Forms.tuple
 import play.api.data.Forms.ignored
@@ -52,27 +52,25 @@ object CreateAction {
 case class CreateAction(
   name: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with ParamValidation {
+  handler: SecureController) extends SecureAction(spec, handler) with ParamValidation {
 
   import CreateAction.Messages._
 
   case class ActionDataHolder(state: State) extends RequestDataHolder
 
   val stateForm = Form(tuple(
-    "id" -> ignored(0:Int),
+    "id" -> ignored(0: Int),
     "status" -> validatedOptionalText(2),
     "label" -> validatedText(2, 32),
-    "description" -> validatedText(2, 255)
-  ))
+    "description" -> validatedText(2, 255)))
 
   override def validate(): Validation = stateForm.bindFromRequest()(request).fold(
     err => Left(RequestDataHolder.error400(fieldError(err))),
     form => {
       val (id, statusOpt, label, description) = form
       val validatedName = StringUtil.trim(name)
-                            .filter(s => s.length > 1 && s.length <= 32)
-                            .map(_.toUpperCase)
+        .filter(s => s.length > 1 && s.length <= 32)
+        .map(_.toUpperCase)
       val statusId = getStatusId(statusOpt)
       if (statusOpt.isDefined && !statusId.isDefined) {
         Left(RequestDataHolder.error400(invalidStatus))
@@ -82,11 +80,9 @@ case class CreateAction(
         Left(RequestDataHolder.error409(invalidName))
       } else {
         Right(
-          ActionDataHolder(State(0, statusId.getOrElse(State.ANY_STATUS), validatedName.get, label, description))
-        )
+          ActionDataHolder(State(0, statusId.getOrElse(State.ANY_STATUS), validatedName.get, label, description)))
       }
-    }
-  )
+    })
 
   override def execute(rdh: RequestDataHolder) = rdh match {
     case ActionDataHolder(state) => try {

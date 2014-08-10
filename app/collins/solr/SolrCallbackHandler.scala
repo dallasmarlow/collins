@@ -84,7 +84,5 @@ case class SolrAssetLogCallbackHandler(server: SolrServer, updater: ActorRef) ex
     s.toString
   }
 
-
 }
-
 

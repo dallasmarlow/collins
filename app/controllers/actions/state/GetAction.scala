@@ -40,8 +40,7 @@ object GetAction {
 case class GetAction(
   name: Option[String],
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) {
+  handler: SecureController) extends SecureAction(spec, handler) {
 
   import GetAction.Messages._
 

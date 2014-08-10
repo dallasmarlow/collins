@@ -11,7 +11,7 @@ class ByteStorageUnit(_bytes: Long) extends StorageUnit(_bytes) {
 
   override def toHuman(): String = {
     val sizes = Array("Bytes", "KB", "MB", "GB", "TB", "PB")
-    if ( bytes == 0 ) { return "0 Bytes" }
+    if (bytes == 0) { return "0 Bytes" }
     val i = math.floor(math.log(bytes) / math.log(1024)).toInt
     val small = bytes / math.pow(1024, i).toDouble
     (i == 0) match {

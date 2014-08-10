@@ -34,12 +34,11 @@ object BackgroundProcessor {
       Akka.system.actorOf(Props[BackgroundProcessorActor])
     }
     Akka.system.actorOf(
-      Props[BackgroundProcessorActor].withRouter(RoundRobinRouter(routees))
-    )
+      Props[BackgroundProcessorActor].withRouter(RoundRobinRouter(routees)))
   }
 
   type SendType[T] = Tuple2[Option[Throwable], Option[T]]
-  def send[PROC_RES,RESPONSE](cmd: BackgroundProcess[PROC_RES])(result: SendType[PROC_RES] => RESPONSE)(implicit mf: Manifest[PROC_RES]) = {
+  def send[PROC_RES, RESPONSE](cmd: BackgroundProcess[PROC_RES])(result: SendType[PROC_RES] => RESPONSE)(implicit mf: Manifest[PROC_RES]) = {
     ask(ref, cmd)(cmd.timeout).mapTo[PROC_RES].asPromise.extend1 {
       case Redeemed(v) => result(Tuple2(None, Some(v)))
       case Thrown(e) => e match {

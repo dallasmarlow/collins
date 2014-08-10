@@ -3,7 +3,7 @@ package controllers.actions.asset
 import controllers.forms._
 import models.Asset
 import models.State
-import models.{Status => AssetStatus}
+import models.{ Status => AssetStatus }
 import play.api.data.Form
 import play.api.data.Forms._
 import util.MessageHelper
@@ -28,8 +28,7 @@ object UpdateForMaintenance {
 case class UpdateForMaintenanceAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
   import UpdateForMaintenance.Messages._
 
@@ -37,11 +36,10 @@ case class UpdateForMaintenanceAction(
     def assetStatusName: String = aStatus.name
   }
 
-  lazy val params: Either[String,ActionDataHolder] = Form(tuple(
+  lazy val params: Either[String, ActionDataHolder] = Form(tuple(
     "status" -> of[AssetStatus],
     "description" -> text(1),
-    "state"  -> of[State]
-  )).bindFromRequest()(request).fold(
+    "state" -> of[State])).bindFromRequest()(request).fold(
     err => {
       err.error("status").map { e =>
         Left(missingStatus)
@@ -67,17 +65,16 @@ case class UpdateForMaintenanceAction(
         case Some(r) =>
           Right(ActionDataHolder(status, r, state))
       }
-    }
-  )
+    })
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = {
     withValidAsset(assetTag) { asset =>
       params.left.map(e => RequestDataHolder.error400(e))
     }
   }
 
   override def execute(rd: RequestDataHolder) = rd match {
-    case adh@ActionDataHolder(status, description, state) =>
+    case adh @ ActionDataHolder(status, description, state) =>
       val success = if (status.id == AssetStatus.Maintenance.get.id) {
         Maintenance.toMaintenance(definedAsset, description, state)
       } else {

@@ -1,6 +1,6 @@
 package collins.cache
 
-import com.google.common.cache.{CacheStats => GuavaCacheStats}
+import com.google.common.cache.{ CacheStats => GuavaCacheStats }
 
 class GuavaCacheStatsAdapter(stats: GuavaCacheStats) extends CacheStats {
   def evictionCount(): Long = stats.evictionCount

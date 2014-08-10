@@ -11,9 +11,9 @@ import org.specs2.mutable.Specification
 class LockingBitSetSpec extends Specification {
   class BitSetScope(val initSize: Int) extends Scope {
     val bitSet = LockingBitSet(initSize)
-    def run(count: Int): List[Tuple2[Int,Boolean]] = {
+    def run(count: Int): List[Tuple2[Int, Boolean]] = {
       val range = ParRange(0, count, 1, false)
-      val results = new ArrayBlockingQueue[Tuple2[Int,Boolean]](count*2)
+      val results = new ArrayBlockingQueue[Tuple2[Int, Boolean]](count * 2)
       val latch = new CountDownLatch(count)
       range.foreach { i =>
         val bool = nextBoolean
@@ -29,8 +29,9 @@ class LockingBitSetSpec extends Specification {
   "A Locking Bit Set" should {
     "Ensure write safety" in new BitSetScope(4096) {
       val results = run(initSize)
-      results.foreach { case(idx,res) =>
-        bitSet.forRead(_.get(idx)) === res
+      results.foreach {
+        case (idx, res) =>
+          bitSet.forRead(_.get(idx)) === res
       }
     }
 

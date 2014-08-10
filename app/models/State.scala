@@ -39,30 +39,26 @@ object State extends Schema with AnormAdapter[State] {
       (json \ "STATUS").asOpt[Int].getOrElse(ANY_STATUS),
       (json \ "NAME").as[String],
       (json \ "LABEL").as[String],
-      (json \ "DESCRIPTION").as[String]
-    )
+      (json \ "DESCRIPTION").as[String])
     override def writes(state: State) = JsObject(Seq(
       "ID" -> toJson(state.id),
       "STATUS" -> toJson(Status.findById(state.status)),
       "NAME" -> toJson(state.name),
       "LABEL" -> toJson(state.label),
-      "DESCRIPTION" -> toJson(state.description)
-    ))
+      "DESCRIPTION" -> toJson(state.description)))
   }
   override val tableDef = table[State]("state")
   on(tableDef)(s => declare(
-    s.id is (autoIncremented,primaryKey),
-    s.name is(unique),
-    s.status is(indexed)
-  ))
+    s.id is (autoIncremented, primaryKey),
+    s.name is (unique),
+    s.status is (indexed)))
 
   override def cacheKeys(s: State) = Seq(
     "State.find",
     "State.findById(%d)".format(s.id),
     "State.findByName(%s)".format(s.name.toLowerCase),
     "State.findByAnyStatus",
-    "State.findByStatus(%d)".format(s.status)
-  )
+    "State.findByStatus(%d)".format(s.status))
 
   override def delete(state: State): Int = inTransaction {
     afterDeleteCallback(state) {
@@ -81,32 +77,29 @@ object State extends Schema with AnormAdapter[State] {
   def findByName(name: String): Option[State] =
     getOrElseUpdate("State.findByName(%s)".format(name.toLowerCase)) {
       tableDef.where(s =>
-        s.name.toLowerCase === name.toLowerCase
-      ).headOption
+        s.name.toLowerCase === name.toLowerCase).headOption
     }
   def findByAnyStatus(): List[State] =
     getOrElseUpdate("State.findByAnyStatus") {
       tableDef.where(s =>
-        s.status === ANY_STATUS
-      ).toList
+        s.status === ANY_STATUS).toList
     }
   def findByStatus(status: Status): List[State] =
     getOrElseUpdate("State.findByStatus(%d)".format(status.id)) {
       tableDef.where(s =>
-        s.status === status.id
-      ).toList
+        s.status === status.id).toList
     }
   override def get(state: State): State = findById(state.id).get
   def isSystemState(state: State): Boolean = state.id < 7
 }
 
 case class State(
-  id: Int,            // unique PK
-  status: Int = 0,    // FK to status, or 0 to apply to any status
-  name: String,       // Name, should be tag like (alpha numeric and _-)
-  label: String,      // A visual (short) label to accompany the state
+  id: Int, // unique PK
+  status: Int = 0, // FK to status, or 0 to apply to any status
+  name: String, // Name, should be tag like (alpha numeric and _-)
+  label: String, // A visual (short) label to accompany the state
   description: String // A longer description of the state
-) extends ValidatedEntity[Int] {
+  ) extends ValidatedEntity[Int] {
   def getId(): Int = id
   def getDisplayLabel(): String = "%s - %s".format(getStatusName, label)
   def getStatusName(): String = status match {
@@ -116,7 +109,7 @@ case class State(
   override def validate() {
     require(status >= 0, "status must be >= 0")
     require(isAlphaNumericString(name), "State name must be alphanumeric")
-    require(name.length > 1 && name.length <=32, "length of name must between 1 and 32")
+    require(name.length > 1 && name.length <= 32, "length of name must between 1 and 32")
     require(name == name.toUpperCase, "name must be uppercase")
     require(isNonEmptyString(label), "label must be specified")
     require(label.length > 1 && label.length <= 32, "length of label must be between 1 and 32 characters")

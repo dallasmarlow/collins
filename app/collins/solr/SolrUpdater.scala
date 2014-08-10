@@ -26,9 +26,8 @@ import play.api.Logger
 class AssetSolrUpdater extends Actor {
 
   private[this] def newAssetTagSet = Collections.newSetFromMap[String](
-    new ConcurrentHashMap[String,java.lang.Boolean]()
-  )
-  
+    new ConcurrentHashMap[String, java.lang.Boolean]())
+
   private[this] val assetTagsRef = new AtomicReference(newAssetTagSet)
   private[this] val logger = Logger("SolrUpdater")
 
@@ -68,7 +67,7 @@ class AssetSolrUpdater extends Actor {
 class AssetLogSolrUpdater extends Actor {
 
   def receive = {
-    case log: AssetLog => Solr.plugin.foreach{_.updateAssetLogs(List(log), new Date)}
+    case log: AssetLog => Solr.plugin.foreach { _.updateAssetLogs(List(log), new Date) }
   }
 
 }

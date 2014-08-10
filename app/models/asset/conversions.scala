@@ -28,8 +28,7 @@ object conversions {
       (json \ "UPDATED").asOpt[Timestamp],
       (json \ "DELETED").asOpt[Timestamp],
       (json \ "ID").as[Long],
-      (json \ "STATE").asOpt[State].map(_.id).getOrElse(0)
-    )
+      (json \ "STATE").asOpt[State].map(_.id).getOrElse(0))
     override def writes(asset: AssetView): JsObject = JsObject(Seq(
       "ID" -> JsNumber(asset.id),
       "TAG" -> JsString(asset.tag),
@@ -38,7 +37,6 @@ object conversions {
       "TYPE" -> Json.toJson(AssetType.findById(asset.asset_type).map(_.name)),
       "CREATED" -> Json.toJson(asset.created),
       "UPDATED" -> Json.toJson(asset.updated),
-      "DELETED" -> Json.toJson(asset.deleted)
-    ))
+      "DELETED" -> Json.toJson(asset.deleted)))
   }
 }

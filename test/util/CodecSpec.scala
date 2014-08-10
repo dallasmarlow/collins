@@ -11,9 +11,9 @@ object CodecSpec extends Specification {
   "The Crypto Codec" should {
     "generate random strings" >> {
       val passwords = (1 to 100).map { _ => CryptoCodec.randomString(14) }
-      passwords must have size(100)
-      ((_:String) must have size(14)).forall(passwords)
-      passwords.distinct must have size(100)
+      passwords must have size (100)
+      ((_: String) must have size (14)).forall(passwords)
+      passwords.distinct must have size (100)
     }
     "encode" >> {
       val message = "Hello World"
@@ -64,7 +64,7 @@ object CodecSpec extends Specification {
       decrypted2 must beSome
       decrypted.get must beEqualTo((username, password))
       decrypted2.get must beEqualTo((username, password))
-      decrypted must be equalTo(decrypted2)
+      decrypted must be equalTo (decrypted2)
     }
   }
 

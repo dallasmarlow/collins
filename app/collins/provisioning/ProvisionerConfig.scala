@@ -36,8 +36,7 @@ object ProvisionerConfig extends Configurable {
       File.requireFileIsReadable(profilesFile)
       require(
         ProfileLoader.fromFile(profilesFile).size > 0,
-        "Must have at least one profile in %s".format(profilesFile)
-      )
+        "Must have at least one profile in %s".format(profilesFile))
     }
   }
 

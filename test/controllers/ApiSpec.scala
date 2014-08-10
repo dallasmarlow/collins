@@ -80,8 +80,8 @@ class ApiSpec extends ApplicationSpecification with ControllerSpec {
     override def expectedStatusCode = 200
     override def responseMatches(txt: String): Boolean = {
       txt.contains("""DATA_TESTLIST_0_NAME="foo123";""") &&
-      txt.contains("""DATA_TESTLIST_0_KEY_WITH_DASH="val-with-dash";""") &&
-      txt.contains("""STATUS="Ok";""");
+        txt.contains("""DATA_TESTLIST_0_KEY_WITH_DASH="val-with-dash";""") &&
+        txt.contains("""STATUS="Ok";""");
     }
   }
 
@@ -91,12 +91,12 @@ class ApiSpec extends ApplicationSpecification with ControllerSpec {
       val json = Json.parse(txt)
       val jsData = json \ "data"
       (jsData \ "Status").isInstanceOf[JsString] &&
-      (jsData \ "Status").as[String].equals("Ok") &&
-      (jsData \ "Data").isInstanceOf[JsObject] &&
-      (jsData \ "Data" \ "TestList").isInstanceOf[JsArray] &&
-      (jsData \ "Data" \ "TestList")(0).isInstanceOf[JsObject] &&
-      ((jsData \ "Data" \ "TestList")(0) \ "id").as[Long] == 123L &&
-      ((jsData \ "Data" \ "TestList") (0) \ "key-with-dash").as[String] == "val-with-dash"
+        (jsData \ "Status").as[String].equals("Ok") &&
+        (jsData \ "Data").isInstanceOf[JsObject] &&
+        (jsData \ "Data" \ "TestList").isInstanceOf[JsArray] &&
+        (jsData \ "Data" \ "TestList")(0).isInstanceOf[JsObject] &&
+        ((jsData \ "Data" \ "TestList")(0) \ "id").as[Long] == 123L &&
+        ((jsData \ "Data" \ "TestList")(0) \ "key-with-dash").as[String] == "val-with-dash"
     }
   }
 

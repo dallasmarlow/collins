@@ -11,7 +11,7 @@ object IntakeConfig extends Configurable {
 
   override protected def validateConfig() {
 
-      intake_field_names
+    intake_field_names
   }
 
 }

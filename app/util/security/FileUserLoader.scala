@@ -1,6 +1,6 @@
 package util.security
 
-import java.io.{File => IoFile}
+import java.io.{ File => IoFile }
 
 import scala.io.Source
 
@@ -11,7 +11,7 @@ import collins.validation.File
 import models.UserImpl
 import play.api.Logger
 
-case class FileUserLoader(users: FileUserMap) extends CacheLoader[String,FileUserMap] {
+case class FileUserLoader(users: FileUserMap) extends CacheLoader[String, FileUserMap] {
 
   private[this] val logger = Logger("util.security.FileUserLoader")
 
@@ -23,8 +23,7 @@ case class FileUserLoader(users: FileUserMap) extends CacheLoader[String,FileUse
     } catch {
       case e =>
         logger.error("There is a problem with the users file %s: %s".format(
-          filename, e.getMessage
-        ))
+          filename, e.getMessage))
         users
     }
   }
@@ -45,6 +44,5 @@ object FileUserLoader {
       val password = split(1)
       val roles = split(2).split(",").toSet
       (username -> UserImpl(username, password, roles, username.hashCode, false))
-    }.toMap
-  )
+    }.toMap)
 }

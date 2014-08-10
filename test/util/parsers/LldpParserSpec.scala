@@ -8,7 +8,7 @@ class LldpParserSpec extends Specification {
 
   class LldpParserHelper(val filename: String) extends Scope with CommonParserSpec[LldpRepresentation] {
     override def getParser(txt: String) = new LldpParser(txt)
-    def parsed(options: Map[String,String] = Map.empty) = getParseResults(filename, options)
+    def parsed(options: Map[String, String] = Map.empty) = getParseResults(filename, options)
   }
 
   "The Lldp Parser" should {
@@ -16,7 +16,7 @@ class LldpParserSpec extends Specification {
       val parseResult = parsed()
       parseResult must beRight
       parseResult.right.toOption must beSome.which { rep =>
-        rep.interfaceCount mustEqual(1)
+        rep.interfaceCount mustEqual (1)
         rep.macAddresses must haveTheSameElementsAs(Seq("78:19:f7:88:60:c0"))
         rep.interfaceNames must haveTheSameElementsAs(Seq("eth0"))
         rep.localPorts must haveTheSameElementsAs(Seq(616))
@@ -30,13 +30,13 @@ class LldpParserSpec extends Specification {
       val parseResult = parsed()
       parseResult must beRight
       parseResult.right.toOption must beSome.which { rep =>
-        rep.interfaceCount mustEqual(2)
+        rep.interfaceCount mustEqual (2)
         rep.macAddresses must contain("78:19:f7:88:60:c0", "5c:5e:ab:68:a5:80").only
         rep.interfaceNames must contain("eth0", "eth1").only
-        rep.localPorts.toSet mustEqual(Set(608))
+        rep.localPorts.toSet mustEqual (Set(608))
         rep.chassisNames must contain("core01.dfw01", "core02.dfw01").only
-        rep.vlanNames.toSet mustEqual(Set("DFW-LOGGING"))
-        rep.vlanIds.toSet mustEqual(Set(106))
+        rep.vlanNames.toSet mustEqual (Set("DFW-LOGGING"))
+        rep.vlanIds.toSet mustEqual (Set(106))
       }
     }
 
@@ -47,14 +47,13 @@ class LldpParserSpec extends Specification {
 
     "missing vlan config ok" in new LldpParserHelper("lldpctl-no-name.xml") {
       val config = Map(
-        "requireVlanName" -> "false"
-      )
+        "requireVlanName" -> "false")
       val parseResult = parsed(config)
       parseResult must beRight
       parseResult.right.toOption must beSome.which { rep =>
-        rep.interfaceCount mustEqual(2)
-        rep.vlanNames.toSet mustEqual(Set(""))
-        rep.vlanIds.toSet mustEqual(Set(100,101))
+        rep.interfaceCount mustEqual (2)
+        rep.vlanNames.toSet mustEqual (Set(""))
+        rep.vlanIds.toSet mustEqual (Set(100, 101))
       }
     }
 
@@ -62,15 +61,15 @@ class LldpParserSpec extends Specification {
       val parseResult = parsed()
       parseResult must beRight
       parseResult.right.toOption must beSome.which { rep =>
-        rep.interfaceCount mustEqual(3)
+        rep.interfaceCount mustEqual (3)
         rep.macAddresses must contain(
           "2c:21:72:96:93:00", "28:c0:da:b9:5b:f0", "84:18:88:9c:57:f0").only
         rep.interfaceNames must contain("eth0", "eth4", "eth5").only
-        rep.localPorts.toSet mustEqual(Set(588,2113,1488))
+        rep.localPorts.toSet mustEqual (Set(588, 2113, 1488))
         rep.chassisNames must contain(
           "oob-switch013.ewr01", "re0.access-switch01.ewr01", "re0.access-switch02.ewr01").only
-        rep.vlanNames.toSet mustEqual(Set("EWR-PROVISIONING","OOB-NETWORK","OOB-POWER","OOB-SERVERS"))
-        rep.vlanIds.toSet mustEqual(Set(104,115,114,108))
+        rep.vlanNames.toSet mustEqual (Set("EWR-PROVISIONING", "OOB-NETWORK", "OOB-POWER", "OOB-SERVERS"))
+        rep.vlanIds.toSet mustEqual (Set(104, 115, 114, 108))
       }
     }
 
@@ -88,7 +87,7 @@ class LldpParserSpec extends Specification {
 
     "Fail to parse invalid XML" in new LldpParserHelper("lldpctl-bad.xml") {
       val invalidXml = getResource(filename)
-      override def getParseResults(data: String, opts: Map[String,String] = Map.empty): Either[Throwable,LldpRepresentation] = {
+      override def getParseResults(data: String, opts: Map[String, String] = Map.empty): Either[Throwable, LldpRepresentation] = {
         getParser(data).parse()
       }
 

@@ -15,7 +15,7 @@ object ListHelper {
   }
   def showSoftLayerLink(assets: Page[AssetView]): Boolean = {
     SoftLayer.pluginEnabled { plugin =>
-      assets.items.collectFirst{ case asset: Asset if(plugin.isSoftLayerAsset(asset)) => true }.getOrElse(false)
+      assets.items.collectFirst { case asset: Asset if (plugin.isSoftLayerAsset(asset)) => true }.getOrElse(false)
     }.getOrElse(false)
   }
   def getPowerComponentsInOrder(units: PowerUnits): Seq[PowerComponent] = {

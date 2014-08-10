@@ -8,7 +8,7 @@ import play.api.Configuration
 trait CommonParserSpec[REP] extends ResourceFinder {
 
   def getParser(txt: String): _root_.util.parsers.CommonParser[REP]
-  def getParseResults(filename: String, options: Map[String,String] = Map.empty): Either[Throwable,REP] = {
+  def getParseResults(filename: String, options: Map[String, String] = Map.empty): Either[Throwable, REP] = {
     val data = getResource(filename)
     if (options.nonEmpty) {
       val cfg = Configuration.from(options)

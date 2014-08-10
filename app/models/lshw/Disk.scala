@@ -22,8 +22,7 @@ object Disk {
       Disk.Type.withName((json \ "TYPE").as[String]),
       (json \ "DESCRIPTION").as[String],
       (json \ "PRODUCT").as[String],
-      (json \ "VENDOR").as[String]
-    )
+      (json \ "VENDOR").as[String])
     override def writes(disk: Disk) = JsObject(Seq(
       "SIZE" -> toJson(disk.size.inBytes),
       "SIZE_S" -> toJson(disk.size.inBytes.toString),
@@ -31,14 +30,12 @@ object Disk {
       "TYPE" -> toJson(disk.diskType.toString),
       "DESCRIPTION" -> toJson(disk.description),
       "PRODUCT" -> toJson(disk.product),
-      "VENDOR" -> toJson(disk.vendor)
-    ))
+      "VENDOR" -> toJson(disk.vendor)))
   }
 }
 
 case class Disk(
-  size: ByteStorageUnit, diskType: Disk.Type, description: String, product: String, vendor: String
-) extends LshwAsset {
+  size: ByteStorageUnit, diskType: Disk.Type, description: String, product: String, vendor: String) extends LshwAsset {
 
   import Disk._
 

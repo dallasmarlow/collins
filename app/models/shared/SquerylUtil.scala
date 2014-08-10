@@ -39,18 +39,16 @@ trait BasicModel[T <: AnyRef] { self: Schema =>
   def inTransaction[A](f: => A): A = PrimitiveTypeMode.inTransaction(f)
   protected def cacheKeys(t: T): Seq[String] = Seq()
   override def callbacks = Seq(
-    afterDelete(tableDef) call(loggedInvalidation("afterDelete", _)),
-    afterUpdate(tableDef) call(loggedInvalidation("afterUpdate", _)),
-    afterInsert(tableDef) call(loggedInvalidation("afterInsert", _))
-  )
+    afterDelete(tableDef) call (loggedInvalidation("afterDelete", _)),
+    afterUpdate(tableDef) call (loggedInvalidation("afterUpdate", _)),
+    afterInsert(tableDef) call (loggedInvalidation("afterInsert", _)))
 
   protected def log[A](a: => A): A = {
     if (QueryLogConfig.enabled) {
-      org.squeryl.Session.currentSession.setLogger(query => 
+      org.squeryl.Session.currentSession.setLogger(query =>
         if (QueryLogConfig.includeResults || !(query startsWith "ResultSetRow")) {
           Logger.logger.info(QueryLogConfig.prefix + query)
-        }
-      )
+        })
     }
     a
   }
@@ -65,7 +63,8 @@ trait BasicModel[T <: AnyRef] { self: Schema =>
 
   def delete(t: T): Int // Override
 
-  /** Optionally return a paginated query
+  /**
+   * Optionally return a paginated query
    *
    * If either the offset or pageSize are non-zero, pagination is applied. Otherwise, the query is
    * given back without pagination being applied.
@@ -127,7 +126,6 @@ trait AnormAdapter[T <: ValidatedEntity[_]] extends BasicModel[T] { self: Schema
   }
 
   override def callbacks = super.callbacks ++ Seq(
-    beforeInsert(tableDef) call(_.validate),
-    beforeUpdate(tableDef) call(_.validate)
-  )
+    beforeInsert(tableDef) call (_.validate),
+    beforeUpdate(tableDef) call (_.validate))
 }

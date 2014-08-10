@@ -23,4 +23,3 @@ object SoftLayerConfig extends Configurable {
   }
 }
 
-

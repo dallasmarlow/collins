@@ -53,8 +53,7 @@ object DeleteAction {
 case class DeleteAction(
   name: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) {
+  handler: SecureController) extends SecureAction(spec, handler) {
 
   import DeleteAction.Messages._
 
@@ -86,8 +85,7 @@ case class DeleteAction(
         Api.errorResponse(
           "Failed to delete state %s".format(state.name),
           Status.InternalServerError,
-          Some(e)
-        )
+          Some(e))
     }
   }
 }

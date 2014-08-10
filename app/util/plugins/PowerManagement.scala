@@ -1,7 +1,7 @@
 package util.plugins
 
 import collins.power.PowerAction
-import collins.power.management.{PowerManagement => PowerManagementTrait}
+import collins.power.management.{ PowerManagement => PowerManagementTrait }
 import collins.power.management.PowerManagementConfig
 
 import models.Asset

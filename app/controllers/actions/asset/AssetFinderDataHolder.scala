@@ -10,7 +10,7 @@ import controllers.forms._
 import models.AssetFinder
 import models.AssetType
 import models.State
-import models.{Status => AssetStatus}
+import models.{ Status => AssetStatus }
 import models.Truthy
 import play.api.Logger
 import play.api.data.Form
@@ -26,49 +26,43 @@ import play.api.mvc.Request
 import util.AttributeResolver
 import util.MessageHelper
 import util.views.Formatter.ISO_8601_FORMAT
-import util.AttributeResolver.{ResultTuple => ResolvedAttributes}
+import util.AttributeResolver.{ ResultTuple => ResolvedAttributes }
 
 case class AssetFinderDataHolder(
   assetFinder: AssetFinder,
   attributes: ResolvedAttributes,
   operation: Option[String],
   details: Option[Truthy],
-  remoteLookup: Option[Truthy]
-) extends RequestDataHolder
+  remoteLookup: Option[Truthy]) extends RequestDataHolder
 
 object AssetFinderDataHolder extends MessageHelper("assetfinder") with AttributeHelper {
   protected[this] val logger = Logger.logger
 
-  val Operations = Set("and","or")
+  val Operations = Set("and", "or")
 
-  type DataForm = Tuple13[
-    Option[String],           // tag
-    Option[List[String]],     // attribute
-    Option[String],           // operation
-    Option[AssetStatus],      // asset status
-    Option[AssetType],        // asset type
-    Option[Truthy],           // details
-    Option[Date],             // createdAfter
-    Option[Date],             // createdBefore
-    Option[Date],             // updatedAfter
-    Option[Date],             // updatedBefore
-    Option[Truthy],           // remoteLookup,
-    Option[State],            // state
-    Option[SolrExpression]    // query
+  type DataForm = Tuple13[Option[String], // tag
+  Option[List[String]], // attribute
+  Option[String], // operation
+  Option[AssetStatus], // asset status
+  Option[AssetType], // asset type
+  Option[Truthy], // details
+  Option[Date], // createdAfter
+  Option[Date], // createdBefore
+  Option[Date], // updatedAfter
+  Option[Date], // updatedBefore
+  Option[Truthy], // remoteLookup,
+  Option[State], // state
+  Option[SolrExpression] // query
   ]
 
   def finderForm = Form(tuple(
     "tag" -> optional(
-      text(1).verifying { t => StringUtil.trim(t).isDefined }
-    ),
+      text(1).verifying { t => StringUtil.trim(t).isDefined }),
     "attribute" -> optional(
       list(
-        text.verifying(pattern("""\S+;.*""".r))
-      )
-    ),
+        text.verifying(pattern("""\S+;.*""".r)))),
     "operation" -> optional(
-      text(2).verifying { txt => isValidOperation(txt) }
-    ),
+      text(2).verifying { txt => isValidOperation(txt) }),
     "status" -> optional(of[AssetStatus]),
     "type" -> optional(of[AssetType]),
     "details" -> optional(of[Truthy]),
@@ -78,14 +72,13 @@ object AssetFinderDataHolder extends MessageHelper("assetfinder") with Attribute
     "updatedBefore" -> optional(date(ISO_8601_FORMAT)),
     "remoteLookup" -> optional(of[Truthy]),
     "state" -> optional(of[State]),
-    "query" -> optional(of[SolrExpression])
-  ))
+    "query" -> optional(of[SolrExpression])))
 
-  def processRequest(req: Request[AnyContent]): Either[RequestDataHolder,AssetFinderDataHolder] = {
+  def processRequest(req: Request[AnyContent]): Either[RequestDataHolder, AssetFinderDataHolder] = {
     processForm(finderForm.bindFromRequest()(req), req.queryString)
   }
-    
-  protected def processForm(form: Form[DataForm], data: Map[String,Seq[String]]): Either[RequestDataHolder,AssetFinderDataHolder] = {
+
+  protected def processForm(form: Form[DataForm], data: Map[String, Seq[String]]): Either[RequestDataHolder, AssetFinderDataHolder] = {
     form.fold(
       err => Left(RequestDataHolder.error400(fieldError(err))),
       succ => try {
@@ -94,14 +87,13 @@ object AssetFinderDataHolder extends MessageHelper("assetfinder") with Attribute
         case e =>
           logger.debug("Error finding assets", e)
           Left(RequestDataHolder.error400(e.getMessage))
-      }
-    )
+      })
   }
 
-  protected def fromForm(form: DataForm, data: Map[String,Seq[String]]): AssetFinderDataHolder = {
+  protected def fromForm(form: DataForm, data: Map[String, Seq[String]]): AssetFinderDataHolder = {
     val (
       tag, attributes, operation, astatus, atype, details, cafter, cbefore, uafter, ubefore, remoteLookup, state, query
-    ) = form
+      ) = form
     val attribs = AttributeResolver(mapAttributes(attributes.filter(_.nonEmpty), AttributeMap.fromMap(data)))
     val afinder = AssetFinder(tag, astatus, atype, cafter, cbefore, uafter, ubefore, state, query)
     AssetFinderDataHolder(
@@ -109,8 +101,7 @@ object AssetFinderDataHolder extends MessageHelper("assetfinder") with Attribute
       attribs,
       cleanedOperation(operation),
       details,
-      remoteLookup
-    )
+      remoteLookup)
   }
 
   override def invalidAttributeMessage(s: String) = message("attribute.invalid", s)

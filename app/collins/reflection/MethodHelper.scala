@@ -33,8 +33,7 @@ trait MethodHelper extends MethodArguments with MethodReturnType {
           } catch {
             case e =>
               handleFailure("Failed to invoke %s on value: %s".format(
-                method.toString, e.getMessage
-              ))
+                method.toString, e.getMessage))
               None
           }
         } else {

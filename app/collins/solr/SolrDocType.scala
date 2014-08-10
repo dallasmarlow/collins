@@ -5,7 +5,7 @@ import play.api.Logger
 sealed trait SolrDocType {
   def name: String
   def keyResolver: SolrKeyResolver
-  
+
 }
 
 case object AssetDocType extends SolrDocType {

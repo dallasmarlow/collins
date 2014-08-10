@@ -33,11 +33,10 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
 
   val tableDef = table[AssetMetaValue]("asset_meta_value")
   on(tableDef)(a => declare(
-    a.asset_meta_id is(indexed),
-    a.group_id is(indexed),
-    a.group_id defaultsTo(0),
-    columns(a.asset_id, a.asset_meta_id) are(indexed)
-  ))
+    a.asset_meta_id is (indexed),
+    a.group_id is (indexed),
+    a.group_id defaultsTo (0),
+    columns(a.asset_id, a.asset_meta_id) are (indexed)))
 
   def apply(asset: Asset, asset_meta_id: Long, value: String) =
     new AssetMetaValue(asset.getId, asset_meta_id, 0, value)
@@ -55,16 +54,13 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
   override def cacheKeys(a: AssetMetaValue) = Seq(
     "AssetMetaValue.findByMeta(%d)".format(a.asset_meta_id),
     "AssetMetaValue.findByAsset(%d)".format(a.asset_id),
-    fbam.format(a.asset_id, a.asset_meta_id)
-  )
+    fbam.format(a.asset_id, a.asset_meta_id))
   override def callbacks = super.callbacks ++ Seq(
     beforeInsert(tableDef).map(v =>
       Option(shouldEncrypt(v))
         .filter(_ == true)
         .map(_ => getEncrypted(v))
-        .getOrElse(v)
-    )
-  )
+        .getOrElse(v)))
   override protected val createEventName = Some("asset_meta_value_create")
   override protected val deleteEventName = Some("asset_meta_value_delete")
 
@@ -96,8 +92,7 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
     afterDeleteCallback(a) {
       tableDef.deleteWhere(p =>
         p.asset_id === a.asset_id and
-        p.asset_meta_id === a.asset_meta_id
-      )
+          p.asset_meta_id === a.asset_meta_id)
     }
   }
 
@@ -112,53 +107,53 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
     deleteByAssetIdAndMetaId(asset.id, meta_id, None)
   }
 
-  def find(mv: AssetMetaValue, useValue: Boolean, groupId: Option[Int]): Option[AssetMetaValue] = inTransaction { log {
-    from(tableDef)(a =>
-      where {
-        a.asset_id === mv.asset_id and
-        a.asset_meta_id === mv.asset_meta_id and
-        a.group_id === groupId.? and
-        a.value === mv.value.inhibitWhen(useValue == false)
-      }
-      select(a)
-    ).headOption
-  }}
+  def find(mv: AssetMetaValue, useValue: Boolean, groupId: Option[Int]): Option[AssetMetaValue] = inTransaction {
+    log {
+      from(tableDef)(a =>
+        where {
+          a.asset_id === mv.asset_id and
+            a.asset_meta_id === mv.asset_meta_id and
+            a.group_id === groupId.? and
+            a.value === mv.value.inhibitWhen(useValue == false)
+        }
+          select (a)).headOption
+    }
+  }
 
   def findAssetsByMeta(page: PageParams, toFind: AssetMetaFinder, afinder: AssetFinder,
-                       op: Option[String]): Page[AssetView] = {
-    val whereClause = {asset: Asset =>
+    op: Option[String]): Page[AssetView] = {
+    val whereClause = { asset: Asset =>
       val e = excludes(asset, toFind, op)
       val i = includes(asset, toFind, op)
       mergeBooleans(e, i)
     }
-    inTransaction { log {
-      logger.debug("Starting asset collection")
-      val assets = from(Asset.tableDef)(asset =>
-        where(whereClause(asset) and afinder.asLogicalBoolean(asset))
-        select(asset)
-      ).distinct.page(page.offset, page.size).toList
-      val totalCount: Long = from(Asset.tableDef)(asset =>
-        where(whereClause(asset) and afinder.asLogicalBoolean(asset))
-        compute(count)
-      )
-      logger.debug("Finished asset collection")
-      Page(assets, page.page, page.offset, totalCount)
-    }}
+    inTransaction {
+      log {
+        logger.debug("Starting asset collection")
+        val assets = from(Asset.tableDef)(asset =>
+          where(whereClause(asset) and afinder.asLogicalBoolean(asset))
+            select (asset)).distinct.page(page.offset, page.size).toList
+        val totalCount: Long = from(Asset.tableDef)(asset =>
+          where(whereClause(asset) and afinder.asLogicalBoolean(asset))
+            compute (count))
+        logger.debug("Finished asset collection")
+        Page(assets, page.page, page.offset, totalCount)
+      }
+    }
   }
 
   def findByAsset(asset: Asset, checkCache: Boolean = true): Seq[MetaWrapper] = {
     lazy val op = {
       from(tableDef)(a =>
         where(a.asset_id === asset.id)
-        select(a)
-      ).toList.map { amv =>
+          select (a)).toList.map { amv =>
         MetaWrapper(amv.getMeta(), amv)
       }
     }
     if (checkCache) {
-      getOrElseUpdate("AssetMetaValue.findByAsset(%d)".format(asset.id))(op) 
+      getOrElseUpdate("AssetMetaValue.findByAsset(%d)".format(asset.id))(op)
     } else {
-      inTransaction{op}
+      inTransaction { op }
     }
   }
 
@@ -167,8 +162,7 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
     getOrElseUpdate(fbam.format(asset.getId, meta.id)) {
       from(tableDef)(a =>
         where(a.asset_id === asset.getId and a.asset_meta_id === meta.id)
-        select(a)
-      ).page(0, count).toList.map(mv => MetaWrapper(meta, mv))
+          select (a)).page(0, count).toList.map(mv => MetaWrapper(meta, mv))
     }
   }
 
@@ -176,19 +170,19 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
     getOrElseUpdate("AssetMetaValue.findByMeta(%d)".format(meta.id)) {
       from(tableDef)(a =>
         where(a.asset_meta_id === meta.id)
-        select(a.value)
-      ).distinct.toList.sorted
+          select (a.value)).distinct.toList.sorted
     }
   }
 
   def purge(mvs: Seq[AssetMetaValue], groupId: Option[Int]) = {
-    mvs.map(mv => (find(mv, false, groupId), mv)).foreach { case(oldValue, newValue) =>
-      val deleteCount = deleteByAssetIdAndMetaId(newValue.asset_id, Set(newValue.asset_meta_id), groupId)
-      if (deleteCount > 0 && shouldLogChange(oldValue, newValue)) {
-        logChange(oldValue, newValue)
-      } else {
-        logger.debug("Got %d rows for AssetMetaValue.purge".format(deleteCount))
-      }
+    mvs.map(mv => (find(mv, false, groupId), mv)).foreach {
+      case (oldValue, newValue) =>
+        val deleteCount = deleteByAssetIdAndMetaId(newValue.asset_id, Set(newValue.asset_meta_id), groupId)
+        if (deleteCount > 0 && shouldLogChange(oldValue, newValue)) {
+          logChange(oldValue, newValue)
+        } else {
+          logger.debug("Got %d rows for AssetMetaValue.purge".format(deleteCount))
+        }
     }
   }
 
@@ -196,8 +190,8 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
     inTransaction {
       val results = tableDef.deleteWhere { p =>
         (p.asset_id === asset_id) and
-        (p.group_id === groupId.?) and
-        (p.asset_meta_id in meta_id)
+          (p.group_id === groupId.?) and
+          (p.asset_meta_id in meta_id)
       }
       meta_id.foreach { id =>
         val meta = new AssetMetaValue(asset_id, id, 0, "")
@@ -211,36 +205,34 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
 
   // Generates parts of findAssetsByMeta query for exclusion in results based on parameter
   // values that are empty.
-  protected def excludes(asset: Asset, toFind: AssetMetaFinder, bool: Option[String]
-    ): Option[LogicalBoolean] = {
+  protected def excludes(asset: Asset, toFind: AssetMetaFinder, bool: Option[String]): Option[LogicalBoolean] = {
     val clauses = toFind.filter(_._2.isEmpty)
     if (clauses.length == 0) {
       return None
     }
     // Don't need value for excludes match, just want assets that have a value
-    val subqueries = clauses.map { case(am, v) =>
-      from(tableDef)(a =>
-        where(a.asset_id === asset.id and a.asset_meta_id === am.id)
-        select(&(1))
-      )
+    val subqueries = clauses.map {
+      case (am, v) =>
+        from(tableDef)(a =>
+          where(a.asset_id === asset.id and a.asset_meta_id === am.id)
+            select (&(1)))
     }
     Some(
       subqueries.map { s =>
         notExists(s): LogicalBoolean
-      }.reduceRight((a,b) => new BinaryOperatorNodeLogicalBoolean(a, b, "and"))
-    )
+      }.reduceRight((a, b) => new BinaryOperatorNodeLogicalBoolean(a, b, "and")))
   }
 
   // Generate parts of the findAssetsByMeta query for inclusion in results
-  protected def includes(asset: Asset, toFind: AssetMetaFinder, bool: Option[String]
-    ): Option[LogicalBoolean] = {
+  protected def includes(asset: Asset, toFind: AssetMetaFinder, bool: Option[String]): Option[LogicalBoolean] = {
     val operator = bool.toBinaryOperator
     val clauses = toFind.filter(_._2.nonEmpty)
     if (clauses.length == 0) {
       return None
     }
-    val clauseExpressions = clauses.map { case(am, v) =>
-      exists(matchClause(asset, am, v)): LogicalBoolean
+    val clauseExpressions = clauses.map {
+      case (am, v) =>
+        exists(matchClause(asset, am, v)): LogicalBoolean
     }.reduceRight((a, b) => new BinaryOperatorNodeLogicalBoolean(a, b, operator))
     Some(clauseExpressions)
   }
@@ -255,8 +247,8 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
           InternalTattler.notice(newValue.getAsset, None, msg)
         } else {
           val msg = "Deleting old %s value '%s', setting to '%s'".format(
-                    AssetMeta.findById(newValue.asset_meta_id).map(_.name).getOrElse("Unknown"),
-                    oValue.value, newValue.value)
+            AssetMeta.findById(newValue.asset_meta_id).map(_.name).getOrElse("Unknown"),
+            oValue.value, newValue.value)
           InternalTattler.notice(newValue.getAsset, None, msg)
         }
     }
@@ -266,23 +258,20 @@ object AssetMetaValue extends Schema with BasicModel[AssetMetaValue] {
     val newAsset = Asset.findById(newValue.asset_id)
     val excludeAsset = newAsset.isDefined && Feature.noLogAssets.map(_.toLowerCase).contains(newAsset.get.tag.toLowerCase)
     oldValue.isDefined &&
-    !Feature.noLogPurges.map(AssetMeta.findByName(_).map(_.id).getOrElse(0L)).contains(newValue.asset_meta_id) &&
-    !excludeAsset &&
-    oldValue.get.value != newValue.value
+      !Feature.noLogPurges.map(AssetMeta.findByName(_).map(_.id).getOrElse(0L)).contains(newValue.asset_meta_id) &&
+      !excludeAsset &&
+      oldValue.get.value != newValue.value
   }
 
   private def matchClause(asset: Asset, am: AssetMeta, v: String) = {
     from(tableDef)(a =>
       where(
-        a.asset_id === asset.id and a.asset_meta_id === am.id and a.value.withPossibleRegex(v)
-      )
-      select(&(1))
-    )
+        a.asset_id === asset.id and a.asset_meta_id === am.id and a.value.withPossibleRegex(v))
+        select (&(1)))
   }
 
   private def mergeBooleans(o: Option[LogicalBoolean]*) = {
     o.filter(_.isDefined).map(_.get).reduceRight((a, b) =>
-      new BinaryOperatorNodeLogicalBoolean(a, b, "and")
-    )
+      new BinaryOperatorNodeLogicalBoolean(a, b, "and"))
   }
 }

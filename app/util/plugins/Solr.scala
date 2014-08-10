@@ -14,34 +14,34 @@ import play.api.Play
 
 object Solr {
 
-  def plugin: Option[SolrPlugin] = Play.maybeApplication.flatMap{_.plugin[SolrPlugin]}.filter{_.enabled}
+  def plugin: Option[SolrPlugin] = Play.maybeApplication.flatMap { _.plugin[SolrPlugin] }.filter { _.enabled }
 
   protected def inPlugin[A](f: SolrPlugin => A): Option[A] = {
     Play.maybeApplication.flatMap { app =>
-      app.plugin[SolrPlugin].map{plugin=>
+      app.plugin[SolrPlugin].map { plugin =>
         f(plugin)
       }
     }
   }
 
-  def populate() = inPlugin {_.populate()}
+  def populate() = inPlugin { _.populate() }
 
-  def updateAssets(assets: Seq[Asset]) = inPlugin {_.updateAssets(assets, new Date)}
+  def updateAssets(assets: Seq[Asset]) = inPlugin { _.updateAssets(assets, new Date) }
 
-  def updateAsset(asset: Asset){updateAssets(asset :: Nil)}
+  def updateAsset(asset: Asset) { updateAssets(asset :: Nil) }
 
-  def updateAssetByTag(tag: String) = Asset.findByTag(tag).foreach{updateAsset}
+  def updateAssetByTag(tag: String) = Asset.findByTag(tag).foreach { updateAsset }
 
   //TODO: Rename
   type AssetSolrDocument = Map[SolrKey, SolrValue]
 
   def server: Option[SolrServer] = Play.maybeApplication.flatMap { app =>
-    app.plugin[SolrPlugin].filter(_.enabled).map{_.server}
+    app.plugin[SolrPlugin].filter(_.enabled).map { _.server }
   }
 
   private[solr] def getNewEmbeddedServer = {
     val solrHome = SolrConfig.embeddedSolrHome
-    System.setProperty("solr.solr.home",solrHome) // (╯°□°)╯︵ɐʌɐɾ
+    System.setProperty("solr.solr.home", solrHome) // (╯°□°)╯︵ɐʌɐɾ
     val initializer = new CoreContainer.Initializer()
     val coreContainer = initializer.initialize()
     Logger.logger.debug("Booting embedded Solr Server with solrhome " + solrHome)

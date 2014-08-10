@@ -7,10 +7,11 @@ case class Users(val assets: Map[String, Set[String]]) {
   // Turns a map of Group -> Users into User -> Groups
   def invertedMap: Map[String, Set[String]] = {
     val map = PermissionsHelper.hashMapWithDefault
-    assets.foreach { case (groupName, users) =>
-      users.foreach { user =>
-        map.update(user, map(user) + groupName)
-      }
+    assets.foreach {
+      case (groupName, users) =>
+        users.foreach { user =>
+          map.update(user, map(user) + groupName)
+        }
     }
     map.toMap
   }

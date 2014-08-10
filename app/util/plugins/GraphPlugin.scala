@@ -1,6 +1,6 @@
 package util.plugins
 
-import collins.graphs.{GraphPlugin => GraphPlayPlugin}
+import collins.graphs.{ GraphPlugin => GraphPlayPlugin }
 
 import play.api.Play
 

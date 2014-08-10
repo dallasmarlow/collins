@@ -13,8 +13,7 @@ import collins.reflection.MethodHelper
  * @param fn a function that takes a PCE and returns some value for it
  */
 case class CallbackMatcher(conditional: MatchConditional, fn: PropertyChangeEvent => AnyRef)
-  extends MethodHelper
-{
+  extends MethodHelper {
 
   override val chattyFailures = true
   val name = conditional.name
@@ -31,7 +30,7 @@ case class CallbackMatcher(conditional: MatchConditional, fn: PropertyChangeEven
   def apply(pce: PropertyChangeEvent): Boolean = {
     checkState(pce) && checkStates(pce)
   }
-  
+
   protected def checkState(pce: PropertyChangeEvent): Boolean = conditional.state.map { method =>
     val value = fn(pce)
     negation(method) match {
@@ -62,7 +61,7 @@ case class CallbackMatcher(conditional: MatchConditional, fn: PropertyChangeEven
    * @param method the method being executed
    * @return a tuple where the left is true if this is a negation, and the right is the method name
    */
-  protected def negation(method: String): Tuple2[Boolean,String] = method.startsWith("!") match {
+  protected def negation(method: String): Tuple2[Boolean, String] = method.startsWith("!") match {
     case true => (true, method.drop(1))
     case false => (false, method)
   }

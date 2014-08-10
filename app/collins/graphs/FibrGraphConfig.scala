@@ -16,30 +16,32 @@ object FibrGraphConfig extends Configurable {
     timeframe / 1000L
   }
 
-  def customMetrics = getObjectMap("customMetrics").map { case(k, v) =>
-    k -> CustomMetricConfig(v.toConfig)
+  def customMetrics = getObjectMap("customMetrics").map {
+    case (k, v) =>
+      k -> CustomMetricConfig(v.toConfig)
   }
 
   def customMetricsFor(hostname: String): Set[String] = {
-    customMetrics.foldLeft(Set[String]()) { case(set, (key, metricConfig)) =>
-      val selector = metricConfig.selector
-      val selectorString =
-        selector + " AND HOSTNAME=\"%s\"".format(hostname)
-      set ++ GraphConfig.queryCache.get(MetricsQuery(selectorString, metricConfig.metrics))
+    customMetrics.foldLeft(Set[String]()) {
+      case (set, (key, metricConfig)) =>
+        val selector = metricConfig.selector
+        val selectorString =
+          selector + " AND HOSTNAME=\"%s\"".format(hostname)
+        set ++ GraphConfig.queryCache.get(MetricsQuery(selectorString, metricConfig.metrics))
     }
   }
 
   def defaultMetrics = getStringSet("defaultMetrics", Set(
-    "SYS/LOAD", "SYS/MEM", "SYS/NET", "SYS/PROC" , "SYS/IO-UTIL"
-  ))
+    "SYS/LOAD", "SYS/MEM", "SYS/NET", "SYS/PROC", "SYS/IO-UTIL"))
 
   def annotations = getStringSet("annotations", Set("deploy"))
 
   override def validateConfig() {
     url
     annotations
-    customMetrics.foreach { case(k,v) =>
-      v.validateConfig
+    customMetrics.foreach {
+      case (k, v) =>
+        v.validateConfig
     }
     defaultMetrics
     timeframe

@@ -21,12 +21,10 @@ object GangliaGraphConfig extends Configurable {
   // Confusingly, these are sometimes called graphs, and sometimes
   // reports.
   def defaultGraphs = getStringList("defaultGraphs", List(
-    "load_all_report", "load_report", "mem_report", "cpu_report", "network_report", "packet_report"
-  ))
+    "load_all_report", "load_report", "mem_report", "cpu_report", "network_report", "packet_report"))
 
   def defaultMetrics = getStringList("defaultMetrics", List(
-    "disk_free", "disk_total"
-  ))
+    "disk_free", "disk_total"))
 
   override def validateConfig() {
     url

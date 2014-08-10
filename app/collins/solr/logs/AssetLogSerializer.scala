@@ -19,10 +19,8 @@ class AssetLogSerializer extends SolrSerializer[AssetLog](AssetLogDocType) {
     res("MESSAGE").get -> SolrStringValue(log.message, StrictUnquoted),
     res("MESSAGE_TYPE").get -> SolrStringValue(log.message_type.toString, StrictUnquoted),
     res("ASSET_TAG").get -> SolrStringValue(log.getAssetTag()),
-    res("CREATED").get -> SolrStringValue(Formatter.solrDateFormat(log.created))
-  )
+    res("CREATED").get -> SolrStringValue(Formatter.solrDateFormat(log.created)))
 
   def getUUID(log: AssetLog) = log.id
-
 
 }

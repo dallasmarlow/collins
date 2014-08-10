@@ -7,7 +7,7 @@ import play.api.Configuration
 import helpers.ApplicationSpecification
 
 class IpmiInfoSpec extends ApplicationSpecification {
-  
+
   "IpmiInfo Model Specification".title
 
   args(sequential = true)
@@ -28,13 +28,13 @@ class IpmiInfoSpec extends ApplicationSpecification {
 
     "Handle validation" in {
       "Disallow negative values" in {
-        IpmiInfo(1,"foo","bar",0,1,1).validate() must throwA[IllegalArgumentException]
-        IpmiInfo(1,"foo","bar",1,0,1).validate() must throwA[IllegalArgumentException]
-        IpmiInfo(1,"foo","bar",1,1,0).validate() must throwA[IllegalArgumentException]
+        IpmiInfo(1, "foo", "bar", 0, 1, 1).validate() must throwA[IllegalArgumentException]
+        IpmiInfo(1, "foo", "bar", 1, 0, 1).validate() must throwA[IllegalArgumentException]
+        IpmiInfo(1, "foo", "bar", 1, 1, 0).validate() must throwA[IllegalArgumentException]
       }
       "Disallow empty username/passwords" in {
-        IpmiInfo(1,"","bar",1,1,1).validate() must throwA[IllegalArgumentException]
-        IpmiInfo(1,"foo","",1,1,1).validate() must throwA[IllegalArgumentException]
+        IpmiInfo(1, "", "bar", 1, 1, 1).validate() must throwA[IllegalArgumentException]
+        IpmiInfo(1, "foo", "", 1, 1, 1).validate() must throwA[IllegalArgumentException]
       }
     }
 
@@ -78,17 +78,15 @@ class IpmiInfoSpec extends ApplicationSpecification {
     "Use configured username options" in {
       "when username is set" in {
         val config = Configuration.from(Map(
-          "username"       -> "root",
-          "randomUsername" -> "false"
-        ))
+          "username" -> "root",
+          "randomUsername" -> "false"))
         IpmiConfig.overwriteConfig(config.underlying)
         val ipmiUsername = IpmiConfig.username
         ipmiUsername.get mustEqual "root"
       }
       "when randomUsername is set, override passed in config values" in {
         val config = Configuration.from(Map(
-          "randomUsername" -> "true"
-        ))
+          "randomUsername" -> "true"))
         IpmiConfig.overwriteConfig(config.underlying)
         val ipmiUsername = IpmiConfig.genUsername(ipmiAsset())
         val ipmiUsername2 = IpmiConfig.genUsername(ipmiAsset())

@@ -14,13 +14,12 @@ import java.io.File
 import java.util.Date
 import controllers.actors.TestProcessor
 
-private[controllers] case class ResponseData(status: Results.Status, data: JsValue, headers: Seq[(String,String)] = Nil, attachment: Option[AnyRef] = None) {
+private[controllers] case class ResponseData(status: Results.Status, data: JsValue, headers: Seq[(String, String)] = Nil, attachment: Option[AnyRef] = None) {
   def asResult(implicit req: Request[AnyContent]): Result =
     ApiResponse.formatResponseData(this)(req)
 }
 
-trait Api extends ApiResponse with AssetApi with AssetManagementApi with AssetWebApi with AssetLogApi with IpmiApi with TagApi with
-IpAddressApi with AssetStateApi with AdminApi {
+trait Api extends ApiResponse with AssetApi with AssetManagementApi with AssetWebApi with AssetLogApi with IpmiApi with TagApi with IpAddressApi with AssetStateApi with AdminApi {
   this: SecureController =>
 
   lazy protected implicit val securitySpec = Permissions.LoggedIn
@@ -46,39 +45,37 @@ IpAddressApi with AssetStateApi with AdminApi {
         "Timestamp" -> JsString(dateFormat(new Date())),
         "TestObj" -> JsObject(Seq(
           "TestString" -> JsString("test"),
-          "TestList" -> JsArray(List(JsNumber(1), JsNumber(2)))
-        )),
+          "TestList" -> JsArray(List(JsNumber(1), JsNumber(2))))),
         "TestList" -> JsArray(List(
           JsObject(Seq("id" -> JsNumber(123), "name" -> JsString("foo123"), "key-with-dash" -> JsString("val-with-dash"))),
           JsObject(Seq("id" -> JsNumber(124), "name" -> JsString("foo124"))),
-          JsObject(Seq("id" -> JsNumber(124), "name" -> JsString("foo124")))
-        ))
-      )),
-      "Status" -> JsString("Ok")
-    ))))
+          JsObject(Seq("id" -> JsNumber(124), "name" -> JsString("foo124"))))))),
+      "Status" -> JsString("Ok")))))
   }
 
   def asyncPing(sleepMs: Long) = Action { implicit req =>
     AsyncResult {
-      BackgroundProcessor.send(TestProcessor(sleepMs)) { case(ex, res) =>
-        println("Got result %s".format(res.toString))
-        formatResponseData(Api.statusResponse(res.getOrElse(false)))
+      BackgroundProcessor.send(TestProcessor(sleepMs)) {
+        case (ex, res) =>
+          println("Got result %s".format(res.toString))
+          formatResponseData(Api.statusResponse(res.getOrElse(false)))
       }
     }
   }
 
   def errorPing(id: Int) = Action { implicit req =>
-    req.queryString.map { case(k,v) =>
-      k match {
-        case "foo" =>
-          formatResponseData(ResponseData(Results.Ok, JsObject(Seq("Result" -> JsBoolean(true)))))
-      }
+    req.queryString.map {
+      case (k, v) =>
+        k match {
+          case "foo" =>
+            formatResponseData(ResponseData(Results.Ok, JsObject(Seq("Result" -> JsBoolean(true)))))
+        }
     }.head
   }
 }
 
 object Api {
-  def withAssetFromTag[T](tag: String)(f: Asset => Either[ResponseData,T]): Either[ResponseData,T] = {
+  def withAssetFromTag[T](tag: String)(f: Asset => Either[ResponseData, T]): Either[ResponseData, T] = {
     Asset.isValidTag(tag) match {
       case false => Left(getErrorMessage("Invalid tag specified"))
       case true => Asset.findByTag(tag) match {

@@ -8,7 +8,7 @@ import play.api.mvc.RequestHeader
 
 sealed trait OutputType {
   val fileExtension: String
-  val queryString: (String,String)
+  val queryString: (String, String)
   val contentType: String
 
   def inPath(header: RequestHeader) = header.path.endsWith(fileExtension)

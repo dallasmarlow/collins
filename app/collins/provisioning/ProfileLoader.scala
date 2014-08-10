@@ -1,6 +1,6 @@
 package collins.provisioning
 
-import java.io.{File => IoFile}
+import java.io.{ File => IoFile }
 
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.JavaConverters.mapAsScalaMapConverter
@@ -13,8 +13,7 @@ import collins.validation.File
 import play.api.Logger
 
 case class ProfileLoader(profiles: Set[ProvisionerProfile])
-  extends CacheLoader[String, Set[ProvisionerProfile]]
-{
+  extends CacheLoader[String, Set[ProvisionerProfile]] {
   private[this] val logger = Logger("collins.provisioning.ProfileLoader")
 
   override def load(filename: String): Set[ProvisionerProfile] = {
@@ -24,8 +23,7 @@ case class ProfileLoader(profiles: Set[ProvisionerProfile])
     } catch {
       case e =>
         logger.error("There is a problem with the profiles file %s: %s".format(
-          filename, e.getMessage
-        ))
+          filename, e.getMessage))
         profiles
     }
   }
@@ -46,25 +44,25 @@ object ProfileLoader {
     File.requireFileIsReadable(file)
     val p = ProvisionerProfileHelper.fromFile(file)
     require(p != null, "Invalid yaml file %s".format(file.getAbsolutePath))
-    val seq = p.profiles.asScala.map { case(key, profile) =>
-      val roleData = ProvisionerRoleData(
-        optionalButNonEmpty(profile.getPrimary_role()),
-        optionalButNonEmpty(profile.getPool()),
-        optionalButNonEmpty(profile.getSecondary_role()),
-        optionalButNonEmpty(profile.getContact()),
-        optionalButNonEmpty(profile.getContact_notes()),
-        Option(profile.getAllowed_classes().asScala.toSet).filter(_.nonEmpty),
-        profile.getAttributes().asScala.map(a => (a._1.toUpperCase, a._2.toString)).toMap,
-        profile.getClear_attributes().asScala.map(_.toUpperCase).toSet,
-        Option(profile.getRequires_primary_role()).map(_.booleanValue()).getOrElse(true),
-        Option(profile.getRequires_pool()).map(_.booleanValue()).getOrElse(true),
-        Option(profile.getRequires_secondary_role()).map(_.booleanValue()).getOrElse(false)
-      )
-      val label = requireNonNullNonEmpty("label", profile.getLabel())
-      val prefix = requireNonNullNonEmpty("prefix", profile.getPrefix())
-      ProvisionerProfile(key, label, prefix, profile.getAllow_suffix().booleanValue(), roleData)
+    val seq = p.profiles.asScala.map {
+      case (key, profile) =>
+        val roleData = ProvisionerRoleData(
+          optionalButNonEmpty(profile.getPrimary_role()),
+          optionalButNonEmpty(profile.getPool()),
+          optionalButNonEmpty(profile.getSecondary_role()),
+          optionalButNonEmpty(profile.getContact()),
+          optionalButNonEmpty(profile.getContact_notes()),
+          Option(profile.getAllowed_classes().asScala.toSet).filter(_.nonEmpty),
+          profile.getAttributes().asScala.map(a => (a._1.toUpperCase, a._2.toString)).toMap,
+          profile.getClear_attributes().asScala.map(_.toUpperCase).toSet,
+          Option(profile.getRequires_primary_role()).map(_.booleanValue()).getOrElse(true),
+          Option(profile.getRequires_pool()).map(_.booleanValue()).getOrElse(true),
+          Option(profile.getRequires_secondary_role()).map(_.booleanValue()).getOrElse(false))
+        val label = requireNonNullNonEmpty("label", profile.getLabel())
+        val prefix = requireNonNullNonEmpty("prefix", profile.getPrefix())
+        ProvisionerProfile(key, label, prefix, profile.getAllow_suffix().booleanValue(), roleData)
     }.toSeq
-    SortedSet(seq:_*)
+    SortedSet(seq: _*)
   }
 
   protected def optionalButNonEmpty(v: String): Option[String] = {

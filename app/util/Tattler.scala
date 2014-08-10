@@ -21,33 +21,27 @@ object TattlerHelper extends TattlerHelper
 sealed abstract class Tattler(val source: LogSource.LogSource, override val pString: Option[String] = None) extends TattlerHelper {
   def critical(asset: Asset, user: Option[User], msg: String): AssetLog = {
     AssetLog.critical(
-      asset, message(user, msg), LogFormat.PlainText, source
-    ).create()
+      asset, message(user, msg), LogFormat.PlainText, source).create()
   }
   def error(asset: Asset, user: Option[User], msg: String): AssetLog = {
     AssetLog.error(
-      asset, message(user, msg), LogFormat.PlainText, source
-    ).create()
+      asset, message(user, msg), LogFormat.PlainText, source).create()
   }
   def warning(asset: Asset, user: Option[User], msg: String): AssetLog = {
     AssetLog.warning(
-      asset, message(user, msg), LogFormat.PlainText, source
-    ).create()
+      asset, message(user, msg), LogFormat.PlainText, source).create()
   }
   def notice(asset: Asset, user: Option[User], msg: String) = {
     AssetLog.notice(
-      asset, message(user, msg), LogFormat.PlainText, source
-    ).create()
+      asset, message(user, msg), LogFormat.PlainText, source).create()
   }
   def note(asset: Asset, user: Option[User], msg: String) = {
     AssetLog.note(
-      asset, message(user, msg), LogFormat.PlainText, source
-    ).create()
+      asset, message(user, msg), LogFormat.PlainText, source).create()
   }
   def informational(asset: Asset, user: Option[User], msg: String): AssetLog = {
     AssetLog.informational(
-      asset, message(user, msg), LogFormat.PlainText, source
-    ).create()
+      asset, message(user, msg), LogFormat.PlainText, source).create()
   }
 }
 object UserTattler extends Tattler(LogSource.User)

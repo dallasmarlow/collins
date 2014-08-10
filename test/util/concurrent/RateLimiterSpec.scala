@@ -63,13 +63,13 @@ class RateLimiterSpec extends Specification {
     lazy val rateLimit = RateLimit.fromString(cfg)
     lazy val rate = rateLimit.rate
     lazy val perTimeUnit = rateLimit.perTimeUnit
-    lazy val buckets = new ConcurrentHashMap[String,RateBucket]()
+    lazy val buckets = new ConcurrentHashMap[String, RateBucket]()
     lazy val limiter = new MemoryRateLimiter(rateLimit, buckets)
     def isLimited() = limiter.isLimited(key)
     def tick() = limiter.tick(key)
-    def run(count: Int)(f: Int => Unit): List[Tuple2[Int,Boolean]] = {
+    def run(count: Int)(f: Int => Unit): List[Tuple2[Int, Boolean]] = {
       val range = ParRange(0, count, 1, false)
-      val limits = new ArrayBlockingQueue[Tuple2[Int,Boolean]](count*2)
+      val limits = new ArrayBlockingQueue[Tuple2[Int, Boolean]](count * 2)
       val latch = new CountDownLatch(count)
       range.foreach { i =>
         val gotLimited = isLimited
@@ -99,7 +99,7 @@ class RateLimiterSpec extends Specification {
         isLimited must beFalse
       }
       "config=50/1 second, 100 concurrent tries" in new RateLimiterScope("50/1 second", "uncle") {
-        val results = run(100) {i => }
+        val results = run(100) { i => }
         val gotLimited = results.filter(res => res._2).size
         gotLimited must beCloseTo(50, 20)
       }

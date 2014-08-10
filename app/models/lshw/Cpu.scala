@@ -15,22 +15,19 @@ object Cpu {
       (json \ "SPEED_GHZ").as[Double],
       (json \ "DESCRIPTION").as[String],
       (json \ "PRODUCT").as[String],
-      (json \ "VENDOR").as[String]
-    )
+      (json \ "VENDOR").as[String])
     override def writes(cpu: Cpu) = JsObject(Seq(
       "CORES" -> toJson(cpu.cores),
       "THREADS" -> toJson(cpu.threads),
       "SPEED_GHZ" -> toJson(cpu.speedGhz),
       "DESCRIPTION" -> toJson(cpu.description),
       "PRODUCT" -> toJson(cpu.product),
-      "VENDOR" -> toJson(cpu.vendor)
-    ))
+      "VENDOR" -> toJson(cpu.vendor)))
   }
 }
 
 case class Cpu(
-  cores: Int, threads: Int, speedGhz: Double, description: String, product: String, vendor: String
-) extends LshwAsset {
+  cores: Int, threads: Int, speedGhz: Double, description: String, product: String, vendor: String) extends LshwAsset {
   import Cpu._
   override def toJsValue() = Json.toJson(this)
 }

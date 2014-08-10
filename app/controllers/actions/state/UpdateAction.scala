@@ -3,7 +3,7 @@ package controllers.actions.state
 import controllers.validators.ParamValidation
 import collins.validation.StringUtil
 import models.State
-import models.{Status => AStatus}
+import models.{ Status => AStatus }
 import util.security.SecuritySpecification
 import play.api.data.Form
 import play.api.data.Forms.tuple
@@ -41,8 +41,7 @@ import controllers.Api
 case class UpdateAction(
   name: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with ParamValidation {
+  handler: SecureController) extends SecureAction(spec, handler) with ParamValidation {
 
   import CreateAction.Messages._
   import DeleteAction.Messages.systemName
@@ -53,8 +52,7 @@ case class UpdateAction(
     "status" -> validatedOptionalText(2),
     "name" -> validatedOptionalText(2, 32),
     "label" -> validatedOptionalText(2, 32),
-    "description" -> validatedOptionalText(2, 255)
-  ))
+    "description" -> validatedOptionalText(2, 255)))
 
   override def validate(): Validation = stateForm.bindFromRequest()(request).fold(
     err => Left(RequestDataHolder.error400(fieldError(err))),
@@ -80,8 +78,7 @@ case class UpdateAction(
       }.getOrElse {
         Left(RequestDataHolder.error404(invalidName))
       }
-    }
-  )
+    })
 
   override def execute(rdh: RequestDataHolder) = rdh match {
     case ActionDataHolder(state) => State.update(state) match {
@@ -107,8 +104,8 @@ case class UpdateAction(
   protected def stateWithDescription(state: State, desc: Option[String]): State =
     desc.map(d => state.copy(description = d)).getOrElse(state)
 
-  protected def validateName(nameOpt: Option[String]): Either[RequestDataHolder,Option[String]] = {
-    val validatedName: Either[String,Option[String]] = nameOpt match {
+  protected def validateName(nameOpt: Option[String]): Either[RequestDataHolder, Option[String]] = {
+    val validatedName: Either[String, Option[String]] = nameOpt match {
       case None =>
         Right(None)
       case Some(n) =>

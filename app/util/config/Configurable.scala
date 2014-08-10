@@ -56,15 +56,13 @@ trait Configurable extends ConfigAccessor with AppConfig { self =>
       val rc = ConfigFactory.parseResourcesAnySyntax(refFilename).resolve
       if (rc.isEmpty) {
         throw new Exception("Got back empty (not found) configuration for %s:%s".format(
-          namespace, refFilename
-        ))
+          namespace, refFilename))
       }
       referenceConfig = Some(rc)
     } catch {
       case e =>
         val msg = "Reference configuration %s not found or invalid: %s".format(
-          refFilename, e.getMessage
-        )
+          refFilename, e.getMessage)
         SystemTattler.safeError(msg)
         logger.error(msg, e)
         referenceConfig = None
@@ -80,8 +78,7 @@ trait Configurable extends ConfigAccessor with AppConfig { self =>
     } catch {
       case e =>
         logger.warn("Exception handling file (%s) change: %s".format(
-          Option(newConfig.origin.filename).getOrElse("unknown"), e.getMessage
-        ))
+          Option(newConfig.origin.filename).getOrElse("unknown"), e.getMessage))
     }
   }
 
@@ -110,8 +107,7 @@ trait Configurable extends ConfigAccessor with AppConfig { self =>
       } catch {
         case e =>
           val msg = "Error validating configuration for %s: %s".format(
-            getClass.getName, e.getMessage
-          )
+            getClass.getName, e.getMessage)
           SystemTattler.safeError(msg)
           logger.error(msg, e)
           self.underlying = savedConfig

@@ -8,7 +8,7 @@ import play.api.mvc.Results
 import util.IpAddress
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsBoolean
-import play.api.http.{Status => StatusValues}
+import play.api.http.{ Status => StatusValues }
 import java.sql.SQLException
 
 trait IpmiApi {
@@ -37,9 +37,7 @@ trait IpmiApi {
       "password" -> optional(text(8)),
       "address" -> optional(text(7)),
       "gateway" -> optional(text(7)),
-      "netmask" -> optional(text(7))
-    )(IpmiForm.apply)(IpmiForm.unapply)
-  )
+      "netmask" -> optional(text(7)))(IpmiForm.apply)(IpmiForm.unapply))
 
   def updateIpmi(tag: String) = SecureAction { implicit req =>
     Api.withAssetFromTag(tag) { asset =>
@@ -66,12 +64,10 @@ trait IpmiApi {
             case e =>
               Left(Api.getErrorMessage("Incomplete form submission: %s".format(e.getMessage)))
           }
-        }
-      )
+        })
     }.fold(
       err => formatResponseData(err),
-      suc => formatResponseData(suc)
-    )
+      suc => formatResponseData(suc))
   }(Permissions.IpmiApi.UpdateIpmi)
 
 }

@@ -9,7 +9,6 @@ import controllers.actions.SecureAction
 import models.AssetMeta.Enum.ChassisTag
 import util.MessageHelperI
 
-
 trait IntakeAction extends AssetAction with MessageHelperI {
   this: SecureAction =>
 
@@ -21,7 +20,7 @@ trait IntakeAction extends AssetAction with MessageHelperI {
   val Stage2Template = views.html.resources.intake2
   val Stage3Template = views.html.resources.intake3
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = {
     withValidAsset(assetId) { asset =>
       assetIntakeAllowed(asset) match {
         case None =>
@@ -34,7 +33,7 @@ trait IntakeAction extends AssetAction with MessageHelperI {
 
   protected def cleanString(input: String) = StringUtil.trim(input)
 
-  protected def verifyChassisTag(tag: String): Either[RequestDataHolder,String] = cleanString(tag) match {
+  protected def verifyChassisTag(tag: String): Either[RequestDataHolder, String] = cleanString(tag) match {
     case None => Left(RequestDataHolder.error400(chassisInvalidMessage))
     case Some(chassisTag) =>
       definedAsset.getMetaAttribute(ChassisTag.toString, 10) match {

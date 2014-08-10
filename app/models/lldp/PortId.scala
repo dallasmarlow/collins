@@ -9,12 +9,10 @@ object PortId {
   implicit object PortIdFormat extends Format[PortId] {
     override def reads(json: JsValue) = PortId(
       (json \ "TYPE").as[String],
-      (json \ "VALUE").as[String]
-    )
+      (json \ "VALUE").as[String])
     override def writes(pid: PortId) = JsObject(Seq(
       "TYPE" -> Json.toJson(pid.idType),
-      "VALUE" -> Json.toJson(pid.value)
-    ))
+      "VALUE" -> Json.toJson(pid.value)))
   }
 }
 case class PortId(idType: String, value: String) extends LldpAttribute {

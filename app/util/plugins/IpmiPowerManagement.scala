@@ -15,7 +15,7 @@ import collins.power.PowerState
 import collins.power.RebootHard
 import collins.power.RebootSoft
 import collins.power.Verify
-import collins.power.management.{PowerManagement => PM}
+import collins.power.management.{ PowerManagement => PM }
 import collins.power.management.PowerManagementConfig
 
 import akka.util.Duration
@@ -32,7 +32,7 @@ case class IpmiPowerCommand(
   override val interval: Duration = 60.seconds,
   val verify: Boolean = false,
   val userTimeout: Option[Duration] = None)
-extends IpmiCommand {
+  extends IpmiCommand {
   override def defaultTimeout = Duration(PowerManagementConfig.timeoutMs, TimeUnit.MILLISECONDS)
   override val timeout = userTimeout.getOrElse(defaultTimeout)
 }
@@ -102,7 +102,6 @@ class IpmiPowerManagement(app: Application) extends Plugin with PM {
   protected[this] def getAsset(e: Asset): Asset = Asset.findByTag(e.tag) match {
     case Some(a) => a
     case None => throw new IllegalArgumentException(
-      "Could not find asset with tag %s".format(e.tag)
-    )
+      "Could not find asset with tag %s".format(e.tag))
   }
 }

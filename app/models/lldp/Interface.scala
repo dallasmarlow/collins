@@ -16,20 +16,17 @@ object Interface {
       (json \ "NAME").as[String],
       (json \ "CHASSIS").as[Chassis],
       (json \ "PORT").as[Port],
-      (json \ "VLANS").as[Seq[Vlan]]
-    )
+      (json \ "VLANS").as[Seq[Vlan]])
     override def writes(iface: Interface) = JsObject(Seq(
       "NAME" -> toJson(iface.name),
       "CHASSIS" -> toJson(iface.chassis),
       "PORT" -> toJson(iface.port),
-      "VLANS" -> toJson(iface.vlans)
-    ))
+      "VLANS" -> toJson(iface.vlans)))
   }
 }
 
 case class Interface(
-  name: String, chassis: Chassis, port: Port, vlans: Seq[Vlan]
-) extends LldpAttribute {
+  name: String, chassis: Chassis, port: Port, vlans: Seq[Vlan]) extends LldpAttribute {
 
   import Interface._
 

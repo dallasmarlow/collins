@@ -16,8 +16,7 @@ trait TagApi {
       val fields = Seq(
         ("name" -> JsString(am.name)),
         ("label" -> JsString(am.label)),
-        ("description" -> JsString(am.description))
-      )
+        ("description" -> JsString(am.description)))
       JsObject(fields)
     }
     val jsArray = JsArray(js.toList)

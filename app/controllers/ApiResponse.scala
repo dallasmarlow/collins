@@ -11,8 +11,7 @@ object ApiResponse extends ApiResponse {
   def formatJsonMessage(status: String, data: JsValue): JsObject = {
     JsObject(Seq(
       "status" -> JsString(status),
-      "data" -> data
-    ))
+      "data" -> data))
   }
   def formatJsonMessage(status: Results.Status, data: JsValue): JsObject = {
     formatJsonMessage(statusToString(status), data)
@@ -35,11 +34,12 @@ object ApiResponse extends ApiResponse {
 
   def bashError(msg: String, status: Results.Status = Results.BadRequest, ex: Option[Throwable]) = {
     val exSeq = ex.map { e => formatException(e) }.getOrElse(Seq())
-    val exMsg = exSeq.map { case(k,v) =>
-      """DATA_EXCEPTION_%s='%s';""".format(k.toUpperCase, v)
+    val exMsg = exSeq.map {
+      case (k, v) =>
+        """DATA_EXCEPTION_%s='%s';""".format(k.toUpperCase, v)
     }.mkString("\n")
     val output =
-"""STATUS="error";
+      """STATUS="error";
 DATA_MESSAGE='%s';
 %s
 """.format(msg, exMsg)
@@ -74,11 +74,12 @@ DATA_MESSAGE='%s';
 
   def textError(msg: String, status: Results.Status = Results.BadRequest, ex: Option[Throwable]) = {
     val exSeq = ex.map { e => formatException(e) }.getOrElse(Seq())
-    val exMsg = exSeq.map { case(k,v) => """
-Exception %s  %s""".format(k, v.replace("\n","\n\t\t"))
+    val exMsg = exSeq.map {
+      case (k, v) => """
+Exception %s  %s""".format(k, v.replace("\n", "\n\t\t"))
     }.mkString("\n")
     val output =
-"""Status        Error
+      """Status        Error
 
 Details
 -----------------------------------------------------------------
@@ -89,10 +90,10 @@ Message       %s
     status(output).as(contentTypeWithCharset(TextOutput()))
   }
 
-  private def formatException(ex: Throwable): Seq[(String,String)] = {
+  private def formatException(ex: Throwable): Seq[(String, String)] = {
     Seq("classOf" -> ex.getClass.toString,
-        "message" -> ex.getMessage,
-        "stackTrace" -> ex.getStackTrace.map { _.toString }.mkString("\n"))
+      "message" -> ex.getMessage,
+      "stackTrace" -> ex.getStackTrace.map { _.toString }.mkString("\n"))
   }
 }
 
@@ -104,15 +105,15 @@ trait ApiResponse extends Controller {
   def formatResponseData(response: ResponseData)(implicit req: Request[AnyContent]) = {
     getOutputType(req) match {
       case o: TextOutput =>
-        response.status(formatTextResponse(response.data) + "\n").as(contentTypeWithCharset(o)).withHeaders(response.headers:_*)
+        response.status(formatTextResponse(response.data) + "\n").as(contentTypeWithCharset(o)).withHeaders(response.headers: _*)
       case o: BashOutput =>
-        response.status(formatBashResponse(response.data) + "\n").as(contentTypeWithCharset(o)).withHeaders(response.headers:_*)
+        response.status(formatBashResponse(response.data) + "\n").as(contentTypeWithCharset(o)).withHeaders(response.headers: _*)
       case o: JsonOutput =>
         val rewritten = ApiResponse.isJsonErrorMessage(response.data) match {
           case true => response.data
           case false => ApiResponse.formatJsonMessage(response.status, response.data)
         }
-        response.status(Json.stringify(rewritten)).as(contentTypeWithCharset(o)).withHeaders(response.headers:_*)
+        response.status(Json.stringify(rewritten)).as(contentTypeWithCharset(o)).withHeaders(response.headers: _*)
       case o: HtmlOutput =>
         val e = new Exception("Unhandled view")
         e.printStackTrace()
@@ -141,11 +142,12 @@ trait ApiResponse extends Controller {
       }.map { _ => true }.getOrElse(false)
 
       if (isObj) {
-        jsvalue.zipWithIndex.map { case(item,id) =>
-          item match {
-            case o: JsObject => formatBashResponse(o, listPrefix + id.toString + "_") + "\n"
-            case b => formatBasic(b)
-          }
+        jsvalue.zipWithIndex.map {
+          case (item, id) =>
+            item match {
+              case o: JsObject => formatBashResponse(o, listPrefix + id.toString + "_") + "\n"
+              case b => formatBasic(b)
+            }
         }.mkString("")
       } else if (!isNonPrim) {
         listPrefix + "=" + jsvalue.map { i => formatBasic(i) }.mkString(",") + ";"
@@ -160,7 +162,7 @@ trait ApiResponse extends Controller {
       val posixTailRegex = """[^a-zA-Z0-9_]""".r
       key.head.toString match {
         case posixHeadRegex() => formatPosixKey("_" + key)
-        case _                => posixTailRegex.replaceAllIn(key,"_").toUpperCase
+        case _ => posixTailRegex.replaceAllIn(key, "_").toUpperCase
       }
     } else {
       throw new Exception("Cannot convert an empty key into a POSIX environment variable name")
@@ -168,12 +170,13 @@ trait ApiResponse extends Controller {
 
     // FIXME
     require(jsobject.isInstanceOf[JsObject], "Required a JsObject")
-    jsobject.asInstanceOf[JsObject].value.map { case(k, v) =>
-      v match {
-        case m: JsObject => formatBashResponse(m, "%s_".format(prefix + k))
-        case JsArray(list) => formatList(list, "%s_".format(prefix + k))
-        case o => "%s=%s;".format(formatPosixKey(prefix + k), formatBasic(o))
-      }
+    jsobject.asInstanceOf[JsObject].value.map {
+      case (k, v) =>
+        v match {
+          case m: JsObject => formatBashResponse(m, "%s_".format(prefix + k))
+          case JsArray(list) => formatList(list, "%s_".format(prefix + k))
+          case o => "%s=%s;".format(formatPosixKey(prefix + k), formatBasic(o))
+        }
     }.mkString("\n")
   }
 
@@ -200,15 +203,15 @@ trait ApiResponse extends Controller {
     val prefix = if (depth > 0) { "\t" * depth } else { "" }
     // FIXME
     require(jsobject.isInstanceOf[JsObject], "Required a JsObject")
-    jsobject.asInstanceOf[JsObject].value.map { case(k, v) =>
-      prefix + k + "\t" + (v match {
-        case m: JsObject => "\n" + formatTextResponse(m, depth + 1)
-        case JsArray(list) => formatList(list)
-        case o => formatBasic(v)
-      })
+    jsobject.asInstanceOf[JsObject].value.map {
+      case (k, v) =>
+        prefix + k + "\t" + (v match {
+          case m: JsObject => "\n" + formatTextResponse(m, depth + 1)
+          case JsArray(list) => formatList(list)
+          case o => formatBasic(v)
+        })
     }.mkString("\n")
   }
-
 
   protected def getOutputType(request: Request[AnyContent]): OutputType = {
     OutputType(request) match {

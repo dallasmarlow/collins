@@ -37,28 +37,24 @@ object UpdateAction extends ParamValidation {
     "lldp" -> validatedOptionalText(1),
     ChassisTag.toString -> validatedOptionalText(1),
     RackPosition.toString -> validatedOptionalText(1),
-    "groupId" -> optional(longNumber)
-  ))
+    "groupId" -> optional(longNumber)))
 }
 
 case class UpdateAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler)
-    with AssetAction
-    with ActionAttributeHelper
-{
+  handler: SecureController) extends SecureAction(spec, handler)
+  with AssetAction
+  with ActionAttributeHelper {
 
   import UpdateAction.Messages._
   import UpdateAction.UpdateForm
 
   override def invalidAttributeMessage(s: String) = message("attribute.invalid")
 
-  case class ActionDataHolder(underlying: Map[String,String])
+  case class ActionDataHolder(underlying: Map[String, String])
     extends RequestDataHolder
-      with DefaultMap[String,String]
-  {
+    with DefaultMap[String, String] {
     override def get(key: String) = underlying.get(key)
     override def iterator = underlying.iterator
   }
@@ -79,7 +75,7 @@ case class UpdateAction(
         error => Left(RequestDataHolder.error400(fieldError(error))),
         success => {
           // drop in attributes first, these have the lowest priority
-          val results = new HashMap[String,String]() ++ getAttributeMap
+          val results = new HashMap[String, String]() ++ getAttributeMap
           val (lshw, lldp, chassisTag, rackPosition, groupId) = success
           // all 'known' parameters now, overwrite attributes possibly
           lshw.foreach { l => results("lshw") = l }
@@ -92,13 +88,12 @@ case class UpdateAction(
           // FIXME we should merge the power map with existing power values and rerun power validation
           val dh = ActionDataHolder((results ++ powerMap).toMap)
           Right(dh)
-        }
-      )
+        })
     }
   }
 
   override def execute(rd: RequestDataHolder) = rd match {
-    case adh@ActionDataHolder(map) =>
+    case adh @ ActionDataHolder(map) =>
       val results: models.AssetLifecycle.Status[Boolean] =
         if (onlyAttributes)
           AssetLifecycle.updateAssetAttributes(definedAsset, map)
@@ -107,8 +102,7 @@ case class UpdateAction(
       results match {
         case Left(exception) =>
           handleError(
-            RequestDataHolder.error500("Error updating asset: %s".format(exception.getMessage))
-          )
+            RequestDataHolder.error500("Error updating asset: %s".format(exception.getMessage)))
         case Right(false) =>
           handleError(RequestDataHolder.error400("Error updating asset"))
         case Right(true) =>

@@ -22,8 +22,7 @@ object ProvisionerStatus {
 
 case class ProvisionerResult(status: ProvisionerStatus, commandResult: CommandResult)
 
-case class ProvisionerTest(request: ProvisionerRequest, userTimeout: Option[Duration] = None)(implicit req: Request[AnyContent]) extends BackgroundProcess[ProvisionerResult]
-{
+case class ProvisionerTest(request: ProvisionerRequest, userTimeout: Option[Duration] = None)(implicit req: Request[AnyContent]) extends BackgroundProcess[ProvisionerResult] {
   override def defaultTimeout: Duration = Duration.parse("90 seconds")
   val timeout = userTimeout.getOrElse(defaultTimeout)
 
@@ -37,8 +36,7 @@ case class ProvisionerTest(request: ProvisionerRequest, userTimeout: Option[Dura
   }.getOrElse(ProvisionerResult(ProvisionerStatus.PluginDisabled, CommandResult(-2, "Provisioner plugin not enabled")))
 }
 
-case class ProvisionerRun(request: ProvisionerRequest, userTimeout: Option[Duration] = None)(implicit req: Request[AnyContent]) extends BackgroundProcess[ProvisionerResult]
-{
+case class ProvisionerRun(request: ProvisionerRequest, userTimeout: Option[Duration] = None)(implicit req: Request[AnyContent]) extends BackgroundProcess[ProvisionerResult] {
   override def defaultTimeout: Duration = Duration.parse("90 seconds")
   val timeout = userTimeout.getOrElse(defaultTimeout)
 

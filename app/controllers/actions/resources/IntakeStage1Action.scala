@@ -21,29 +21,25 @@ import controllers.Help
 case class IntakeStage1Action(
   assetId: Long,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with IntakeAction {
+  handler: SecureController) extends SecureAction(spec, handler) with IntakeAction {
 
   val dataForm = Form(single(
-    "light" -> of[Truthy]
-  ))
+    "light" -> of[Truthy]))
 
   case class ActionDataHolder(light: Truthy) extends RequestDataHolder
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = super.validate() match {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = super.validate() match {
     case Left(err) => Left(err)
     case Right(dummy) =>
       dataForm.bindFromRequest()(request).fold(
         err => Right(dummy),
-        suc => Right(ActionDataHolder(suc))
-      )
+        suc => Right(ActionDataHolder(suc)))
   }
 
   override def execute(rd: RequestDataHolder) = rd match {
     case ActionDataHolder(light) if light.toBoolean =>
       Status.Ok(
-        views.html.resources.intake2(definedAsset, IntakeStage2Action.dataForm)(flash, request)
-      )
+        views.html.resources.intake2(definedAsset, IntakeStage2Action.dataForm)(flash, request))
     case dummy => PowerManagement.pluginEnabled match {
       case None =>
         Status.Ok(views.html.help(Help.PowerManagementDisabled)(flash, request))
@@ -54,8 +50,7 @@ case class IntakeStage1Action(
   }
 
   override def handleWebError(rd: RequestDataHolder) = Some(
-    Redirect(app.routes.Resources.intake(assetId, 1)).flashing("error" -> rd.toString)
-  )
+    Redirect(app.routes.Resources.intake(assetId, 1)).flashing("error" -> rd.toString))
 
   protected def identifyAsset(plugin: PowerManagement) = {
     val cmd = IpmiPowerCommand.fromPowerAction(definedAsset, Identify)

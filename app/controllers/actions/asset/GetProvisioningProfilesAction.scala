@@ -18,8 +18,7 @@ import controllers.ResponseData
 
 case class GetProvisioningProfilesAction(
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
   case class ActionDataHolder(profiles: Set[ProvisionerProfile]) extends RequestDataHolder
 
@@ -40,20 +39,18 @@ case class GetProvisioningProfilesAction(
     profiles.toList.map { profile =>
       val role = profile.role
       val seq = Seq(
-        "PROFILE"                 -> JsString(profile.identifier),
-        "LABEL"                   -> JsString(profile.label),
-        "PREFIX"                  -> JsString(profile.prefix),
-        "SUFFIX_ALLOWED"          -> JsBoolean(profile.allow_suffix),
-        "PRIMARY_ROLE"            -> stringOrNull(role.primary_role),
-        "REQUIRES_PRIMARY_ROLE"   -> JsBoolean(role.requires_primary_role),
-        "POOL"                    -> stringOrNull(role.pool),
-        "REQUIRES_POOL"           -> JsBoolean(role.requires_pool),
-        "SECONDARY_ROLE"          -> stringOrNull(role.secondary_role),
-        "REQUIRES_SECONDARY_ROLE" -> JsBoolean(role.requires_secondary_role)
-      )
+        "PROFILE" -> JsString(profile.identifier),
+        "LABEL" -> JsString(profile.label),
+        "PREFIX" -> JsString(profile.prefix),
+        "SUFFIX_ALLOWED" -> JsBoolean(profile.allow_suffix),
+        "PRIMARY_ROLE" -> stringOrNull(role.primary_role),
+        "REQUIRES_PRIMARY_ROLE" -> JsBoolean(role.requires_primary_role),
+        "POOL" -> stringOrNull(role.pool),
+        "REQUIRES_POOL" -> JsBoolean(role.requires_pool),
+        "SECONDARY_ROLE" -> stringOrNull(role.secondary_role),
+        "REQUIRES_SECONDARY_ROLE" -> JsBoolean(role.requires_secondary_role))
       JsObject(seq)
-    }
-  )
+    })
 
   private def stringOrNull(s: Option[String]): JsValue = s.map(JsString(_)).getOrElse(JsNull)
 }

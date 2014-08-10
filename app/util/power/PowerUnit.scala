@@ -9,8 +9,9 @@ import play.api.libs.json.Json.toJson
 object PowerUnit {
   def apply(config: PowerConfiguration, id: Int): PowerUnit = {
     val components: PowerComponents =
-      config.components.zipWithIndex.map { case(componentType, position) =>
-        PowerComponentValue(componentType, config, id, position)
+      config.components.zipWithIndex.map {
+        case (componentType, position) =>
+          PowerComponentValue(componentType, config, id, position)
       }
     new PowerUnit(config, id, components)
   }
@@ -20,12 +21,10 @@ object PowerUnit {
     override def reads(json: JsValue) = PowerUnit(
       PowerConfiguration.get(),
       (json \ "UNIT_ID").as[Int],
-      (json \ "UNITS").as[Set[PowerComponent]]
-    )
+      (json \ "UNITS").as[Set[PowerComponent]])
     override def writes(unit: PowerUnit) = JsObject(Seq(
       "UNIT_ID" -> toJson(unit.id),
-      "UNITS" -> toJson(unit.components.map(toJson(_)))
-    ))
+      "UNITS" -> toJson(unit.components.map(toJson(_)))))
   }
 }
 

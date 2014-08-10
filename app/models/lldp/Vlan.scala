@@ -9,12 +9,10 @@ object Vlan {
   implicit object VlanFormat extends Format[Vlan] {
     override def reads(json: JsValue) = Vlan(
       (json \ "ID").as[Int],
-      (json \ "NAME").as[String]
-    )
+      (json \ "NAME").as[String])
     override def writes(vlan: Vlan) = JsObject(Seq(
       "ID" -> Json.toJson(vlan.id),
-      "NAME" -> Json.toJson(vlan.name)
-    ))
+      "NAME" -> Json.toJson(vlan.name)))
   }
 }
 

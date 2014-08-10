@@ -16,8 +16,7 @@ class AssetMetaSpec extends ApplicationSpecification {
         val ams = Seq(
           AssetMeta("", -1, "Foo", "Description"),
           AssetMeta("Foo", -1, "Foo", "Description"),
-          AssetMeta("Foo Bar", -1, "Foo", "Description")
-        )
+          AssetMeta("Foo Bar", -1, "Foo", "Description"))
         ams.foreach { am =>
           am.validate() must throwA[IllegalArgumentException]
           AssetMeta.create(am) must throwA[IllegalArgumentException]
@@ -62,7 +61,7 @@ class AssetMetaSpec extends ApplicationSpecification {
       "findByTag" in new concreteassetmeta {
         AssetMeta.findByName(metaName) must beSome[AssetMeta]
       }
-      
+
       "findAll" in {
         AssetMeta.findAll().size must be_>=(AssetMeta.Enum.values.size)
       }
@@ -78,15 +77,15 @@ class AssetMetaSpec extends ApplicationSpecification {
         val maybeMeta = AssetMeta.findByName(metaName)
         maybeMeta must beSome[AssetMeta]
         val realMeta = maybeMeta.get
-        val whateverAsset = Asset("foo",Status.Allocated.get,AssetType.ServerNode.get)
-        AssetMetaValue(whateverAsset, realMeta.id, "123") 
+        val whateverAsset = Asset("foo", Status.Allocated.get, AssetType.ServerNode.get)
+        AssetMetaValue(whateverAsset, realMeta.id, "123")
         success
       }
       "reject non-numeric value" in new numberassetmeta {
         val maybeMeta = AssetMeta.findByName(metaName)
         maybeMeta must beSome[AssetMeta]
         val realMeta = maybeMeta.get
-        val whateverAsset = Asset("foo",Status.Allocated.get,AssetType.ServerNode.get)
+        val whateverAsset = Asset("foo", Status.Allocated.get, AssetType.ServerNode.get)
         AssetMetaValue(whateverAsset, realMeta.id, "a123") must throwA[IllegalArgumentException]
       }
     }
@@ -115,6 +114,5 @@ class AssetMetaSpec extends ApplicationSpecification {
     val metaType = AssetMeta.ValueType.Integer.id
     val newMeta = AssetMeta(metaName, metaPriority, metaLabel, metaDescription, 0, metaType)
   }
-
 
 }

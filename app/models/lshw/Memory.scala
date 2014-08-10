@@ -15,8 +15,7 @@ object Memory {
       (json \ "BANK").as[Int],
       (json \ "DESCRIPTION").as[String],
       (json \ "PRODUCT").as[String],
-      (json \ "VENDOR").as[String]
-    )
+      (json \ "VENDOR").as[String])
     override def writes(mem: Memory) = JsObject(Seq(
       "SIZE" -> toJson(mem.size.inBytes),
       "SIZE_S" -> toJson(mem.size.inBytes.toString),
@@ -24,14 +23,12 @@ object Memory {
       "BANK" -> toJson(mem.bank),
       "DESCRIPTION" -> toJson(mem.description),
       "PRODUCT" -> toJson(mem.product),
-      "VENDOR" -> toJson(mem.vendor)
-    ))
+      "VENDOR" -> toJson(mem.vendor)))
   }
 }
 
 case class Memory(
-  size: ByteStorageUnit, bank: Int, description: String, product: String, vendor: String
-) extends LshwAsset {
+  size: ByteStorageUnit, bank: Int, description: String, product: String, vendor: String) extends LshwAsset {
   import Memory._
   override def toJsValue() = Json.toJson(this)
 }

@@ -3,10 +3,10 @@ import play.api.mvc._
 import collins.database.DatabasePlugin
 
 import controllers.ApiResponse
-import util.{CryptoAccessor, Stats}
-import util.{BashOutput, HtmlOutput, JsonOutput, OutputType, TextOutput}
+import util.{ CryptoAccessor, Stats }
+import util.{ BashOutput, HtmlOutput, JsonOutput, OutputType, TextOutput }
 import util.config.CryptoConfig
-import util.security.{AuthenticationAccessor, AuthenticationProvider, AuthenticationProviderConfig}
+import util.security.{ AuthenticationAccessor, AuthenticationProvider, AuthenticationProviderConfig }
 
 object Global extends GlobalSettings with AuthenticationAccessor with CryptoAccessor {
   private[this] val logger = Logger.logger
@@ -31,7 +31,7 @@ object Global extends GlobalSettings with AuthenticationAccessor with CryptoAcce
       super.onRouteRequest(request)
     }
 
-    Play.maybeApplication.flatMap{_.plugin[DatabasePlugin]}.filter{_.enabled}.foreach{_.closeConnection}
+    Play.maybeApplication.flatMap { _.plugin[DatabasePlugin] }.filter { _.enabled }.foreach { _.closeConnection }
     response
   }
 

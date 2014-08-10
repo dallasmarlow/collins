@@ -17,35 +17,30 @@ import util.security.SecuritySpecification
 case class ProvisionAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with Provisions {
+  handler: SecureController) extends SecureAction(spec, handler) with Provisions {
 
   private val rateLimiter = RateLimiter(ProvisionerConfig.rate)
 
   override def validate(): Validation = withValidAsset(assetTag) { asset =>
     if (isRateLimited) {
       return Left(
-        RequestDataHolder.error429("Request rate limited by configuration")
-      )
+        RequestDataHolder.error429("Request rate limited by configuration"))
     }
     if (AppConfig.ignoreAsset(asset))
       return Left(
-        RequestDataHolder.error403("Asset has been configured to ignore dangerous commands")
-      )
+        RequestDataHolder.error403("Asset has been configured to ignore dangerous commands"))
     val plugin = Provisioner.plugin
     if (!plugin.isDefined)
       return Left(
-        RequestDataHolder.error501("Provisioner plugin not enabled")
-      )
+        RequestDataHolder.error501("Provisioner plugin not enabled"))
     provisionForm.bindFromRequest()(request).fold(
       errorForm => fieldError(errorForm),
-      okForm => validate(plugin.get, asset, okForm)
-    )
+      okForm => validate(plugin.get, asset, okForm))
   }
 
   override def execute(rd: RequestDataHolder) = AsyncResult {
     rd match {
-      case adh@ActionDataHolder(_, _, activate, _) =>
+      case adh @ ActionDataHolder(_, _, activate, _) =>
         rateLimiter.tick(user.id.toString) // we will reset on error
         try {
           if (activate)

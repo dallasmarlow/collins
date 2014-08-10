@@ -11,17 +11,15 @@ import util.security.SecuritySpec
 import views.html
 
 object Application extends SecureWebController {
- 
+
   val loginForm = Form(
     tuple(
       "username" -> nonEmptyText,
       "password" -> nonEmptyText(3),
-      "location" -> optional(text)
-      ) verifying ("Invalid username or password", result => result match {
-        case(username,password,location) =>
+      "location" -> optional(text)) verifying ("Invalid username or password", result => result match {
+        case (username, password, location) =>
           User.authenticate(username, password).isDefined
-      })
-  )
+      }))
 
   def login = Action { implicit req =>
     setUser(None)
@@ -29,7 +27,7 @@ object Application extends SecureWebController {
       case None =>
         Ok(html.login(loginForm))
       case Some(location) =>
-        Ok(html.login(loginForm.fill(("","",Some(location.head))).copy(errors = Nil)))
+        Ok(html.login(loginForm.fill(("", "", Some(location.head))).copy(errors = Nil)))
     }
   }
 
@@ -37,26 +35,24 @@ object Application extends SecureWebController {
     setUser(None)
     loginForm.bindFromRequest.fold(
       formWithErrors => {
-        val tmp: Map[String,String] = formWithErrors.data - "password"
+        val tmp: Map[String, String] = formWithErrors.data - "password"
         BadRequest(html.login(formWithErrors.copy(data = tmp)))
       },
       user => {
         val u = User.toMap(User.authenticate(user._1, user._2))
         user._3 match {
           case Some(location) =>
-            Redirect(location).withSession(u.toSeq:_*)
+            Redirect(location).withSession(u.toSeq: _*)
           case None =>
-            Redirect(app.routes.Resources.index).withSession(u.toSeq:_*)
+            Redirect(app.routes.Resources.index).withSession(u.toSeq: _*)
         }
-      }
-    )
+      })
   }
 
   def logout = SecureAction { implicit req =>
     setUser(None)
     Redirect(routes.Application.login).withNewSession.flashing(
-      "success" -> "You have been logged out"
-    )
+      "success" -> "You have been logged out")
   }(SecuritySpec(true))
 
 }

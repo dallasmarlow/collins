@@ -17,7 +17,7 @@ trait IpAddressApi {
     UpdateAction(tag, Permissions.IpAddressApi.UpdateAddress, this)
 
   // PUT /api/asset/:tag/address
-  def allocateAddress(tag: String) = 
+  def allocateAddress(tag: String) =
     CreateAction(tag, Permissions.IpAddressApi.AllocateAddress, this)
 
   // GET /api/assets/with/addresses/in/:pool

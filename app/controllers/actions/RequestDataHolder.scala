@@ -4,23 +4,23 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 
 import play.api.mvc.Results
-import play.api.mvc.Results.{Status => HttpStatus}
+import play.api.mvc.Results.{ Status => HttpStatus }
 
 trait RequestDataHolder {
   type This = RequestDataHolder
 
   val ErrorKey = "error.message"
-  protected val sMap = new ConcurrentHashMap[String,String]()
+  protected val sMap = new ConcurrentHashMap[String, String]()
   protected val _status = new AtomicReference[Option[HttpStatus]](None)
   protected val _exception = new AtomicReference[Option[Throwable]](None)
 
   def status(): Option[HttpStatus] = _status.get()
-  def status_= (s: HttpStatus):Unit = _status.set(Some(s))
+  def status_=(s: HttpStatus): Unit = _status.set(Some(s))
 
   def error(): Option[String] = string(ErrorKey)
   def exception(): Option[Throwable] = _exception.get()
-  def exception_= (e: Throwable) = _exception.set(Some(e))
-  def exception_= (e: Option[Throwable]) = _exception.set(e)
+  def exception_=(e: Throwable) = _exception.set(Some(e))
+  def exception_=(e: Option[Throwable]) = _exception.set(e)
   def withException(e: Throwable): This = {
     _exception.set(Some(e))
     this
@@ -32,7 +32,7 @@ trait RequestDataHolder {
   def string(k: String): Option[String] = Option(sMap.get(k))
   def string(k: String, default: String): String = string(k).getOrElse(default)
   def update(k: String, v: String): This = {
-    sMap.put(k,v)
+    sMap.put(k, v)
     this
   }
 }
@@ -47,8 +47,7 @@ case class EphemeralDataHolder(message: Option[String] = None) extends RequestDa
 object RequestDataHolder extends RequestDataHolder {
   private[RequestDataHolder] case class ErrorRequestDataHolder(
     message: String,
-    override val status: Option[HttpStatus]
-  ) extends RequestDataHolder {
+    override val status: Option[HttpStatus]) extends RequestDataHolder {
     update(ErrorKey, message)
     override def toString() = message
   }
@@ -91,8 +90,7 @@ object RequestDataHolder extends RequestDataHolder {
     error5xx(message, Results.NotImplemented, None)
 
   def error504(message: String): RequestDataHolder = ErrorRequestDataHolder(
-    message, Results.Status(play.api.http.Status.GATEWAY_TIMEOUT)
-  )
+    message, Results.Status(play.api.http.Status.GATEWAY_TIMEOUT))
 }
 
 object NotImplementedError extends RequestDataHolder {

@@ -5,7 +5,7 @@ import org.specs2.mutable.Specification
 
 class VersionRouterSpec extends Specification {
 
-  val map: PartialFunction[ApiVersion,String] = {
+  val map: PartialFunction[ApiVersion, String] = {
     case `1.1` => "A"
     case `1.2` => "B"
   }
@@ -21,7 +21,7 @@ class VersionRouterSpec extends Specification {
       VersionRouter.route(heads)(map) must_== "B"
 
     }
-    "default route on missing header" in {      
+    "default route on missing header" in {
       VersionRouter.route(FakeHeaders(Map[String, Seq[String]]()))(map) must_== map(ApiVersion.defaultVersion)
     }
     "default route on malformed header" in {

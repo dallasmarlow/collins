@@ -8,8 +8,9 @@ case class ExecActionRunner(command: Seq[String]) extends CallbackActionRunner[S
 
   override def formatCommand(v: AnyRef, replacements: Set[MethodReplacement]): Seq[String] = {
     command.map { cmd =>
-      replacements.foldLeft(cmd) { case(string, replacement) =>
-        string.replaceAllLiterally(replacement.originalValue, replacement.newValue)
+      replacements.foldLeft(cmd) {
+        case (string, replacement) =>
+          string.replaceAllLiterally(replacement.originalValue, replacement.newValue)
       }
     }
   }

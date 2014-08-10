@@ -22,8 +22,7 @@ trait AddressActionHelper { self: SecureAction =>
     IpAddress.toOptLong(a) match {
       case Some(_) => f(a)
       case None => Left(RequestDataHolder.error400(
-        "Invalid IP address '%s' specified".format(a)
-      ))
+        "Invalid IP address '%s' specified".format(a)))
     }
 
   def convertPoolName(name: String, emptyToDef: Boolean = false) = name match {

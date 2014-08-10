@@ -35,12 +35,11 @@ import util.security.SecuritySpecification
 // views)
 abstract class SecureAction(
   val securitySpecification: SecuritySpecification,
-  val securityHandler: SecureController
-) extends Action[AnyContent] {
+  val securityHandler: SecureController) extends Action[AnyContent] {
 
   import ActionHelper.DummyRequest
 
-  type Validation = Either[RequestDataHolder,RequestDataHolder]
+  type Validation = Either[RequestDataHolder, RequestDataHolder]
 
   protected[this] val logger = Logger.logger
 
@@ -80,7 +79,7 @@ abstract class SecureAction(
   def executeDelete(rd: RequestDataHolder): Option[Promise[Result]] = None
   def execute(rd: RequestDataHolder): Result
 
-  def executeAsync(rd: RequestDataHolder): Promise[Result] = Akka.future{
+  def executeAsync(rd: RequestDataHolder): Promise[Result] = Akka.future {
     AppConfig.setUser(userOption)
     execute(rd)
   }
@@ -94,9 +93,7 @@ abstract class SecureAction(
       Api.errorResponse(
         rd.toString,
         rd.status().getOrElse(Results.InternalServerError),
-        rd.exception()
-      )
-    )
+        rd.exception()))
   }
 
   def handleWebError(rd: RequestDataHolder): Option[Result] = None
@@ -113,9 +110,8 @@ abstract class SecureAction(
     }
   }
 
-  protected def getHeaders(): Seq[Tuple2[String,String]] = Seq(
-    "Content-Language" -> "en"
-  )
+  protected def getHeaders(): Seq[Tuple2[String, String]] = Seq(
+    "Content-Language" -> "en")
 
   protected def isHtml(): Boolean = OutputType.isHtml(request)
   protected def isReadRequest(): Boolean = request.method == "GET" || request.method == "HEAD"
@@ -123,7 +119,7 @@ abstract class SecureAction(
   protected def isCreateRequest(): Boolean = request.method == "PUT"
   protected def isDeleteRequest(): Boolean = request.method == "DELETE"
 
-  private def checkAuthorization(): Either[Result,User] = {
+  private def checkAuthorization(): Either[Result, User] = {
     val path = request.path
     if (securitySpecification.isSecure) {
       securityHandler.authenticate(request) match {
@@ -137,13 +133,11 @@ abstract class SecureAction(
             Right(user)
           } else if (securityHandler.authorize(user, securitySpecification)) {
             logger.debug("Credentials required and found for resource %s, user %s".format(
-              path, user.username
-            ))
+              path, user.username))
             Right(user)
           } else {
             logger.info("Credentials required for %s but not found for user %s".format(
-              path, user.username
-            ))
+              path, user.username))
             Left(securityHandler.onUnauthorized(request))
           }
       }
@@ -184,7 +178,7 @@ abstract class SecureAction(
   private def run(): Promise[Result] = handleValidation() match {
     case Left(rd) => PurePromise(handleError(rd))
     case Right(rd) => handleExecution(rd) map {
-      case p: PlainResult => p.withHeaders(getHeaders:_*)
+      case p: PlainResult => p.withHeaders(getHeaders: _*)
       case o => o
     }
   }

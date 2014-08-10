@@ -29,11 +29,9 @@ object CreateAction {
   object Messages extends MessageHelper("assetlog.create") {
     val MessageError = messageWithDefault("error.messageInvalid", "Message must not be empty")
     val MessageTypeError = messageWithDefault(
-      "error.messageTypeInvalid", "Message type is invalid", ValidMessageTypes
-    )
+      "error.messageTypeInvalid", "Message type is invalid", ValidMessageTypes)
     val MessageSourceError = messageWithDefault(
-      "error.messageSourceInvalid", "Message source is invalid", ValidMessageSources
-    )
+      "error.messageSourceInvalid", "Message source is invalid", ValidMessageSources)
   }
 }
 
@@ -41,18 +39,16 @@ case class CreateAction(
   assetTag: String,
   defaultMessageType: LogMessageType.LogMessageType = CreateAction.DefaultMessageType,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction with ParamValidation {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction with ParamValidation {
 
   import CreateAction.Messages._
 
-  type DataForm = Tuple3[String,Option[String],Option[String]]
-  type FilledForm = Tuple3[String,LogSource.LogSource,LogMessageType.LogMessageType]
+  type DataForm = Tuple3[String, Option[String], Option[String]]
+  type FilledForm = Tuple3[String, LogSource.LogSource, LogMessageType.LogMessageType]
   val dataForm: Form[DataForm] = Form(tuple(
     "message" -> validatedText(1),
     "source" -> validatedOptionalText(1),
-    "type" -> validatedOptionalText(1)
-  ))
+    "type" -> validatedOptionalText(1)))
 
   case class ActionDataHolder(log: AssetLog) extends RequestDataHolder
 
@@ -79,11 +75,11 @@ case class CreateAction(
   protected def validateForm(asset: Asset): Validation = {
     dataForm.bindFromRequest()(request).fold(
       error => Left(RequestDataHolder.error400(MessageError)),
-      success => logFromRequestData(success) { case(messageBody, messageSource, messageType) =>
-        val msg = formatStringMessage(messageBody)
-        AssetLog(asset, msg, LogFormat.PlainText, messageSource, messageType)
-      }
-    )
+      success => logFromRequestData(success) {
+        case (messageBody, messageSource, messageType) =>
+          val msg = formatStringMessage(messageBody)
+          AssetLog(asset, msg, LogFormat.PlainText, messageSource, messageType)
+      })
   }
 
   // Validate a JSON blob submitted
@@ -97,8 +93,9 @@ case class CreateAction(
     omessage match {
       case None => Left(RequestDataHolder.error400(MessageError))
       case Some(message) =>
-        logFromRequestData(message, osource, otype) { case(messageBody,messageSource,messageType) =>
-          AssetLog(asset, messageBody, LogFormat.Json, LogSource.Api, messageType)
+        logFromRequestData(message, osource, otype) {
+          case (messageBody, messageSource, messageType) =>
+            AssetLog(asset, messageBody, LogFormat.Json, LogSource.Api, messageType)
         }
     }
   }
@@ -126,9 +123,9 @@ case class CreateAction(
   protected def extractLogData(form: DataForm) = {
     val (messageBody, messageSource, messageType) = form
     val filteredMessageType = messageType.orElse(Some(defaultMessageType.toString))
-                                .flatMap(convertMessageType(_))
+      .flatMap(convertMessageType(_))
     val filteredMessageSource = messageSource.map(_ => "USER").orElse(Some("API"))
-                                  .flatMap(convertMessageSource(_))
+      .flatMap(convertMessageSource(_))
     (messageBody, filteredMessageSource, filteredMessageType)
   }
 

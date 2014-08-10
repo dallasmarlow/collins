@@ -13,8 +13,7 @@ import controllers.ResponseData
 case class FindByAssetAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction with AddressActionHelper {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction with AddressActionHelper {
 
   case class ActionDataHolder(asset: Asset) extends RequestDataHolder
 

@@ -25,19 +25,16 @@ trait IntakeStage3Form extends ParamValidation {
   val intakeCustomFields = IntakeConfig.intake_field_names
 
   // See http://www.playframework.com/documentation/2.0/ScalaForms
-  type DataForm = (
-    String, // chassis tag
-    String // rack position
-   )
+  type DataForm = (String, // chassis tag
+  String // rack position
+  )
 
   val dataForm = Form(tuple(
     ChassisTag.toString -> validatedText(1),
-    RackPosition.toString -> validatedText(1)
-  ))
+    RackPosition.toString -> validatedText(1)))
 
   def formFromChassisTag(tag: String) = dataForm.bind(Map(
-    ChassisTag.toString -> tag
-  )).copy(errors = Nil)
+    ChassisTag.toString -> tag)).copy(errors = Nil)
 }
 
 object IntakeStage3Action extends IntakeStage3Form
@@ -45,12 +42,10 @@ object IntakeStage3Action extends IntakeStage3Form
 case class IntakeStage3Action(
   assetId: Long,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler)
-    with IntakeAction
-    with IntakeStage3Form
-    with ActionAttributeHelper
-{
+  handler: SecureController) extends SecureAction(spec, handler)
+  with IntakeAction
+  with IntakeStage3Form
+  with ActionAttributeHelper {
 
   protected val form = new AtomicReference[Form[DataForm]](dataForm)
 
@@ -59,19 +54,18 @@ case class IntakeStage3Action(
     chassisTag: String,
     rackPosition: String,
     customFieldMap: Map[String, String],
-    powerMap: Map[String, String]
-  ) extends RequestDataHolder
+    powerMap: Map[String, String]) extends RequestDataHolder
 
   override def invalidAttributeMessage(p: String) = "Parameter %s invalid".format(p)
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = super.validate() match {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = super.validate() match {
     case Right(_) =>
       val boundForm = dataForm.bindFromRequest()(request)
       form.set(boundForm)
       if (boundForm.hasErrors)
         Left(ActionError)
       else {
-        val (chassisTag, rackPosition ) = boundForm.get
+        val (chassisTag, rackPosition) = boundForm.get
         verifyChassisTag(chassisTag) match {
           case Right(cleanChassisTag) => {
             validateIntakeFields(cleanChassisTag, rackPosition)
@@ -86,8 +80,7 @@ case class IntakeStage3Action(
     case IntakeDataHolder(chassisTag, rackPosition, customFieldMap, powerMap) => {
       val basicMap = Map(
         ChassisTag.toString -> chassisTag,
-        RackPosition.toString -> rackPosition
-      )
+        RackPosition.toString -> rackPosition)
 
       val updateMap = basicMap ++ customFieldMap ++ powerMap
       // Asset Lifecycle business
@@ -97,12 +90,10 @@ case class IntakeStage3Action(
           handleError(RequestDataHolder.error400(error.getMessage))
         case Right(ok) if ok =>
           Redirect(app.routes.Resources.index).flashing(
-             "success" -> rootMessage("asset.intake.success", definedAsset.tag)
-          )
+            "success" -> rootMessage("asset.intake.success", definedAsset.tag))
         case Right(ok) if !ok =>
           handleError(RequestDataHolder.error400(
-            rootMessage("asset.intake.failed", definedAsset.tag)
-          ))
+            rootMessage("asset.intake.failed", definedAsset.tag)))
       }
     }
   }
@@ -115,7 +106,7 @@ case class IntakeStage3Action(
       Some(Status.Ok(Stage3Template(definedAsset, form.get)(flash, request)))
   }
 
-  private def validateIntakeFields(chassisTag: String, rackPosition: String): Either[RequestDataHolder,RequestDataHolder] = {
+  private def validateIntakeFields(chassisTag: String, rackPosition: String): Either[RequestDataHolder, RequestDataHolder] = {
     val pmap = PowerUnits.unitMapFromMap(getInputMap)
     PowerUnits.validateMap(pmap)
     val rp = cleanString(rackPosition).get
@@ -127,7 +118,7 @@ case class IntakeStage3Action(
     // Return the extracted values for the custom fields from the request
     intakeCustomFields.map((fieldName: String) => {
       val formValue = request().queryString(fieldName).mkString
-          fieldName -> formValue
+      fieldName -> formValue
     }).toMap
   }
 

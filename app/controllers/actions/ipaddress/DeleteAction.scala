@@ -20,20 +20,17 @@ import controllers.ResponseData
 case class DeleteAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction with ParamValidation {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction with ParamValidation {
 
   case class ActionDataHolder(asset: Asset, pool: Option[String]) extends RequestDataHolder
 
   val dataForm = Form(
-    "pool" -> validatedOptionalText(1)
-  )
+    "pool" -> validatedOptionalText(1))
 
   override def validate(): Validation = withValidAsset(assetTag) { asset =>
     val pool: Option[String] = dataForm.bindFromRequest()(request).fold(
       err => None,
-      str => str
-    )
+      str => str)
     Right(ActionDataHolder(asset, pool))
   }
 

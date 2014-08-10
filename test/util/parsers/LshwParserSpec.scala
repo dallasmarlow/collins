@@ -13,11 +13,11 @@ class LshwParserSpec extends Specification {
   class LshwParserHelper(val filename: String) extends Scope with CommonParserSpec[LshwRepresentation] {
     override def getParser(txt: String) =
       new LshwParser(txt)
-    def parsed(options: Map[String,String] = Map.empty) = getParseResults(filename, options)
+    def parsed(options: Map[String, String] = Map.empty) = getParseResults(filename, options)
   }
 
   "The Lshw Parser" should {
-   
+
     "Parse Dell (AMD) lshw output" in {
 
       "with a 10-Gig card" in new LshwParserHelper("lshw-10g.xml") {
@@ -28,12 +28,12 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 12
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(2.3, 0.1)
-    
+
           rep.totalMemory.inGigabytes must beCloseTo(32L, 1)
           rep.memoryBanksUsed mustEqual 4
           rep.memoryBanksUnused mustEqual 8
           rep.memoryBanksTotal mustEqual 12
-    
+
           rep.totalStorage.toHuman mustEqual "5.46 TB"
           rep.diskCount mustEqual 6
 
@@ -56,15 +56,15 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 12
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(2.3, 0.1)
-  
+
           rep.totalMemory.inGigabytes must beCloseTo(32L, 1)
           rep.memoryBanksUsed mustEqual 4
           rep.memoryBanksUnused mustEqual 8
           rep.memoryBanksTotal mustEqual 12
-    
+
           rep.totalStorage.toHuman mustEqual "5.46 TB"
           rep.diskCount mustEqual 6
-    
+
           rep.hasFlashStorage must beFalse
           rep.totalFlashStorage.toHuman mustEqual "0 Bytes"
           rep.totalUsableStorage.toHuman mustEqual "5.46 TB"
@@ -85,15 +85,15 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 12
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(2.3, 0.1)
-  
+
           rep.totalMemory.inGigabytes must beCloseTo(96L, 1)
           rep.memoryBanksUsed mustEqual 12
           rep.memoryBanksUnused mustEqual 0
           rep.memoryBanksTotal mustEqual 12
-    
+
           rep.totalStorage.toHuman mustEqual "931.52 GB"
           rep.diskCount mustEqual 2
-    
+
           rep.hasFlashStorage must beFalse
           rep.totalFlashStorage.toHuman mustEqual "0 Bytes"
           rep.totalUsableStorage.toHuman mustEqual "931.52 GB"
@@ -114,15 +114,15 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 12
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(2.3, 0.1)
-  
+
           rep.totalMemory.inGigabytes must beCloseTo(96L, 1)
           rep.memoryBanksUsed mustEqual 12
           rep.memoryBanksUnused mustEqual 0
           rep.memoryBanksTotal mustEqual 12
-    
+
           rep.totalStorage.toHuman mustEqual "931.52 GB"
           rep.diskCount mustEqual 2
-    
+
           rep.hasFlashStorage must beFalse
           rep.totalFlashStorage.toHuman mustEqual "0 Bytes"
           rep.totalUsableStorage.toHuman mustEqual "931.52 GB"
@@ -143,7 +143,7 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 12
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(2.3, 0.1)
-    
+
           rep.totalMemory.inGigabytes must beCloseTo(32L, 1)
           rep.memoryBanksUsed mustEqual 4
           rep.memoryBanksUnused mustEqual 8
@@ -152,10 +152,10 @@ class LshwParserSpec extends Specification {
           rep.hasFlashStorage must beTrue
           rep.totalFlashStorage.toHuman mustEqual "1.27 TB"
           rep.totalUsableStorage.toHuman mustEqual "1.55 TB"
-   
+
           rep.totalStorage.toHuman mustEqual "278.46 GB"
           rep.diskCount mustEqual 4
-    
+
           rep.nicCount mustEqual 2
           rep.hasGbNic must beTrue
           rep.has10GbNic must beFalse
@@ -175,12 +175,12 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 2
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(1.6, 0.1)
-    
+
           rep.totalMemory.inGigabytes must beCloseTo(72L, 1)
           rep.memoryBanksUsed mustEqual 18
           rep.memoryBanksUnused mustEqual 0
           rep.memoryBanksTotal mustEqual 18
-    
+
           rep.totalStorage.toHuman mustEqual "930.99 GB"
           rep.diskCount mustEqual 3
 
@@ -203,12 +203,12 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 2
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(2.3, 0.1)
-    
+
           rep.totalMemory.inGigabytes must beCloseTo(96L, 1)
           rep.memoryBanksUsed mustEqual 12
           rep.memoryBanksUnused mustEqual 0
           rep.memoryBanksTotal mustEqual 12
-    
+
           rep.totalStorage.toHuman mustEqual "931.52 GB"
           rep.diskCount mustEqual 2
 
@@ -228,12 +228,12 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 12
           rep.hasHyperthreadingEnabled must beTrue
           rep.cpuSpeed must beCloseTo(1.6, 0.1)
-    
+
           rep.totalMemory.inGigabytes must beCloseTo(72L, 1)
           rep.memoryBanksUsed mustEqual 18
           rep.memoryBanksUnused mustEqual 0
           rep.memoryBanksTotal mustEqual 18
-    
+
           rep.totalStorage.toHuman mustEqual "930.99 GB"
           rep.diskCount mustEqual 3
 
@@ -253,18 +253,18 @@ class LshwParserSpec extends Specification {
           rep.cpuCoreCount mustEqual 12
           rep.hasHyperthreadingEnabled must beFalse
           rep.cpuSpeed must beCloseTo(2.3, 0.1)
-    
+
           rep.totalMemory.inGigabytes must beCloseTo(32L, 1)
           rep.memoryBanksUsed mustEqual 4
           rep.memoryBanksUnused mustEqual 8
           rep.memoryBanksTotal mustEqual 12
-  
+
           rep.totalStorage.toHuman mustEqual "465.76 GB"
           rep.hasFlashStorage must beFalse
           rep.totalFlashStorage.toHuman mustEqual "0 Bytes"
           rep.diskCount mustEqual 1
           rep.hasCdRom must beFalse
-  
+
           rep.nicCount mustEqual 2
           rep.hasGbNic must beTrue
           rep.has10GbNic must beFalse
@@ -282,8 +282,7 @@ class LshwParserSpec extends Specification {
       "Different flash description and size" in new LshwParserHelper(file) {
         val config = Map(
           "flashProduct" -> "flashmax",
-          "flashSize" -> "1048576"
-        )
+          "flashSize" -> "1048576")
         val parseResults = parsed(config)
         parseResults must beRight
         parseResults.right.toOption must beSome.which { rep =>
@@ -296,8 +295,7 @@ class LshwParserSpec extends Specification {
       "Bad flash description" in new LshwParserHelper(file) {
         val config = Map(
           "flashProduct" -> "flashing memory",
-          "flashSize" -> "1048576"
-        )
+          "flashSize" -> "1048576")
         val parseResults = parsed(config)
         parseResults must beRight
         parseResults.right.toOption must beSome.which { rep =>
@@ -328,7 +326,7 @@ class LshwParserSpec extends Specification {
           rep.totalFlashStorage.toHuman mustEqual "0 Bytes"
           rep.diskCount mustEqual 2
           rep.hasCdRom must beTrue
-    
+
           rep.nicCount mustEqual 4
           rep.hasGbNic must beTrue
           rep.has10GbNic must beFalse
@@ -356,7 +354,7 @@ class LshwParserSpec extends Specification {
           rep.totalFlashStorage.toHuman mustEqual "0 Bytes"
           rep.diskCount mustEqual 2
           rep.hasCdRom must beTrue
-    
+
           rep.nicCount mustEqual 4
           rep.hasGbNic must beTrue
           rep.has10GbNic must beFalse
@@ -446,13 +444,12 @@ class LshwParserSpec extends Specification {
           rep.base.description mustEqual "Multi-system"
           rep.base.product mustEqual "ProLiant SL335s G7"
           rep.base.vendor mustEqual "HP"
-          }
-       }
+        }
+      }
 
       "wonky amd-opteron output w/ show empty sockets" in new LshwParserHelper("lshw-amd-opteron-wonky.xml") {
         val config = Map(
-          "includeEmptySocket" -> "true"
-        )
+          "includeEmptySocket" -> "true")
         val parseResults = parsed(config)
         parseResults must beRight
         parseResults.right.toOption must beSome.which { rep =>

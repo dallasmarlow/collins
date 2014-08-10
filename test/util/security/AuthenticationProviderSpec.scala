@@ -17,8 +17,7 @@ object AuthenticationProviderSpec extends Specification with ResourceFinder {
     "work with file based auth" >> {
       val authFile = findResource("htpasswd_users")
       val configData = Map(
-        "userfile" -> authFile.getAbsolutePath
-      )
+        "userfile" -> authFile.getAbsolutePath)
       val config = Configuration.from(configData)
       _root_.util.config.AppConfig.globalConfig = Some(config)
       FileAuthenticationProviderConfig.initialize
@@ -26,16 +25,16 @@ object AuthenticationProviderSpec extends Specification with ResourceFinder {
 
       val users = Seq(
         ("blake", "password123", Set("engineering")),
-        ("testuser", "FizzBuzzAbc", Set("ny","also"))
-      )
+        ("testuser", "FizzBuzzAbc", Set("ny", "also")))
 
-      users.foreach { case(username,password,roles) =>
-        val user = provider.authenticate(username, password)
-        user must beSome[User]
-        user.get.username mustEqual username
-        user.get.password mustNotEqual password
-        user.get.isAuthenticated must beTrue
-        user.get.roles mustEqual roles
+      users.foreach {
+        case (username, password, roles) =>
+          val user = provider.authenticate(username, password)
+          user must beSome[User]
+          user.get.username mustEqual username
+          user.get.password mustNotEqual password
+          user.get.isAuthenticated must beTrue
+          user.get.roles mustEqual roles
       }
       provider.authenticate("blake", "abbazabba") must beNone
     }

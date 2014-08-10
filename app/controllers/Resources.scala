@@ -20,7 +20,6 @@ trait Resources extends Controller {
     Ok(html.resources.index(AssetMeta.getViewable())).withHeaders("Content-Language" -> "en")
   }(Permissions.Resources.Index)
 
-
   def displayCreateForm(assetType: String) = SecureAction { implicit req =>
     AssetType.findByName(assetType) match {
       case None =>
@@ -34,17 +33,15 @@ trait Resources extends Controller {
   }(Permissions.Resources.CreateForm)
 
   def createAsset(atype: String) = CreateAction(
-    None, Some(atype), Permissions.Resources.CreateAsset, this
-  )
+    None, Some(atype), Permissions.Resources.CreateAsset, this)
 
   /**
    * Find assets by query parameters, special care for ASSET_TAG
    */
   def find(page: Int, size: Int, sort: String, operation: String, sortField: String) = FindAction(
-    PageParams(page, size, sort, sortField), operation, Permissions.Resources.Find, this
-  )
+    PageParams(page, size, sort, sortField), operation, Permissions.Resources.Find, this)
 
-  def similar(tag: String, page: Int, size: Int, sort: String) = 
+  def similar(tag: String, page: Int, size: Int, sort: String) =
     FindSimilarAction(tag, PageParams(page, size, sort, "sparse"), Permissions.Resources.Find, this)
 
   def intake(id: Long, stage: Int = 1) = stage match {

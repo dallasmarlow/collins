@@ -2,7 +2,7 @@ package util
 
 import config.Feature
 
-import models.{Asset, AssetMeta, AssetMetaValue, IpAddresses, IpmiInfo, State, Status}
+import models.{ Asset, AssetMeta, AssetMetaValue, IpAddresses, IpmiInfo, State, Status }
 import models.conversions._
 
 import java.util.Date

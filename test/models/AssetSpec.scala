@@ -24,7 +24,7 @@ class AssetSpec extends ApplicationSpecification {
         val realAsset = maybeAsset.get
         Asset.update(realAsset.copy(status = Status.New.get.id))
         Asset.findByTag(assetTag).map { a =>
-          a.getStatus().getId mustEqual(Status.New.get.id)
+          a.getStatus().getId mustEqual (Status.New.get.id)
         }.getOrElse(failure("Couldn't find asset but expected to"))
       }
 
@@ -37,9 +37,9 @@ class AssetSpec extends ApplicationSpecification {
     }
 
     "Support nodeclass" in {
-      
+
       "nodeClass" in new mocknodeclass {
-        val nodeclass = Asset.create(Asset(nodeclassTag, nodeclassStatus,nodeclassType))
+        val nodeclass = Asset.create(Asset(nodeclassTag, nodeclassStatus, nodeclassType))
         val testAsset = Asset.create(Asset(assetTag, assetStatus, assetType))
         val nodeclassMetas = createAssetMetas(nodeclass, (nodeclassMetaTags + nodeclassIdentifierTag))
         val assetMetas = createAssetMetas(testAsset, nodeclassMetaTags)
@@ -47,25 +47,25 @@ class AssetSpec extends ApplicationSpecification {
       }
 
       "findSimilar" in new mocknodeclass {
-        val assets = similarAssetData.map{case (tag, status, metatags) => {
-          val asset = Asset.create(Asset(tag, status, AssetType.ServerNode.get))
-          createAssetMetas(asset, metatags)
-          asset
-        }}
+        val assets = similarAssetData.map {
+          case (tag, status, metatags) => {
+            val asset = Asset.create(Asset(tag, status, AssetType.ServerNode.get))
+            createAssetMetas(asset, metatags)
+            asset
+          }
+        }
         val finder = AssetFinder.empty.copy(
           status = Status.Unallocated,
-          assetType = Some(AssetType.ServerNode.get)
-        )
-        val expected = assets.filter{_.tag == similarAssetTag}
-        val page = PageParams(0,10, "", "tag")
-        Asset.findByTag(assetTag).map{asset =>
+          assetType = Some(AssetType.ServerNode.get))
+        val expected = assets.filter { _.tag == similarAssetTag }
+        val page = PageParams(0, 10, "", "tag")
+        Asset.findByTag(assetTag).map { asset =>
           Asset.findSimilar(asset, page, finder, AssetSortType.Distribution).items must_== expected
         }.getOrElse(failure("Couldn't find asset but expected to"))
 
       }
 
     } //support nodeclass
-        
 
     "Support getters/finders" in {
 
@@ -104,8 +104,9 @@ class AssetSpec extends ApplicationSpecification {
 
   trait mocknodeclass extends Scope {
     def createAssetMetas(asset: Asset, metamap: Map[String, String]) = metamap
-      .map{ case (k,v) => 
-        AssetMetaValue.create(AssetMetaValue(asset.id, AssetMeta.findOrCreateFromName(k).id, 0, v))
+      .map {
+        case (k, v) =>
+          AssetMetaValue.create(AssetMetaValue(asset.id, AssetMeta.findOrCreateFromName(k).id, 0, v))
       }
     val nodeclassTag = "test_nodeclass"
     val nodeclassStatus = Status.Allocated.get
@@ -116,13 +117,10 @@ class AssetSpec extends ApplicationSpecification {
     val assetStatus = Status.Allocated.get
     val assetType = AssetType.ServerNode.get
     val similarAssetTag = "similar_asset"
-    val similarAssetData = List[(String, Status, Map[String,String])](
-      (similarAssetTag,Status.Unallocated.get,nodeclassMetaTags),
-      ("not_similar",Status.Unallocated.get,Map[String,String]()),
-      ("similar_not_unallocated", Status.Provisioned.get,nodeclassMetaTags)
-    )
+    val similarAssetData = List[(String, Status, Map[String, String])](
+      (similarAssetTag, Status.Unallocated.get, nodeclassMetaTags),
+      ("not_similar", Status.Unallocated.get, Map[String, String]()),
+      ("similar_not_unallocated", Status.Provisioned.get, nodeclassMetaTags))
   }
-
-
 
 }

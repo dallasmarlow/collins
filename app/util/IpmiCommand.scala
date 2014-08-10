@@ -16,7 +16,7 @@ import play.api.Logger
 
 object IpmiCommand {
   type BackgroundResult = Tuple2[Option[Throwable], Option[Option[CommandResult]]]
-  def fromResult(r: BackgroundResult): Either[Throwable,Option[CommandResult]] = r match {
+  def fromResult(r: BackgroundResult): Either[Throwable, Option[CommandResult]] = r match {
     case (None, None) =>
       Left(new Exception("No command result AND no throwable"))
     case (Some(ex), _) =>
@@ -55,8 +55,7 @@ abstract class IpmiCommand extends BackgroundProcess[Option[CommandResult]] {
     val exitStatus = try {
       process ! ProcessLogger(
         s => stdout.append(s + "\n"),
-        e => stderr.append(e + "\n")
-      )
+        e => stderr.append(e + "\n"))
     } catch {
       case e: Throwable =>
         stderr.append(e.getMessage)

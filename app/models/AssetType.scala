@@ -27,28 +27,24 @@ object AssetType extends Schema with AnormAdapter[AssetType] {
 
   override val tableDef = table[AssetType]("asset_type")
   on(tableDef)(a => declare(
-    a.id is(autoIncremented,primaryKey),
-    a.name is(unique)
-  ))
+    a.id is (autoIncremented, primaryKey),
+    a.name is (unique)))
 
   implicit object AssetTypeFormat extends Format[AssetType] {
     override def reads(json: JsValue) = AssetType(
       (json \ "NAME").as[String],
       (json \ "LABEL").as[String],
-      (json \ "ID").asOpt[Int].getOrElse(0)
-    )
+      (json \ "ID").asOpt[Int].getOrElse(0))
     override def writes(at: AssetType) = JsObject(Seq(
       "ID" -> Json.toJson(at.id),
       "NAME" -> Json.toJson(at.name),
-      "LABEL" -> Json.toJson(at.label)
-    ))
+      "LABEL" -> Json.toJson(at.label)))
   }
 
   override def cacheKeys(a: AssetType) = Seq(
     "AssetType.findById(%d)".format(a.id),
     "AssetType.findByName(%s)".format(a.name.toUpperCase),
-    "AssetType.find"
-  )
+    "AssetType.find")
 
   def findById(id: Int): Option[AssetType] =
     getOrElseUpdate("AssetType.findById(%d)".format(id)) {
@@ -64,8 +60,7 @@ object AssetType extends Schema with AnormAdapter[AssetType] {
   def findByName(name: String): Option[AssetType] =
     getOrElseUpdate("AssetType.findByName(%s)".format(name.toUpperCase)) {
       tableDef.where(a =>
-        a.name.toLowerCase === name.toLowerCase
-      ).headOption
+        a.name.toLowerCase === name.toLowerCase).headOption
     }
 
   override def delete(a: AssetType): Int = inTransaction {

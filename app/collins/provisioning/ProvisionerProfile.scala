@@ -10,8 +10,7 @@ case class ProvisionerProfile(
   label: String,
   prefix: String,
   allow_suffix: Boolean,
-  role: ProvisionerRoleData
-) extends Ordered[ProvisionerProfile] {
+  role: ProvisionerRoleData) extends Ordered[ProvisionerProfile] {
   override def compare(that: ProvisionerProfile): Int = {
     this.label.compare(that.label)
   }

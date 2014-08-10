@@ -5,18 +5,18 @@ import akka.util.duration._
 
 import java.util.Date
 
-import models.{Asset, AssetFinder, AssetLog, AssetMeta, AssetMetaValue, AssetType, IpAddresses, MetaWrapper, Page, PageParams, Status, Truthy}
+import models.{ Asset, AssetFinder, AssetLog, AssetMeta, AssetMetaValue, AssetType, IpAddresses, MetaWrapper, Page, PageParams, Status, Truthy }
 import models.asset.AssetView
 import models.IpmiInfo.Enum._
 import models.SortDirection._
 
-import org.apache.solr.client.solrj.{SolrServer, SolrQuery}
+import org.apache.solr.client.solrj.{ SolrServer, SolrQuery }
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
-import org.apache.solr.common.{SolrDocument, SolrInputDocument}
+import org.apache.solr.common.{ SolrDocument, SolrInputDocument }
 import org.apache.solr.core.CoreContainer
-import org.apache.solr.client.solrj.impl.{HttpSolrServer, XMLResponseParser}
+import org.apache.solr.client.solrj.impl.{ HttpSolrServer, XMLResponseParser }
 
-import play.api.{Application, Logger, Play, PlayException, Plugin}
+import play.api.{ Application, Logger, Play, PlayException, Plugin }
 import play.api.libs.concurrent._
 import play.api.libs.concurrent.Akka._
 import play.api.Play.current
@@ -103,35 +103,35 @@ class SolrPlugin(app: Application) extends Plugin {
     Callback.on("asset_log_update", logCallback)
   }
 
-  def populate() = Akka.future { 
-    _server.map{ server => 
+  def populate() = Akka.future {
+    _server.map { server =>
       val indexTime = new Date
 
       //Assets
       logger.debug("Populating Solr with Assets")
       val assets = Asset.findRaw()
       updateAssets(assets, indexTime)
-      server.deleteByQuery( """SELECT asset WHERE last_indexed < %s""".format(Formatter.solrDateFormat(indexTime)).solr )
+      server.deleteByQuery("""SELECT asset WHERE last_indexed < %s""".format(Formatter.solrDateFormat(indexTime)).solr)
 
       //logs
       logger.debug("Populating Asset Logs")
-      val num = assets.map{asset =>
+      val num = assets.map { asset =>
         val logs = AssetLog.findByAsset(asset)
         updateAssetLogs(logs, indexTime, false)
         logs.size
       }.sum
-      _server.foreach{_.commit()}
+      _server.foreach { _.commit() }
       logger.info("Indexed %d logs".format(num))
       server.deleteByQuery("""SELECT asset_log WHERE last_indexed < %s""".format(Formatter.solrDateFormat(indexTime)).solr)
     }.getOrElse(logger.warn("attempted to populate solr when no server was initialized"))
   }
 
   def updateItems[T](items: Seq[T], serializer: SolrSerializer[T], indexTime: Date, commit: Boolean = true) {
-    _server.map{server =>
-      val docs = items.map{item => prepForInsertion(serializer.serialize(item, indexTime))}
+    _server.map { server =>
+      val docs = items.map { item => prepForInsertion(serializer.serialize(item, indexTime)) }
       if (docs.size > 0) {
         val fuckingJava = new java.util.ArrayList[SolrInputDocument]
-        docs.foreach{doc => fuckingJava.add(doc)}
+        docs.foreach { doc => fuckingJava.add(doc) }
         server.add(fuckingJava)
         if (commit) {
           server.commit()
@@ -153,16 +153,16 @@ class SolrPlugin(app: Application) extends Plugin {
   }
 
   def updateAssetLogs(logs: Seq[AssetLog], indexTime: Date, commit: Boolean = true) {
-    updateItems[AssetLog](logs, assetLogSerializer, indexTime,commit)
+    updateItems[AssetLog](logs, assetLogSerializer, indexTime, commit)
   }
 
   override def onStop() {
-    _server.foreach{case s: EmbeddedSolrServer => s.shutdown}
+    _server.foreach { case s: EmbeddedSolrServer => s.shutdown }
   }
 
   def prepForInsertion(typedMap: AssetSolrDocument): SolrInputDocument = {
     val input = new SolrInputDocument
-    typedMap.foreach{case(key,value) => input.addField(key.resolvedName,value.value)}
+    typedMap.foreach { case (key, value) => input.addField(key.resolvedName, value.value) }
     input
   }
 }

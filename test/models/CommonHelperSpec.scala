@@ -17,7 +17,6 @@ trait CommonHelperSpec[REP] extends ResourceFinder {
     parsed.right.getOrElse(throw parsed.left.get)
   }
 
-
   def getStub(): Asset = {
     Asset("test", Status.New.get.id, AssetType.ServerNode.get.id, new Date().asTimestamp, None, None, 1)
   }

@@ -13,7 +13,7 @@ sealed trait PowerComponent extends Ordered[PowerComponent] {
   def config: PowerConfiguration
   def id: Int // the id of the power unit
   // the position of the component within a unit, not physical position, this has to do with ordering during display
-  def position: Int 
+  def position: Int
   def value: Option[String] // value of the power component
 
   def label = PowerConfiguration.Messages.ComponentLabel(typeName, sid)
@@ -50,8 +50,7 @@ case class PowerComponentValue(
   config: PowerConfiguration,
   id: Int,
   position: Int,
-  value: Option[String] = None
-) extends PowerComponent
+  value: Option[String] = None) extends PowerComponent
 
 object PowerComponent {
   private def unidentify(s: String): String = s.replaceAll("^POWER_", "")
@@ -66,8 +65,7 @@ object PowerComponent {
       PowerConfiguration.get(),
       unkey((json \ "KEY").as[String]),
       (json \ "POSITION").as[Int],
-      (json \ "VALUE").asOpt[String]
-    )
+      (json \ "VALUE").asOpt[String])
 
     override def writes(pc: PowerComponent) = JsObject(Seq(
       "KEY" -> toJson(pc.key),
@@ -76,7 +74,6 @@ object PowerComponent {
       "LABEL" -> toJson(pc.label),
       "POSITION" -> toJson(pc.position),
       "IS_REQUIRED" -> toJson(pc.isRequired),
-      "UNIQUE" -> toJson(pc.isUnique)
-    ))
+      "UNIQUE" -> toJson(pc.isUnique)))
   }
 }

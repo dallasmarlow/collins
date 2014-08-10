@@ -17,8 +17,7 @@ import util.security.SecuritySpecification
 case class PowerStatusAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends PowerManagementActionHelper(assetTag, spec, handler) {
+  handler: SecureController) extends PowerManagementActionHelper(assetTag, spec, handler) {
 
   override val powerAction = Some(PowerState)
 
@@ -27,7 +26,7 @@ case class PowerStatusAction(
   override protected def assetStateAllowed(asset: Asset): Boolean = true
 
   override protected def onNoResult(): ResponseData = if (AppConfig.isDev) {
-     ResponseData(Status.Ok, JsObject(Seq("MESSAGE" -> JsString("on - fake for dev"))))
+    ResponseData(Status.Ok, JsObject(Seq("MESSAGE" -> JsString("on - fake for dev"))))
   } else {
     super.onNoResult()
   }

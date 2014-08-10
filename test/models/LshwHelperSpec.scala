@@ -1,6 +1,5 @@
 package models
 
-
 import helpers.ApplicationSpecification
 import util.parsers.LshwParser
 import util.parsers.LshwParser
@@ -86,7 +85,7 @@ class LshwHelperSpec extends ApplicationSpecification {
       }
       "update asset LSHW with smaller profile" in new AssetUpdateHelper("lshw-small.xml") {
         //lshw-small.xml has no disks
-        Asset.findByTag(assetTag).map{asset =>
+        Asset.findByTag(assetTag).map { asset =>
           LshwHelper.updateAsset(asset, parsed())
           asset.getMetaAttribute(AssetMeta.Enum.DiskType.toString) must beNone
         }.getOrElse(failure("expected to find asset"))

@@ -15,13 +15,12 @@ case class GetAction(
   assetTag: String,
   location: Option[String],
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
   case class AssetDataHolder(asset: Asset) extends RequestDataHolder
   case class RedirectDataHolder(host: RemoteCollinsHost) extends RequestDataHolder
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = location match {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = location match {
     case Some(locationTag) =>
       assetFromTag(locationTag) match {
         case None => Left(RequestDataHolder.error404("Unknown location %s".format(locationTag)))
@@ -33,8 +32,7 @@ case class GetAction(
           } catch {
             case e =>
               Left(RequestDataHolder.error500("Invalid LOCATION url for asset %s: %s".format(
-                locationTag, e.getMessage
-              )))
+                locationTag, e.getMessage)))
           }
         }
       }

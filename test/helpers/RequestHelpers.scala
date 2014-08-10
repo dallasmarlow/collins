@@ -11,14 +11,13 @@ import play.api.mvc.AnyContent
 import play.api.mvc.AnyContentAsEmpty
 import play.api.mvc.RequestHeader
 import play.api.test.FakeHeaders
-import play.api.test.{FakeRequest => PlayFakeRequest}
+import play.api.test.{ FakeRequest => PlayFakeRequest }
 
 object FakeRequestHeader {
   def apply[A](req: PlayFakeRequest[A]) = new FakeRequestHeader(
     method = req.method,
     uri = req.uri,
-    headers = req.headers
-  )
+    headers = req.headers)
   def withAcceptHeader(value: String) = {
     FakeRequestHeader(FakeRequest()).copy(headers = FakeHeaders(Map(HeaderNames.ACCEPT -> Seq(value))))
   }
@@ -27,8 +26,7 @@ object FakeRequestHeader {
 case class FakeRequestHeader(
   method: String = "GET",
   uri: String = "/",
-  headers: FakeHeaders = FakeHeaders()
-) extends RequestHeader {
+  headers: FakeHeaders = FakeHeaders()) extends RequestHeader {
   lazy val path = uri.split('?').take(1).mkString
   lazy val queryString = play.core.parsers.FormUrlEncodedParser.parse(rawQueryString)
   val remoteAddress = "127.0.0.1"
@@ -37,8 +35,7 @@ case class FakeRequestHeader(
       this.method,
       this.uri,
       this.headers,
-      body
-    )
+      body)
 }
 
 object FakeRequest {
@@ -52,7 +49,7 @@ object FakeRequest {
 }
 
 object ResultType {
-  type ResultTuple = Tuple3[Int, Map[String,String], String]
+  type ResultTuple = Tuple3[Int, Map[String, String], String]
 }
 
 abstract class ResponseMatcher(contentType: String) extends Matcher[ResultType.ResultTuple] {
@@ -68,8 +65,7 @@ abstract class ResponseMatcher(contentType: String) extends Matcher[ResultType.R
       status,
       "Got expected %s response".format(contentType),
       "Invalid %s response for %s".format(contentType, s.value),
-      s
-    )
+      s)
   }
 }
 
@@ -83,8 +79,7 @@ trait ResponseMatchHelpers {
       result(code == expectedCode,
         "expected and got %d".format(expectedCode),
         "expected %d, got %d".format(expectedCode, code),
-        s
-      )
+        s)
     }
   }
 
@@ -96,8 +91,7 @@ trait ResponseMatchHelpers {
       result(matchResult,
         "Response is JSON and contains data key",
         "Response is not JSON or does not contain a 'data' key: %s".format(response),
-        s
-      )
+        s)
     }
     def which(f: String => Boolean) = new Matcher[ResultTuple] {
       def apply[S <: ResultTuple](a: Expectable[S]) = {

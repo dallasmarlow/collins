@@ -20,12 +20,10 @@ trait CallbackActionRunner[T] extends CallbackActionHandler {
     }
     val replacements = getMethodReplacements()
     logger.debug("Got replacements for command %s: %s".format(commandString,
-      replacements.map(_.toString).mkString(", ")
-    ))
+      replacements.map(_.toString).mkString(", ")))
     val replacementsWithValues = replacements.map(_.runMethod(value))
     logger.debug("Got replacements (with values) for command %s: %s".format(commandString,
-      replacementsWithValues.map(_.toString).mkString(", ")
-    ))
+      replacementsWithValues.map(_.toString).mkString(", ")))
     val cmdValue = formatCommand(value, replacementsWithValues)
     logger.debug("Got new command with replacements: %s".format(cmdValue))
     runCommand(cmdValue)

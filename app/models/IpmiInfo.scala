@@ -1,7 +1,7 @@
 package models
 
 import asset.AssetView
-import shared.{AddressPool,IpAddressConfig}
+import shared.{ AddressPool, IpAddressConfig }
 import util.CryptoCodec
 import util.IpAddress
 import util.config.Configurable
@@ -19,8 +19,7 @@ case class IpmiInfo(
   gateway: Long,
   address: Long,
   netmask: Long,
-  id: Long = 0) extends IpAddressable
-{
+  id: Long = 0) extends IpAddressable {
   import conversions._
   override def validate() {
     super.validate()
@@ -47,12 +46,11 @@ object IpmiInfo extends IpAddressStorage[IpmiInfo] {
 
   val tableDef = table[IpmiInfo]("ipmi_info")
   on(tableDef)(i => declare(
-    i.id is(autoIncremented,primaryKey),
-    i.asset_id is(unique),
-    i.address is(unique),
-    i.gateway is(indexed),
-    i.netmask is(indexed)
-  ))
+    i.id is (autoIncremented, primaryKey),
+    i.asset_id is (unique),
+    i.address is (unique),
+    i.gateway is (indexed),
+    i.netmask is (indexed)))
 
   def createForAsset(asset: Asset): IpmiInfo = inTransaction {
     val assetId = asset.getId
@@ -61,8 +59,7 @@ object IpmiInfo extends IpAddressStorage[IpmiInfo] {
     createWithRetry(10) { attempt =>
       val (gateway, address, netmask) = getNextAvailableAddress()(None)
       val ipmiInfo = IpmiInfo(
-        assetId, username, password, gateway, address, netmask
-      )
+        assetId, username, password, gateway, address, netmask)
       tableDef.insert(ipmiInfo)
     }
   }
@@ -76,21 +73,20 @@ object IpmiInfo extends IpAddressStorage[IpmiInfo] {
     def whereClause(assetRow: Asset, ipmiRow: IpmiInfo) = {
       where(
         assetRow.id === ipmiRow.asset_id and
-        finder.asLogicalBoolean(assetRow) and
-        collectParams(ipmi, ipmiRow)
-      )
+          finder.asLogicalBoolean(assetRow) and
+          collectParams(ipmi, ipmiRow))
     }
-    inTransaction { log {
-      val results = from(Asset.tableDef, tableDef)((assetRow, ipmiRow) =>
-        whereClause(assetRow, ipmiRow)
-        select(assetRow)
-      ).page(page.offset, page.size).toList
-      val totalCount = from(Asset.tableDef, tableDef)((assetRow, ipmiRow) =>
-        whereClause(assetRow, ipmiRow)
-        compute(count)
-      )
-      Page(results, page.page, page.offset, totalCount)
-    }}
+    inTransaction {
+      log {
+        val results = from(Asset.tableDef, tableDef)((assetRow, ipmiRow) =>
+          whereClause(assetRow, ipmiRow)
+            select (assetRow)).page(page.offset, page.size).toList
+        val totalCount = from(Asset.tableDef, tableDef)((assetRow, ipmiRow) =>
+          whereClause(assetRow, ipmiRow)
+            compute (count))
+        Page(results, page.page, page.offset, totalCount)
+      }
+    }
   }
 
   override def get(i: IpmiInfo) = getOrElseUpdate(getKey.format(i.id)) {
@@ -129,21 +125,22 @@ object IpmiInfo extends IpAddressStorage[IpmiInfo] {
   // Converts our query parameters to fragments and parameters for a query
   private[this] def collectParams(ipmi: Seq[Tuple2[IpmiInfo.Enum, String]], ipmiRow: IpmiInfo): LogicalBoolean = {
     import Enum._
-    val results: Seq[LogicalBoolean] = ipmi.map { case(enum, value) =>
-      enum match {
-        case IpmiAddress =>
-          (ipmiRow.address === IpAddress.toLong(value))
-        case IpmiUsername =>
-          (ipmiRow.username === value)
-        case IpmiGateway =>
-          (ipmiRow.gateway === IpAddress.toLong(value))
-        case IpmiNetmask =>
-          (ipmiRow.netmask === IpAddress.toLong(value))
-        case e =>
-          throw new Exception("Unhandled IPMI tag: %s".format(e))
-      }
+    val results: Seq[LogicalBoolean] = ipmi.map {
+      case (enum, value) =>
+        enum match {
+          case IpmiAddress =>
+            (ipmiRow.address === IpAddress.toLong(value))
+          case IpmiUsername =>
+            (ipmiRow.username === value)
+          case IpmiGateway =>
+            (ipmiRow.gateway === IpAddress.toLong(value))
+          case IpmiNetmask =>
+            (ipmiRow.netmask === IpAddress.toLong(value))
+          case e =>
+            throw new Exception("Unhandled IPMI tag: %s".format(e))
+        }
     }
-    results.reduceRight((a,b) => new BinaryOperatorNodeLogicalBoolean(a, b, "and"))
+    results.reduceRight((a, b) => new BinaryOperatorNodeLogicalBoolean(a, b, "and"))
   }
 
 }

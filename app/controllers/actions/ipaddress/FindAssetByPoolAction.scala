@@ -15,8 +15,7 @@ import controllers.ResponseData
 case class FindAssetsByPoolAction(
   pool: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AddressActionHelper {
+  handler: SecureController) extends SecureAction(spec, handler) with AddressActionHelper {
 
   case class ActionDataHolder(cleanPool: String) extends RequestDataHolder
 
@@ -28,8 +27,7 @@ case class FindAssetsByPoolAction(
       IpAddresses.findInPool(cleanPool) match {
         case Nil =>
           handleError(
-            RequestDataHolder.error404("No such pool or no assets in pool")
-          )
+            RequestDataHolder.error404("No such pool or no assets in pool"))
         case list =>
           val jsList = list.map(e => Asset.findById(e.asset_id).get.toJsValue).toList
           ResponseData(Status.Ok, JsObject(Seq("ASSETS" -> JsArray(jsList))))

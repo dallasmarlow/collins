@@ -96,5 +96,4 @@ package object forms {
     def unbind(key: String, value: SolrExpression) = Map(key -> value.toString)
   }
 
-
 }

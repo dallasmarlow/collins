@@ -52,8 +52,7 @@ trait IpAddressStorage[T <: IpAddressable] extends Schema with AnormAdapter[T] {
   override def cacheKeys(a: T) = Seq(
     findByAssetKey.format(a.asset_id),
     findAllByAssetKey.format(a.asset_id),
-    getKey.format(a.id)
-  )
+    getKey.format(a.id))
 
   protected[this] val logger = Logger.logger
 
@@ -64,16 +63,17 @@ trait IpAddressStorage[T <: IpAddressable] extends Schema with AnormAdapter[T] {
   }
 
   def deleteByAsset(a: Asset)(implicit mf: Manifest[T]): Int = inTransaction {
-    findAllByAsset(a).foldLeft(0) { case(sum, ipInfo) =>
-      sum + delete(ipInfo)
+    findAllByAsset(a).foldLeft(0) {
+      case (sum, ipInfo) =>
+        sum + delete(ipInfo)
     }
   }
 
   def findAllByAsset(asset: Asset, checkCache: Boolean = true)(implicit mf: Manifest[T]): Seq[T] = {
     lazy val op = tableDef.where(a => a.asset_id === asset.getId).toList
     if (checkCache) {
-      getOrElseUpdate(findAllByAssetKey.format(asset.getId)) (op)
-    } else inTransaction {op}
+      getOrElseUpdate(findAllByAssetKey.format(asset.getId))(op)
+    } else inTransaction { op }
   }
 
   def findByAsset(asset: Asset)(implicit mf: Manifest[T]): Option[T] = {
@@ -82,7 +82,7 @@ trait IpAddressStorage[T <: IpAddressable] extends Schema with AnormAdapter[T] {
     }
   }
 
-  def getNextAvailableAddress(overrideStart: Option[String] = None)(implicit scope: Option[String]): Tuple3[Long,Long,Long] = {
+  def getNextAvailableAddress(overrideStart: Option[String] = None)(implicit scope: Option[String]): Tuple3[Long, Long, Long] = {
     //this is used by ip allocation without pools (i.e. IPMI)
     val network = getNetwork
     val startAt = overrideStart.orElse(getStartAddress)
@@ -119,8 +119,7 @@ trait IpAddressStorage[T <: IpAddressable] extends Schema with AnormAdapter[T] {
       }
     } while (!res.isDefined && i < retryCount)
     res.getOrElse(
-      throw new RuntimeException("Unable to create address after %d tries".format(retryCount))
-    )
+      throw new RuntimeException("Unable to create address after %d tries".format(retryCount)))
   }
 
   /*
@@ -138,19 +137,17 @@ trait IpAddressStorage[T <: IpAddressable] extends Schema with AnormAdapter[T] {
     val sortedAddresses = from(tableDef)(t =>
       where(
         (t.address gte minAddress) and
-        (t.address lte maxAddress)
-      )
-      select(t.address)
-      orderBy(t.address asc)
-    ).toSeq
+          (t.address lte maxAddress))
+        select (t.address)
+        orderBy (t.address asc)).toSeq
 
     lazy val localMaximaAddresses = for {
-      i <- Range(0, sortedAddresses.size-1).inclusive.toStream
+      i <- Range(0, sortedAddresses.size - 1).inclusive.toStream
       curr = sortedAddresses(i)
-      next = sortedAddresses.lift(i+1)
+      next = sortedAddresses.lift(i + 1)
       nextAddress = calc.incrementAddressUnchecked(curr)
       // address should not have an allocated address logically after it
-      if (next.map{_ > nextAddress}.getOrElse(true))
+      if (next.map { _ > nextAddress }.getOrElse(true))
       // address should not be the last address in the IP range
       if (curr < maxAddress)
     } yield curr

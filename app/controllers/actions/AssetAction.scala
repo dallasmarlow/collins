@@ -83,8 +83,8 @@ trait AssetResultsAction {
   }
 
   protected def handleApiSuccess(p: Page[AssetView], details: Boolean): Result = {
-    val items = p.items.map { 
-      case a: Asset => if (details){
+    val items = p.items.map {
+      case a: Asset => if (details) {
         a.getAllAttributes.exposeCredentials(user.canSeePasswords).toJsValue
       } else {
         a.toJsValue
@@ -92,7 +92,6 @@ trait AssetResultsAction {
       case v: RemoteAsset => v.toJsValue
     }.toList
     ResponseData(Status.Ok, JsObject(p.getPaginationJsObject() ++ Seq(
-      "Data" -> JsArray(items)
-    )), p.getPaginationHeaders)
+      "Data" -> JsArray(items))), p.getPaginationHeaders)
   }
 }

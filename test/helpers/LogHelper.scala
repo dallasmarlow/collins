@@ -2,7 +2,7 @@ package helpers
 
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
-import play.api.{Logger => PlayLogger}
+import play.api.{ Logger => PlayLogger }
 
 object LogHelper extends LogHelper
 trait LogHelper {
@@ -21,9 +21,9 @@ trait LogHelper {
 
   def setLevel(level: Level, name: Option[String] = None) {
     val logger = name
-                  .map(PlayLogger(_).logger)
-                  .getOrElse(PlayLogger.logger)
-                  .asInstanceOf[Logger]
+      .map(PlayLogger(_).logger)
+      .getOrElse(PlayLogger.logger)
+      .asInstanceOf[Logger]
     logger.setLevel(level)
   }
 }

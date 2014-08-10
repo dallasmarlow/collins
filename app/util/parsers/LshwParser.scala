@@ -15,28 +15,23 @@ import util.LshwRepresentation
 import util.ByteStorageUnit
 import util.BitStorageUnit
 
-
 object SpeedConversions {
-  private val ghz = (1000*1000*1000).toDouble
-  private val mhz = (1000*1000*1000*1000).toDouble
-  def hzToGhz(l: Long): Double = l/ghz
-  def hzToMhz(l: Long): Double = l/mhz
+  private val ghz = (1000 * 1000 * 1000).toDouble
+  private val mhz = (1000 * 1000 * 1000 * 1000).toDouble
+  def hzToGhz(l: Long): Double = l / ghz
+  def hzToMhz(l: Long): Double = l / mhz
 }
 
 class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
 
-  val wildcard: PartialFunction[NodeSeq,LshwAsset] = { case _ => null }
+  val wildcard: PartialFunction[NodeSeq, LshwAsset] = { case _ => null }
   lazy val matcher = cpuMatcher.orElse(
     memMatcher.orElse(
       diskMatcher.orElse(
         nicMatcher.orElse(
-          wildcard
-        )
-      )
-    )
-  )
+          wildcard))))
 
-  override def parse(): Either[Throwable,LshwRepresentation] = {
+  override def parse(): Either[Throwable, LshwRepresentation] = {
     val xml = try {
       XML.loadString(txt)
     } catch {
@@ -46,14 +41,15 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
     }
     val rep = try {
       val base = getBaseInfo(xml)
-      getCoreNodes(xml).foldLeft(LshwRepresentation(Nil,Nil,Nil,Nil,base)) { case (holder,node) =>
-        matcher(node) match {
-          case c: Cpu => holder.copy(cpus = c +: holder.cpus)
-          case m: Memory => holder.copy(memory = m.copy(bank = holder.memory.size) +: holder.memory)
-          case d: Disk => holder.copy(disks = d +: holder.disks)
-          case n: Nic => holder.copy(nics = n +: holder.nics)
-          case _ => holder
-        }
+      getCoreNodes(xml).foldLeft(LshwRepresentation(Nil, Nil, Nil, Nil, base)) {
+        case (holder, node) =>
+          matcher(node) match {
+            case c: Cpu => holder.copy(cpus = c +: holder.cpus)
+            case m: Memory => holder.copy(memory = m.copy(bank = holder.memory.size) +: holder.memory)
+            case d: Disk => holder.copy(disks = d +: holder.disks)
+            case n: Nic => holder.copy(nics = n +: holder.nics)
+            case _ => holder
+          }
       }
     } catch {
       case e: Throwable =>
@@ -63,7 +59,7 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
     Right(rep)
   }
 
-  val cpuMatcher: PartialFunction[NodeSeq,Cpu] = {
+  val cpuMatcher: PartialFunction[NodeSeq, Cpu] = {
     case n if isCpuNode(n) =>
       val asset = getAsset(n)
       val speedString = Option(n \ "size" text).filter(_.nonEmpty).getOrElse("0")
@@ -84,7 +80,7 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
       Cpu(cores, threads, speed, asset.description, asset.product, asset.vendor)
   }
 
-  val memMatcher: PartialFunction[NodeSeq,Memory] = {
+  val memMatcher: PartialFunction[NodeSeq, Memory] = {
     case n if (n \ "@class" text) == "memory" && (n \ "@id" text).contains("bank:") =>
       val asset = getAsset(n)
       val size = (n \ "size" text) match {
@@ -95,10 +91,10 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
       Memory(size, bank, asset.description, asset.product, asset.vendor)
   }
 
-  val diskMatcher: PartialFunction[NodeSeq,Disk] = {
-    case n if ( (n \ "@class" text) == "disk" ) ||
-              ( (n \ "@class" text) == "volume" &&
-                (n \ "@id" text).contains("disk") ) =>
+  val diskMatcher: PartialFunction[NodeSeq, Disk] = {
+    case n if ((n \ "@class" text) == "disk") ||
+      ((n \ "@class" text) == "volume" &&
+        (n \ "@id" text).contains("disk")) =>
       val _type = (n \ "physid" text).contains("\\.") match {
         case true => Disk.Type.Ide
         case false =>
@@ -121,7 +117,7 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
 
   private val defaultNicCapacity = LshwConfig.defaultNicCapacity
 
-  val nicMatcher: PartialFunction[NodeSeq,Nic] = {
+  val nicMatcher: PartialFunction[NodeSeq, Nic] = {
     case n if ((n \ "@class" text) == "network") => {
       val asset = getAsset(n)
       val mac = (n \ "serial" text)
@@ -145,8 +141,7 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
         .map((s: String) => BitStorageUnit(s.toLong))
         .getOrElse(
           throw AttributeNotFoundException(
-            "Could not find capacity for network interface for %s".format(asset.product)
-        ))
+            "Could not find capacity for network interface for %s".format(asset.product)))
     }
   }
 
@@ -157,7 +152,7 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
     // claims there are more CPUs than physical sockets. In text mode
     // they are listed as UNCLAIMED, but are only identified in the
     // xml by empty attributes
-    val hasHandle = ! (n \ "@handle" text).isEmpty
+    val hasHandle = !(n \ "@handle" text).isEmpty
     // lshw B.02.12.01 on el5 will also populate an empty socket with
     // generic ghost data (like "I'm socket 2 and I *could* in theory
     // have a proc with this clock speed, but I'm not going to give
@@ -188,21 +183,20 @@ class LshwParser(txt: String) extends CommonParser[LshwRepresentation](txt) {
     if ((elem \ "@class" text).toString == "system") {
       val asset = getAsset(elem)
       ServerBase(asset.description, asset.product, asset.vendor)
-    }
-    // To spice things up, sometimes we get <list>$everything</list>
+    } // To spice things up, sometimes we get <list>$everything</list>
     // instead of just $everything
-    else if (((elem \ "node") \ "@class" text) == "system")  {
+    else if (((elem \ "node") \ "@class" text) == "system") {
       val asset = getAsset(elem \ "node")
       ServerBase(asset.description, asset.product, asset.vendor)
-    }
-    else {
+    } else {
       throw MalformedAttributeException("Expected root class=system node attribute")
     }
   }
 
-  protected def settingsMap(n: NodeSeq): Map[String,String] = {
-    n.foldLeft(Map[String,String]()) { case(r,setting) =>
-      r ++ Map((setting \ "@id" text) -> (setting \ "@value" text))
+  protected def settingsMap(n: NodeSeq): Map[String, String] = {
+    n.foldLeft(Map[String, String]()) {
+      case (r, setting) =>
+        r ++ Map((setting \ "@id" text) -> (setting \ "@value" text))
     }
   }
 

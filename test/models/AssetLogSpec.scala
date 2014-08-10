@@ -35,36 +35,36 @@ class AssetLogSpec extends ApplicationSpecification {
       }
 
       "find with a filter and no asset" in new concretelog {
-        val alert = AssetLog.list(None,0,10,"DESC","Alert")
+        val alert = AssetLog.list(None, 0, 10, "DESC", "Alert")
         alert.total mustEqual 1
         alert.items(0).isAlert must beTrue
-        val info = AssetLog.list(None,0,10,"DESC","Informational")
+        val info = AssetLog.list(None, 0, 10, "DESC", "Informational")
         info.total must be_>=(1L)
         info.items(0).isInformational must beTrue
       }
 
       "find with a filter and an asset" in new concretelog {
-        AssetLog.list(Some(asset),0,10,"DESC","Alert").total mustEqual 0
-        val info = AssetLog.list(Some(asset),0,10,"DESC","Informational")
+        AssetLog.list(Some(asset), 0, 10, "DESC", "Alert").total mustEqual 0
+        val info = AssetLog.list(Some(asset), 0, 10, "DESC", "Informational")
         info.total mustEqual 1
         info.items(0).getAssetId mustEqual asset_id
       }
 
       "find with a negating filter and no asset" in new concretelog {
-        val alert = AssetLog.list(None,0,10,"DESC","!Informational")
+        val alert = AssetLog.list(None, 0, 10, "DESC", "!Informational")
         alert.total mustEqual 1
         alert.items(0).isAlert must beTrue
-        val info = AssetLog.list(None,0,10,"DESC","!Alert")
+        val info = AssetLog.list(None, 0, 10, "DESC", "!Alert")
         info.total must be_>=(1L)
         info.items(0).isInformational must beTrue
       }
 
       "find with a negating filter and an asset" in new mocklog {
-        val alert = AssetLog.list(Some(asset),0,10,"DESC","!Informational")
+        val alert = AssetLog.list(Some(asset), 0, 10, "DESC", "!Informational")
         alert.total mustEqual 1
         alert.items(0).isAlert must beTrue
         alert.items(0).getAssetId mustEqual asset_id
-        AssetLog.list(Some(asset),0,10,"DESC","!Alert").total mustEqual 0
+        AssetLog.list(Some(asset), 0, 10, "DESC", "!Alert").total mustEqual 0
       }
 
       "find with a sort" in {
@@ -103,6 +103,5 @@ class AssetLogSpec extends ApplicationSpecification {
     val asset = Asset.findById(1).get
     val message = "Automatically created by database migration"
   }
-
 
 }

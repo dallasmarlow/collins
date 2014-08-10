@@ -6,9 +6,8 @@ class AssetSearchParametersSpec extends Specification {
 
   val EMPTY_RESULT_TUPLE = (Nil, Nil, Nil)
 
-
   class QuerySeq(items: Seq[(String, String)]) {
-    def findByKey(key: String): List[String] = items.filter(_._1 == key).map{_._2}.toList
+    def findByKey(key: String): List[String] = items.filter(_._1 == key).map { _._2 }.toList
 
     /**
      * returns the value for key iff there is exactly one value for key (aka
@@ -41,66 +40,60 @@ class AssetSearchParametersSpec extends Specification {
   }
 
   "AssetSearchParameters" should {
-    
+
     "generate correct query string sequence" in {
 
       "asks for details" in {
         AssetSearchParameters(EMPTY_RESULT_TUPLE, AssetFinder.empty, None, true).toSeq.findOne("details") must_== Some("true")
       }
-      
+
       "include operation with empty params" in {
         AssetSearchParameters(EMPTY_RESULT_TUPLE, AssetFinder.empty, Some("and")).toSeq.findOne("operation") must_== Some("and")
       }
-      
+
       "include operation with non-empty parms" in {
         AssetSearchParameters(EMPTY_RESULT_TUPLE, AssetFinder.empty.copy(tag = Some("foo")), Some("and")).toSeq.findOne("operation") must_== Some("and")
       }
-      
+
       "IPMI info" in {
         AssetSearchParameters(
           EMPTY_RESULT_TUPLE.copy(_1 = List((IpmiInfo.Enum.IpmiAddress, "1.2.3.4"))),
-          AssetFinder.empty, 
-          None
-        ).toSeq.findOne(IpmiInfo.Enum.IpmiAddress.toString) must_== Some("1.2.3.4")
+          AssetFinder.empty,
+          None).toSeq.findOne(IpmiInfo.Enum.IpmiAddress.toString) must_== Some("1.2.3.4")
       }
-      
+
       "single attribute" in {
         AssetSearchParameters(
-          EMPTY_RESULT_TUPLE.copy(_2 = List((AssetMeta("CPU_COUNT", -1, "","", 0L), 2.toString))),
+          EMPTY_RESULT_TUPLE.copy(_2 = List((AssetMeta("CPU_COUNT", -1, "", "", 0L), 2.toString))),
           AssetFinder.empty,
-          None
-        ).toSeq.findOne("attribute") must_== Some("CPU_COUNT;2")
+          None).toSeq.findOne("attribute") must_== Some("CPU_COUNT;2")
       }
 
       "multiple attributes" in {
         val metas = List(
-          (AssetMeta("CPU_COUNT", -1, "","", 0L), 2.toString), 
-          (AssetMeta("FOO", -1, "", "", 0L), "BAR")
-        )
+          (AssetMeta("CPU_COUNT", -1, "", "", 0L), 2.toString),
+          (AssetMeta("FOO", -1, "", "", 0L), "BAR"))
         AssetSearchParameters(
           EMPTY_RESULT_TUPLE.copy(_2 = metas),
           AssetFinder.empty,
-          None
-        ).toSeq.findByKey("attribute") must_== List("CPU_COUNT;2", "FOO;BAR")
+          None).toSeq.findByKey("attribute") must_== List("CPU_COUNT;2", "FOO;BAR")
       }
 
       "ip address" in {
         AssetSearchParameters(
           EMPTY_RESULT_TUPLE.copy(_3 = List("1.3.5.7")),
           AssetFinder.empty,
-          None
-        ).toSeq.findOne("attribute") must_== Some("ip_address;1.3.5.7")
+          None).toSeq.findOne("attribute") must_== Some("ip_address;1.3.5.7")
       }
 
     }
 
     "properly url-encode values" in {
       AssetSearchParameters(
-        EMPTY_RESULT_TUPLE.copy(_2 = List((AssetMeta("TEST", -1, "","", 0L), "foo;|bar"))),
+        EMPTY_RESULT_TUPLE.copy(_2 = List((AssetMeta("TEST", -1, "", "", 0L), "foo;|bar"))),
         AssetFinder.empty,
-        None
-      ).toSeq.findOne("attribute") must_== Some("TEST;foo%3B%7Cbar")
+        None).toSeq.findOne("attribute") must_== Some("TEST;foo%3B%7Cbar")
     }
   }
 }
-        
+

@@ -15,20 +15,19 @@ class MixedAuthenticationProviderSpec extends Specification with ResourceFinder 
   def is: Fragments =
     "The " + classOf[MixedAuthenticationProviderSpec] + " should" ^
       "Authenticate users in htaccess type files" ! authUser() ^
-      "Stop iterating if a user is found"         ! shortCircuit() ^
-      "Return None if no method succeeds"         ! authBadUser() ^
-      "Attempt each method in order"              ! allTypes() ^
-      "Fail because ldap is not stubbed out"      ! attemptLdap() ^
-      "Fail when bad type specified"              ! enforceKnownTypes() ^
-    end
+      "Stop iterating if a user is found" ! shortCircuit() ^
+      "Return None if no method succeeds" ! authBadUser() ^
+      "Attempt each method in order" ! allTypes() ^
+      "Fail because ldap is not stubbed out" ! attemptLdap() ^
+      "Fail when bad type specified" ! enforceKnownTypes() ^
+      end
 
   def configure() {
     val authFile = findResource("htpasswd_users")
     val configData = Map(
       "authentication.type" -> "file",
       "authentication.permissionsFile" -> "conf/permissions.yaml",
-      "userfile" -> authFile.getAbsolutePath
-    )
+      "userfile" -> authFile.getAbsolutePath)
 
     val config = Configuration.from(configData)
     _root_.util.config.AppConfig.globalConfig = Some(config)

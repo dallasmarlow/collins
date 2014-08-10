@@ -25,23 +25,21 @@ import controllers.Api
 abstract class PowerManagementActionHelper(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
   case class PowerStatusRd(cmd: IpmiPowerCommand) extends RequestDataHolder
 
   def powerAction(): Option[PowerAction]
 
   val PowerActionNotFoundMessage = "Power management action must be one of: %s".format(
-    PowerManagementConfig.RequiredKeys.mkString(", ")
-  )
+    PowerManagementConfig.RequiredKeys.mkString(", "))
   val PowerMessages = PowerManagementConfig.Messages
 
   override def execute(rd: RequestDataHolder): Result = rd match {
     case PowerStatusRd(cmd) => AsyncResult { runCommand(cmd) }
   }
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = {
     val asset = assetFromTag(assetTag)
     val pa = powerAction
 
@@ -68,8 +66,7 @@ abstract class PowerManagementActionHelper(
           Left(RequestDataHolder.error400(ex.getMessage, ex))
         case ex =>
           Left(RequestDataHolder.error500(
-            "Unexpected error: %s".format(ex.getMessage), ex
-          ))
+            "Unexpected error: %s".format(ex.getMessage), ex))
       }
     }
   }
@@ -139,7 +136,7 @@ abstract class PowerManagementActionHelper(
     val pa = powerAction.get
     pa match {
       case Verify | PowerState | Identify =>
-        // don't log verify, state, identify (normal lifecycle)
+      // don't log verify, state, identify (normal lifecycle)
       case o =>
         UserTattler.warning(definedAsset, userOption, msg)
     }

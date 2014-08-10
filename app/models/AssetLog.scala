@@ -35,10 +35,9 @@ case class AssetLog(
   source: LogSource = LogSource.Internal,
   message_type: LogMessageType = LogMessageType.Emergency,
   message: String,
-  id: Long = 0) extends ValidatedEntity[Long]
-{
+  id: Long = 0) extends ValidatedEntity[Long] {
   def this() = // 0 arg constructor since we have enums
-    this(0,new Date().asTimestamp, LogFormat.PlainText, LogSource.Internal, LogMessageType.Emergency, "", 0)
+    this(0, new Date().asTimestamp, LogFormat.PlainText, LogSource.Internal, LogMessageType.Emergency, "", 0)
 
   override def validate() {
     require(message != null && message.length > 0)
@@ -89,14 +88,12 @@ case class AssetLog(
         case true =>
           val jsSeq = Seq(
             "Exception Class" -> JsString(ex.getClass.toString),
-            "Exception Message" -> JsString(ex.getMessage)
-          )
+            "Exception Message" -> JsString(ex.getMessage))
           val json = Json.parse(oldMessage) match {
             case JsObject(seq) =>
               JsObject(jsSeq ++ seq)
             case o => JsObject(jsSeq ++ Seq(
-              "Message" -> o
-            ))
+              "Message" -> o))
           }
           Json.stringify(json)
         case false =>
@@ -121,9 +118,8 @@ object AssetLog extends Schema with AnormAdapter[AssetLog] {
 
   override val tableDef = table[AssetLog]("asset_log")
   on(tableDef)(a => declare(
-    a.id is(autoIncremented,primaryKey),
-    columns(a.asset_id, a.message_type) are(indexed)
-  ))
+    a.id is (autoIncremented, primaryKey),
+    columns(a.asset_id, a.message_type) are (indexed)))
 
   override def delete(t: AssetLog): Int = 0
 
@@ -134,52 +130,52 @@ object AssetLog extends Schema with AnormAdapter[AssetLog] {
   // A "panic" condition - notify all tech staff on call? (earthquake? tornado?) - affects multiple
   // apps/servers/sites...
   def emergency(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Emergency)
+    apply(asset, message, format, source, LogMessageType.Emergency)
   }
 
   // Should be corrected immediately, but indicates failure in a primary system - fix CRITICAL
   // problems before ALERT - example is loss of primary ISP connection
   def critical(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Critical)
+    apply(asset, message, format, source, LogMessageType.Critical)
   }
 
   // Should be corrected immediately - notify staff who can fix the problem - example is loss of
   // backup ISP connection
   def alert(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Alert)
+    apply(asset, message, format, source, LogMessageType.Alert)
   }
 
   // Non-urgent failures - these should be relayed to developers or admins; each item must be
   // resolved within a given time
   def error(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Error)
+    apply(asset, message, format, source, LogMessageType.Error)
   }
 
   // Warning messages - not an error, but indication that an error will occur if action is not
   // taken, e.g. file system 85% full - each item must be resolved within a given time
   def warning(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Warning)
+    apply(asset, message, format, source, LogMessageType.Warning)
   }
 
   // Events that are unusual but not error conditions - might be summarized in an email to
   // developers or admins to spot potential problems - no immediate action required
   def notice(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Notice)
+    apply(asset, message, format, source, LogMessageType.Notice)
   }
 
   def note(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Note)
+    apply(asset, message, format, source, LogMessageType.Note)
   }
 
   // Normal operational messages - may be harvested for reporting, measuring throughput, etc - no
   // action required
   def informational(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Informational)
+    apply(asset, message, format, source, LogMessageType.Informational)
   }
 
   //Info useful to developers for debugging the application, not useful during operations
   def debug(asset: Asset, message: String, format: LogFormat, source: LogSource) = {
-      apply(asset, message, format, source, LogMessageType.Debug)
+    apply(asset, message, format, source, LogMessageType.Debug)
   }
 
   override def get(log: AssetLog) = getOrElseUpdate("AssetLog.get(%d)".format(log.id)) {
@@ -191,30 +187,26 @@ object AssetLog extends Schema with AnormAdapter[AssetLog] {
     val asset_id = asset.map(_.getId)
     val query = from(tableDef)(a =>
       where(whereClause(a, asset_id, filter))
-      select(a)
-      orderBy(a.id.withSort(sort))
-    )
+        select (a)
+        orderBy (a.id.withSort(sort)))
     val paginatedQuery = optionallyPaginate(query, offset, pageSize)
     val results = paginatedQuery.toList
     val totalCount = from(tableDef)(a =>
       where(whereClause(a, asset_id, filter))
-      compute(count)
-    )
+        compute (count))
     Page(results, page, offset, totalCount)
   }
 
   def findByAsset(asset: Asset) = inTransaction {
     from(tableDef)(a =>
       where(a.asset_id === asset.id)
-      select(a)
-    ).toList
+        select (a)).toList
   }
 
   def findById(id: Long): Option[AssetLog] = inTransaction {
-    from(tableDef)(a => 
+    from(tableDef)(a =>
       where(a.id === id)
-      select(a)
-    ).toList.headOption
+        select (a)).toList.headOption
   }
 
   private def whereClause(a: AssetLog, asset_id: Option[Long], filter: String) = {
@@ -223,24 +215,25 @@ object AssetLog extends Schema with AnormAdapter[AssetLog] {
         (a.asset_id === asset_id.?)
       case ne =>
         (a.asset_id === asset_id.?) and
-        filterToClause(ne, a)
+          filterToClause(ne, a)
     }
   }
 
   private def filterToClause(filter: String, log: AssetLog): LogicalBoolean = {
-    val (negated, filters) = filter.split(';').foldLeft(false,Set[LogMessageType]()) { case(tuple, fs) => 
-      val negate = fs.startsWith("!")
-      val mt = negate match {
-        case true =>
-          LogMessageType.withName(fs.drop(1).toUpperCase)
-        case false =>
-          LogMessageType.withName(fs.toUpperCase)
-      }
-      if (negate || tuple._1) {
-        (true, tuple._2 ++ Set(mt))
-      } else {
-        (false, tuple._2 ++ Set(mt))
-      }
+    val (negated, filters) = filter.split(';').foldLeft(false, Set[LogMessageType]()) {
+      case (tuple, fs) =>
+        val negate = fs.startsWith("!")
+        val mt = negate match {
+          case true =>
+            LogMessageType.withName(fs.drop(1).toUpperCase)
+          case false =>
+            LogMessageType.withName(fs.toUpperCase)
+        }
+        if (negate || tuple._1) {
+          (true, tuple._2 ++ Set(mt))
+        } else {
+          (false, tuple._2 ++ Set(mt))
+        }
     }
     if (negated) {
       (log.message_type notIn filters)

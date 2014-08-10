@@ -2,8 +2,8 @@ package controllers
 
 import actions.asset.UpdateRequestRouter.Matcher.StatusOnly
 import views.html
-import models.{Status => AStatus}
-import play.api.http.{Status => StatusValues}
+import models.{ Status => AStatus }
+import play.api.http.{ Status => StatusValues }
 import java.util.Date
 import controllers.actions.asset.FindSimilarAction
 import controllers.actions.asset.UpdateForMaintenanceAction
@@ -18,14 +18,12 @@ import controllers.actions.asset.UpdateRequestRouter
 import controllers.actions.asset.UpdateStatusAction
 import models.PageParams
 
-
 trait AssetApi {
   this: Api with SecureController =>
 
   // GET /api/asset/:tag
   def getAsset(tag: String, location: Option[String] = None) = GetAction(
-    tag, location, Permissions.AssetApi.GetAsset, this
-  )
+    tag, location, Permissions.AssetApi.GetAsset, this)
 
   // GET /api/assets?params
   def getAssets(page: Int, size: Int, sort: String, sortField: String, details: String) =
@@ -47,19 +45,17 @@ trait AssetApi {
     UpdateStatusAction(tag, Permissions.AssetApi.UpdateAssetStatus, this)
 
   def updateAssetForMaintenance(tag: String) = UpdateForMaintenanceAction(
-    tag, Permissions.AssetApi.UpdateAssetForMaintenance, this
-  )
+    tag, Permissions.AssetApi.UpdateAssetForMaintenance, this)
 
   // DELETE /api/asset/attribute/:attribute/:tag
   def deleteAssetAttribute(tag: String, attribute: String) = DeleteAttributeAction(
-    tag, attribute, Permissions.AssetApi.DeleteAssetAttribute, this
-  )
+    tag, attribute, Permissions.AssetApi.DeleteAssetAttribute, this)
 
   // DELETE /api/asset/:tag
   def deleteAsset(tag: String) = DeleteAction(tag, false, Permissions.AssetApi.DeleteAsset, this)
 
   //GET /api/asset/:tag/similar
-  def similar(tag: String, page: Int, size: Int, sort: String) = 
+  def similar(tag: String, page: Int, size: Int, sort: String) =
     FindSimilarAction(tag, PageParams(page, size, sort, "sparse"), Permissions.AssetApi.GetAssets, this)
 
 }

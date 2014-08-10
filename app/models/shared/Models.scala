@@ -26,12 +26,11 @@ object Model {
 
   def initialize() {
     SessionFactory.concreteFactory = Some(
-      () => new Session(DB.getConnection(name), adapter, None)
-    )
+      () => new Session(DB.getConnection(name), adapter, None))
   }
 
   def shutdown() {
-    if(Session.hasCurrentSession) {
+    if (Session.hasCurrentSession) {
       Logger.debug("closing squeryl session")
 
       Session.currentSession.close

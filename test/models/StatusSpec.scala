@@ -3,7 +3,7 @@ package models
 import helpers.ApplicationSpecification
 
 class StatusSpec extends ApplicationSpecification {
-  
+
   "Status Model Specification".title
 
   args(sequential = true)

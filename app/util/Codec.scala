@@ -63,7 +63,7 @@ class CryptoCodec(privateKey: String, saltSize: Int = 8, iterations: Int = 100) 
   }
 
   object Decode {
-    def toUsernamePassword(value: String): Option[(String,String)] = {
+    def toUsernamePassword(value: String): Option[(String, String)] = {
       apply(value).flatMap { decoded =>
         decoded.split(":", 2).toList match {
           case username :: password :: Nil =>
@@ -79,7 +79,7 @@ class CryptoCodec(privateKey: String, saltSize: Int = 8, iterations: Int = 100) 
     }
     def apply(value: String): Option[String] = {
       try {
-        val (cipher,salt) = splitWithSalt(value)
+        val (cipher, salt) = splitWithSalt(value)
         val pGen = new PKCS12ParametersGenerator(new SHA256Digest())
         val pkcs12PasswordBytes = PBEParametersGenerator.PKCS12PasswordToBytes(secretKey)
         pGen.init(pkcs12PasswordBytes, salt, iterations)
@@ -101,7 +101,7 @@ class CryptoCodec(privateKey: String, saltSize: Int = 8, iterations: Int = 100) 
   object Encode {
     private val encodeType = "PBEWithSHA256And256BitAES-CBC-BC"
     def apply(values: String*): String = {
-      apply(combiner(values:_*).getBytes)
+      apply(combiner(values: _*).getBytes)
     }
     def apply(value: Array[Byte]): String = {
       val salt = createSalt(saltSize)

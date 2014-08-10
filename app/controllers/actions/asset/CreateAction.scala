@@ -6,7 +6,7 @@ import models.Asset
 import models.AssetLifecycle
 import models.AssetType
 import models.IpmiInfo
-import models.{Status => AssetStatus}
+import models.{ Status => AssetStatus }
 import models.Truthy
 import play.api.data.Form
 import play.api.data.Forms._
@@ -22,22 +22,19 @@ case class CreateAction(
   _assetTag: Option[String],
   _assetType: Option[String],
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
   case class ActionDataHolder(
     assetTag: String,
     generateIpmi: Boolean,
     assetType: AssetType,
-    assetStatus: Option[AssetStatus]
-  ) extends RequestDataHolder
+    assetStatus: Option[AssetStatus]) extends RequestDataHolder
 
-  lazy val dataHolder: Either[RequestDataHolder,ActionDataHolder] = Form(tuple(
+  lazy val dataHolder: Either[RequestDataHolder, ActionDataHolder] = Form(tuple(
     "generate_ipmi" -> optional(of[Truthy]),
     "type" -> optional(of[AssetType]),
     "status" -> optional(of[AssetStatus]),
-    "tag" -> optional(text(1))
-  )).bindFromRequest()(request).fold(
+    "tag" -> optional(text(1)))).bindFromRequest()(request).fold(
     err => Left(RequestDataHolder.error400(fieldError(err))),
     tuple => {
       val (generate, atype, astatus, tag) = tuple
@@ -53,20 +50,17 @@ case class CreateAction(
           assetTag,
           generate.map(_.toBoolean).getOrElse(AssetType.isServerNode(assetType.get)),
           assetType.get,
-          astatus
-        ))
+          astatus))
       }
-    }
-  )
+    })
 
-  override def validate(): Either[RequestDataHolder,RequestDataHolder] = dataHolder match {
+  override def validate(): Either[RequestDataHolder, RequestDataHolder] = dataHolder match {
     case Left(err) => Left(err)
     case Right(dh) => assetExists(dh.assetTag) match {
       case true =>
         Left(
           RequestDataHolder.error409("Duplicate asset tag '%s'".format(dh.assetTag))
-            .update("assetType", dh.assetType.name)
-        )
+            .update("assetType", dh.assetType.name))
       case false =>
         Right(dh)
     }
@@ -77,14 +71,13 @@ case class CreateAction(
       AssetLifecycle.createAsset(assetTag, assetType, genIpmi, assetStatus) match {
         case Left(throwable) =>
           handleError(
-            RequestDataHolder.error500("Could not create asset: %s".format(throwable.getMessage))
-          )
+            RequestDataHolder.error500("Could not create asset: %s".format(throwable.getMessage)))
         case Right((asset, ipmi)) => handleSuccess(asset, ipmi)
       }
   }
 
-  override def handleWebError(rd: RequestDataHolder) = if(rd.string(rd.ErrorKey).isDefined) {
-    rd.string(rd.ErrorKey).map{
+  override def handleWebError(rd: RequestDataHolder) = if (rd.string(rd.ErrorKey).isDefined) {
+    rd.string(rd.ErrorKey).map {
       err => Redirect(app.routes.Resources.index).flashing("error" -> err)
     }
   } else assetTypeString(rd) match {
@@ -92,11 +85,8 @@ case class CreateAction(
       Some(Redirect(app.routes.Resources.index).flashing("error" -> "Invalid asset type specified"))
     case Some(s) =>
       Some(Redirect(app.routes.Resources.displayCreateForm(s)).flashing(
-        "error" -> rd.error.getOrElse("A tag must be specified")
-      ))
+        "error" -> rd.error.getOrElse("A tag must be specified")))
   }
-    
-  
 
   protected def handleSuccess(asset: Asset, ipmi: Option[IpmiInfo]): Result = isHtml match {
     case true =>

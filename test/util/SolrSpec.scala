@@ -2,11 +2,10 @@ package collins.solr
 
 import java.util.Date
 import Solr._
-import models.{Asset, AssetFinder, AssetType, AssetMeta, AssetSearchParameters, IpAddresses, IpmiInfo, State, Status, AssetMetaValue}
+import models.{ Asset, AssetFinder, AssetType, AssetMeta, AssetSearchParameters, IpAddresses, IpmiInfo, State, Status, AssetMetaValue }
 import helpers.ApplicationSpecification
 import util.views.Formatter
 import org.specs2.mutable.Specification
-
 
 class MultiSetSpec extends Specification {
 
@@ -15,23 +14,23 @@ class MultiSetSpec extends Specification {
       (MultiSet[Int]() + 3).items must_== Map(3 -> 1)
     }
     "vararg constructor" in {
-      MultiSet(1,2,2,3).items must_== Map(1 -> 1, 2 -> 2, 3 -> 1)
+      MultiSet(1, 2, 2, 3).items must_== Map(1 -> 1, 2 -> 2, 3 -> 1)
     }
     "add an existing element" in {
-      (MultiSet(1,1,1) + 1).items must_== Map(1 -> 4)
+      (MultiSet(1, 1, 1) + 1).items must_== Map(1 -> 4)
     }
     "size" in {
       MultiSet(1, 2, 2, 3, 4, 5).size must_== 6
     }
     "headOption" in {
       MultiSet().headOption must_== None
-      MultiSet(1,2,3,4).headOption must_== Some(1)
+      MultiSet(1, 2, 3, 4).headOption must_== Some(1)
     }
-    "toSeq" in { 
-      MultiSet(1, 2, 2, 3).toSeq must_== Seq(1,2,2,3)
+    "toSeq" in {
+      MultiSet(1, 2, 2, 3).toSeq must_== Seq(1, 2, 2, 3)
     }
     "equals" in {
-      MultiSet(1,2, 3, 2) must_== MultiSet(1, 2, 2, 3)
+      MultiSet(1, 2, 3, 2) must_== MultiSet(1, 2, 2, 3)
     }
   }
 }
@@ -47,13 +46,13 @@ class SolrSpec extends ApplicationSpecification {
     def eqHelper[T](actualSet: Set[T], expectedSet: Set[T]) {
       if (expectedSet != actualSet) {
         println("== EXPECTED ==")
-        expectedSet.foreach{e => println(e.toString)}
+        expectedSet.foreach { e => println(e.toString) }
         println("== ACTUAL ==")
-        actualSet.foreach{a => println(a.toString)}
+        actualSet.foreach { a => println(a.toString) }
         println("== expected - actual ==")
-        (expectedSet diff actualSet).foreach{e => println(e.toString)}
+        (expectedSet diff actualSet).foreach { e => println(e.toString) }
         println("== actual - expected ==")
-        (actualSet diff expectedSet).foreach{e => println(e.toString)}
+        (actualSet diff expectedSet).foreach { e => println(e.toString) }
       }
     }
 
@@ -63,14 +62,13 @@ class SolrSpec extends ApplicationSpecification {
       val status = Status.Allocated.get
       val state = State.Running.get
       val meta = List(
-        ("A",String, 0,"a"),
-        ("B",String, 0,"b"),
-        ("A",String, 1,"a1"),
+        ("A", String, 0, "a"),
+        ("B", String, 0, "b"),
+        ("A", String, 1, "a1"),
         ("int", Integer, 0, "1135"),
         ("double", Double, 0, "3.1415"),
         ("bool", Boolean, 0, "false"),
-        ("HOSTNAME", String, 0, "my_hostname")
-      )
+        ("HOSTNAME", String, 0, "my_hostname"))
       val asset = generateAsset(assetTag, assetType, status, meta, state)
       val indexTime = new Date
       val addresses = IpAddresses.createForAsset(asset, 2, Some("DEV"))
@@ -80,10 +78,9 @@ class SolrSpec extends ApplicationSpecification {
       val allDoc = Map(
         SolrKey("DOC_TYPE", String, false, false, true) -> SolrStringValue("ASSET", StrictUnquoted),
         SolrKey("LAST_INDEXED", String, false, false, true) -> SolrStringValue(Formatter.solrDateFormat(indexTime), StrictUnquoted),
-        SolrKey("UUID", String, false, false, true) -> SolrStringValue("ASSET_" + asset.id, StrictUnquoted)
-      )
+        SolrKey("UUID", String, false, false, true) -> SolrStringValue("ASSET_" + asset.id, StrictUnquoted))
       val almostExpected = Map(
-        SolrKey("ID", Integer, false, false,true) -> SolrIntValue(asset.id.toInt),
+        SolrKey("ID", Integer, false, false, true) -> SolrIntValue(asset.id.toInt),
         SolrKey("TAG", String, false, false, true) -> SolrStringValue(assetTag, StrictUnquoted),
         SolrKey("STATUS", String, false, false, true) -> SolrStringValue(status.name, StrictUnquoted),
         SolrKey("STATE", String, false, false, true) -> SolrStringValue(state.name, StrictUnquoted),
@@ -94,39 +91,37 @@ class SolrSpec extends ApplicationSpecification {
         SolrKey("INT", Integer, true, true, false) -> SolrIntValue(1135),
         SolrKey("DOUBLE", Double, true, true, false) -> SolrDoubleValue(3.1415),
         SolrKey("BOOL", Boolean, true, true, false) -> SolrBooleanValue(false),
-        SolrKey("IP_ADDRESS", String, false, true, false) -> SolrMultiValue(MultiSet.fromSeq(addresses.map{a => SolrStringValue(a.dottedAddress, StrictUnquoted)})),
+        SolrKey("IP_ADDRESS", String, false, true, false) -> SolrMultiValue(MultiSet.fromSeq(addresses.map { a => SolrStringValue(a.dottedAddress, StrictUnquoted) })),
         SolrKey("HOSTNAME", String, false, false, true) -> SolrStringValue("my_hostname", StrictUnquoted),
-        SolrKey("IPMI_ADDRESS", String, true, false, true) -> SolrStringValue(ipmi.dottedAddress, StrictUnquoted)
-      )
+        SolrKey("IPMI_ADDRESS", String, true, false, true) -> SolrStringValue(ipmi.dottedAddress, StrictUnquoted))
 
       val sortKeys = Map(
         SolrKey("DOC_TYPE_SORT", String, false, false, true) -> SolrStringValue("ASSET", StrictUnquoted),
         SolrKey("LAST_INDEXED_SORT", String, false, false, true) -> SolrStringValue(Formatter.solrDateFormat(indexTime), StrictUnquoted),
         SolrKey("UUID_SORT", String, false, false, true) -> SolrStringValue("ASSET_" + asset.id, StrictUnquoted),
-        SolrKey("ID_SORT", String, false,false, true) -> SolrStringValue(asset.id.toString, StrictUnquoted),
-        SolrKey("TAG_SORT", String, false,false, true) -> SolrStringValue(assetTag, StrictUnquoted),
-        SolrKey("STATUS_SORT", String, false,false, true) -> SolrStringValue(status.name, StrictUnquoted),
-        SolrKey("STATE_SORT", String, false,false, true) -> SolrStringValue(state.name, StrictUnquoted),
-        SolrKey("TYPE_SORT", String, false,false, true) -> SolrStringValue(assetType.name, StrictUnquoted),
-        SolrKey("CREATED_SORT", String, false,false, true) -> SolrStringValue(Formatter.solrDateFormat(asset.created), StrictUnquoted),
-        SolrKey("HOSTNAME_SORT", String, false,false, true) -> SolrStringValue("my_hostname", StrictUnquoted),
-        SolrKey("IPMI_ADDRESS_SORT", String, false,false, true) -> SolrStringValue(ipmi.dottedAddress, StrictUnquoted)
-      )
+        SolrKey("ID_SORT", String, false, false, true) -> SolrStringValue(asset.id.toString, StrictUnquoted),
+        SolrKey("TAG_SORT", String, false, false, true) -> SolrStringValue(assetTag, StrictUnquoted),
+        SolrKey("STATUS_SORT", String, false, false, true) -> SolrStringValue(status.name, StrictUnquoted),
+        SolrKey("STATE_SORT", String, false, false, true) -> SolrStringValue(state.name, StrictUnquoted),
+        SolrKey("TYPE_SORT", String, false, false, true) -> SolrStringValue(assetType.name, StrictUnquoted),
+        SolrKey("CREATED_SORT", String, false, false, true) -> SolrStringValue(Formatter.solrDateFormat(asset.created), StrictUnquoted),
+        SolrKey("HOSTNAME_SORT", String, false, false, true) -> SolrStringValue("my_hostname", StrictUnquoted),
+        SolrKey("IPMI_ADDRESS_SORT", String, false, false, true) -> SolrStringValue(ipmi.dottedAddress, StrictUnquoted))
 
       val expected = allDoc
         .++(almostExpected)
         .++(sortKeys)
-        .+((SolrKey("KEYS", String, true, true, false) -> SolrMultiValue(MultiSet.fromSeq(almostExpected.map{case(k,v) => SolrStringValue(k.name, StrictUnquoted)}.toSeq), String)))
-      val actual = (new AssetSerializer).serialize(asset, indexTime) 
+        .+((SolrKey("KEYS", String, true, true, false) -> SolrMultiValue(MultiSet.fromSeq(almostExpected.map { case (k, v) => SolrStringValue(k.name, StrictUnquoted) }.toSeq), String)))
+      val actual = (new AssetSerializer).serialize(asset, indexTime)
       val actualSet: Set[(SolrKey, SolrValue)] = actual.toSet
       val expectedSet: Set[(SolrKey, SolrValue)] = expected.toSet
       eqHelper(actualSet, expectedSet)
       actualSet must_== expectedSet
     }
     "post-process number of disks" in {
-      val m = Map[SolrKey, SolrValue](SolrKey("DISK_SIZE_BYTES", String, true, true,false) -> SolrMultiValue(MultiSet(SolrStringValue("123", StrictUnquoted), SolrStringValue("123", StrictUnquoted))))
-      val expected = m + 
-        (SolrKey("NUM_DISKS", Integer, true, false, true) -> SolrIntValue(2)) + 
+      val m = Map[SolrKey, SolrValue](SolrKey("DISK_SIZE_BYTES", String, true, true, false) -> SolrMultiValue(MultiSet(SolrStringValue("123", StrictUnquoted), SolrStringValue("123", StrictUnquoted))))
+      val expected = m +
+        (SolrKey("NUM_DISKS", Integer, true, false, true) -> SolrIntValue(2)) +
         (SolrKey("KEYS", String, true, true, false) -> SolrMultiValue(MultiSet(SolrStringValue("DISK_SIZE_BYTES", StrictUnquoted), SolrStringValue("NUM_DISKS", StrictUnquoted))))
       val actual = (new AssetSerializer).postProcess(m)
       val actualSet = actual.toSet
@@ -139,16 +134,17 @@ class SolrSpec extends ApplicationSpecification {
   def generateAsset(tag: String, assetType: AssetType, status: Status, metaValues: Seq[(String, ValueType, Int, String)], state: State) = {
     val asset = Asset.create(Asset(tag, status, assetType))
     Asset.partialUpdate(asset, None, None, Some(state))
-    metaValues.foreach{case (name, value_type, group_id, value) =>
-      AssetMeta.findOrCreateFromName(name, value_type)
-      val meta = AssetMeta.findByName(name).get
-      try {
-        AssetMetaValue.create(AssetMetaValue(asset.id, meta.id, group_id, value))
-      } catch {
-        case e: RuntimeException =>
-          Thread.sleep(1000)
+    metaValues.foreach {
+      case (name, value_type, group_id, value) =>
+        AssetMeta.findOrCreateFromName(name, value_type)
+        val meta = AssetMeta.findByName(name).get
+        try {
           AssetMetaValue.create(AssetMetaValue(asset.id, meta.id, group_id, value))
-      }
+        } catch {
+          case e: RuntimeException =>
+            Thread.sleep(1000)
+            AssetMetaValue.create(AssetMetaValue(asset.id, meta.id, group_id, value))
+        }
     }
     Asset.findById(asset.id).get
   }
@@ -161,7 +157,6 @@ class SolrQuerySpec extends ApplicationSpecification {
 
   import CollinsQueryDSL._
   import AssetMeta.ValueType._
-
 
   "CollinsQueryDSL" should {
     "key vals" in {
@@ -209,7 +204,7 @@ class SolrQuerySpec extends ApplicationSpecification {
           """ 
               foo = bar
             """.query.where must_== SolrKeyVal("foo", SolrStringValue("bar"))
-         }
+        }
         "remove enclosing quotes" in {
           """   "foo = bar" """.query.where must_== SolrKeyVal("foo", SolrStringValue("bar"))
         }
@@ -219,7 +214,7 @@ class SolrQuerySpec extends ApplicationSpecification {
 
     "SolrKey" should {
       "properly convert names to U case" in {
-        val n: String = SolrKey("foo", String, false, false, false).name 
+        val n: String = SolrKey("foo", String, false, false, false).name
         n must_== "FOO"
       }
       "convert aliases to UCASE" in {
@@ -340,7 +335,7 @@ class SolrQuerySpec extends ApplicationSpecification {
       "!=" in {
         """foosolr != 5""".query.where must_== SolrNotOp(SolrKeyVal("foosolr", SolrStringValue("5", Unquoted)))
       }
-        
+
     }
   }
 
@@ -359,31 +354,31 @@ class SolrQuerySpec extends ApplicationSpecification {
       "*foo" in {
         s("*foo") must_== S("foo", L)
       }
-      "*foo*"in {
+      "*foo*" in {
         s("*foo*") must_== S("foo", LR)
       }
-      "foo*"in {
+      "foo*" in {
         s("foo*") must_== S("foo", R)
       }
-      "foo.*"in {
+      "foo.*" in {
         s("foo.*") must_== S("foo", R)
       }
-      "^foo"in {
+      "^foo" in {
         s("^foo") must_== S("foo", R)
       }
-      "^foo.*"in {
+      "^foo.*" in {
         s("^foo.*") must_== S("foo", R)
       }
-      "^foo*"in {
+      "^foo*" in {
         s("^foo*") must_== S("foo", R)
       }
-      "^foo$"in {
+      "^foo$" in {
         s("^foo$") must_== S("foo", Q)
       }
-      "*foo$"in {
+      "*foo$" in {
         s("*foo$") must_== S("foo", L)
       }
-      "foo$"in {
+      "foo$" in {
         s("foo$") must_== S("foo", L)
       }
     }
@@ -393,14 +388,13 @@ class SolrQuerySpec extends ApplicationSpecification {
         S("04:7d:7b:06:8f:f9", Q).traverseQueryString(false) must_== """"04:7d:7b:06:8f:f9""""
       }
       "wildcard" in {
-        S("04:7d:7b:06:8",R).traverseQueryString(false) must_== """04\:7d\:7b\:06\:8*"""
+        S("04:7d:7b:06:8", R).traverseQueryString(false) must_== """04\:7d\:7b\:06\:8*"""
       }
       "strict unquoted" in {
         S("04:7d:7b:06:8f:f9", StrictUnquoted).traverseQueryString(false) must_== """04\:7d\:7b\:06\:8f\:f9"""
       }
     }
-  } 
-
+  }
 
   "CQL abstract syntax-tree" should {
 
@@ -443,10 +437,10 @@ class SolrQuerySpec extends ApplicationSpecification {
         """foo = [abc, abd]""".query.where.traverseQueryString must_== """foo:[abc TO abd]"""
       }
       "ANDs" in {
-         """foosolr = 3 AND bar = "abcdef" AND baz = true""".query.where.traverseQueryString must_== """foosolr:"3" AND bar:"abcdef" AND baz:"true""""
+        """foosolr = 3 AND bar = "abcdef" AND baz = true""".query.where.traverseQueryString must_== """foosolr:"3" AND bar:"abcdef" AND baz:"true""""
       }
       "ORs" in {
-         """foosolr = 3 OR bar = "abcdef" OR baz = true""".query.where.traverseQueryString must_== """foosolr:"3" OR bar:"abcdef" OR baz:"true""""
+        """foosolr = 3 OR bar = "abcdef" OR baz = true""".query.where.traverseQueryString must_== """foosolr:"3" OR bar:"abcdef" OR baz:"true""""
       }
       "NOT" in {
         """NOT foosolr = 3""".query.where.traverseQueryString must_== """-foosolr:"3""""
@@ -527,32 +521,29 @@ class SolrQuerySpec extends ApplicationSpecification {
       }
     }
 
-
   }
-  
+
   "AssetFinder solr conversion" should {
     "basic conversion" in {
       val somedate = new java.util.Date
       val dateString = util.views.Formatter.solrDateFormat(somedate)
       val afinder = AssetFinder(
-        Some("foosolrtag"), 
-        Status.Allocated, 
+        Some("foosolrtag"),
+        Status.Allocated,
         Some(AssetType.ServerNode.get),
         Some(somedate),
         Some(somedate),
         Some(somedate),
         Some(somedate),
         Some(State.Running.get),
-        None
-      )
+        None)
       val expected = List(
         SolrKeyVal("tag", SolrStringValue("foosolrtag", Unquoted)),
         SolrKeyVal("status", SolrIntValue(Status.Allocated.get.id)),
         SolrKeyVal("assetType", SolrIntValue(AssetType.ServerNode.get.id)),
-        SolrKeyRange("created", Some(SolrStringValue(dateString, StrictUnquoted)),Some(SolrStringValue(dateString, StrictUnquoted)), true),
-        SolrKeyRange("updated", Some(SolrStringValue(dateString, StrictUnquoted)),Some(SolrStringValue(dateString, StrictUnquoted)), true),
-        SolrKeyVal("state", SolrIntValue(State.Running.get.id))
-      )
+        SolrKeyRange("created", Some(SolrStringValue(dateString, StrictUnquoted)), Some(SolrStringValue(dateString, StrictUnquoted)), true),
+        SolrKeyRange("updated", Some(SolrStringValue(dateString, StrictUnquoted)), Some(SolrStringValue(dateString, StrictUnquoted)), true),
+        SolrKeyVal("state", SolrIntValue(State.Running.get.id)))
       afinder.toSolrKeyVals.toSet must_== expected.toSet
 
     }
@@ -568,12 +559,10 @@ class SolrQuerySpec extends ApplicationSpecification {
         Some(somedate),
         None,
         None,
-        None
-      )
+        None)
       val expected = List(
-        SolrKeyRange("updated", Some(SolrStringValue(dateString, StrictUnquoted)),None, true),
-        SolrKeyRange("created",None,Some(SolrStringValue(dateString, StrictUnquoted)), true)
-      )
+        SolrKeyRange("updated", Some(SolrStringValue(dateString, StrictUnquoted)), None, true),
+        SolrKeyRange("created", None, Some(SolrStringValue(dateString, StrictUnquoted)), true))
       afinder.toSolrKeyVals.toSet must_== expected.toSet
 
     }
@@ -588,13 +577,11 @@ class SolrQuerySpec extends ApplicationSpecification {
         None,
         None,
         None,
-        query = Some(cql)
-      )
+        query = Some(cql))
       val expected = List(
         SolrKeyVal("tag", "tagvalue".unquoted),
         SolrKeyVal("status", SolrIntValue(Status.Allocated.get.id)),
-        cql
-      )
+        cql)
       afinder.toSolrKeyVals.toSet must_== expected.toSet
     }
 
@@ -606,16 +593,15 @@ class SolrQuerySpec extends ApplicationSpecification {
       val somedate = new java.util.Date
       val dateString = util.views.Formatter.solrDateFormat(somedate)
       val afinder = AssetFinder(
-        Some("footag"), 
-        Some(Status.Allocated.get), 
+        Some("footag"),
+        Some(Status.Allocated.get),
         AssetType.ServerNode,
         Some(somedate),
         Some(somedate),
         Some(somedate),
         Some(somedate),
         None,
-        None
-      )
+        None)
       val ipmiTuples = (IpmiInfo.Enum.IpmiAddress -> "ipmi_address") :: (IpmiInfo.Enum.IpmiUsername -> "ipmi_username") :: Nil
       val metaTuples = (AssetMeta("meta1", 0, "meta1", "meta1") -> "meta1_value") :: (AssetMeta("meta2", 0, "meta2", "meta2") -> "meta2_value") :: Nil
       val ipAddresses = List("1.2.3.4")
@@ -627,12 +613,11 @@ class SolrQuerySpec extends ApplicationSpecification {
         SolrKeyVal("meta1", SolrStringValue("meta1_value", Unquoted)),
         SolrKeyVal("meta2", SolrStringValue("meta2_value", Unquoted)),
         SolrKeyVal("ip_address", SolrStringValue("1.2.3.4", Unquoted)),
-        SolrKeyRange("created", Some(SolrStringValue(dateString, StrictUnquoted)),Some(SolrStringValue(dateString, StrictUnquoted)), true),
-        SolrKeyRange("updated", Some(SolrStringValue(dateString, StrictUnquoted)),Some(SolrStringValue(dateString, StrictUnquoted)), true),
+        SolrKeyRange("created", Some(SolrStringValue(dateString, StrictUnquoted)), Some(SolrStringValue(dateString, StrictUnquoted)), true),
+        SolrKeyRange("updated", Some(SolrStringValue(dateString, StrictUnquoted)), Some(SolrStringValue(dateString, StrictUnquoted)), true),
         SolrKeyVal("tag", SolrStringValue("footag", Unquoted)),
         SolrKeyVal("status", SolrIntValue(Status.Allocated.get.id)),
-        SolrKeyVal("assetType", SolrIntValue(AssetType.ServerNode.get.id))
-      ))
+        SolrKeyVal("assetType", SolrIntValue(AssetType.ServerNode.get.id))))
       val p = AssetSearchParameters(resultTuple, afinder)
       /*
       println(p.toSolrExpression.toSolrQueryString)
@@ -641,11 +626,9 @@ class SolrQuerySpec extends ApplicationSpecification {
       */
       p.toSolrExpression must_== expected
 
-
     }
 
   }
-        
 
 }
 

@@ -28,10 +28,11 @@ object TagDecorator {
     }
   }
 
-  protected def decorators: Map[String,Decorator] = {
+  protected def decorators: Map[String, Decorator] = {
     val decorators = TagDecoratorConfig.decorators
-    decorators.map { case(name, config) =>
-      name -> createDecorator(config)
+    decorators.map {
+      case (name, config) =>
+        name -> createDecorator(config)
     }
   }
 

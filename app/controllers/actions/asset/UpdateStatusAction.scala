@@ -4,7 +4,7 @@ import controllers.forms._
 import models.Asset
 import models.AssetLifecycle
 import models.State
-import models.{Status => AssetStatus}
+import models.{ Status => AssetStatus }
 import play.api.data.Form
 import play.api.data.Forms._
 import util.security.SecuritySpecification
@@ -19,8 +19,7 @@ object UpdateStatusAction extends ParamValidation {
   val UpdateForm = Form(tuple(
     "status" -> optional(of[AssetStatus]),
     "state" -> optional(of[State]),
-    "reason" -> validatedText(2)
-  ))
+    "reason" -> validatedText(2)))
 }
 
 /**
@@ -52,22 +51,20 @@ object UpdateStatusAction extends ParamValidation {
 case class UpdateStatusAction(
   assetTag: String,
   spec: SecuritySpecification,
-  handler: SecureController
-) extends SecureAction(spec, handler) with AssetAction {
+  handler: SecureController) extends SecureAction(spec, handler) with AssetAction {
 
   import UpdateAction.Messages._
   import UpdateStatusAction._
 
   case class ActionDataHolder(
-    astatus: Option[AssetStatus], state: Option[State], reason: String
-  ) extends RequestDataHolder
+    astatus: Option[AssetStatus], state: Option[State], reason: String) extends RequestDataHolder
 
   override def validate(): Validation = UpdateForm.bindFromRequest()(request).fold(
     err => Left(RequestDataHolder.error400(fieldError(err))),
     form => {
       withValidAsset(assetTag) { asset =>
         val (statusOpt, stateOpt, reason) = form
-        if (List(statusOpt,stateOpt).filter(_.isDefined).size == 0) {
+        if (List(statusOpt, stateOpt).filter(_.isDefined).size == 0) {
           Left(RequestDataHolder.error400(invalidInvocation))
         } else {
           checkStateConflict(asset, statusOpt, stateOpt) match {
@@ -78,20 +75,17 @@ case class UpdateStatusAction(
           }
         }
       }
-    }
-  )
+    })
 
   override def execute(rd: RequestDataHolder) = rd match {
     case ActionDataHolder(status, state, reason) =>
       AssetLifecycle.updateAssetStatus(definedAsset, status, state, reason).fold(
         e => Api.errorResponse("Error updating status", Status.InternalServerError, Some(e)),
-        b => Api.statusResponse(b)
-      )
+        b => Api.statusResponse(b))
   }
 
   protected def checkStateConflict(
-    asset: Asset, statusOpt: Option[AssetStatus], stateOpt: Option[State]
-  ): Tuple2[Option[AssetStatus],Option[State]] = {
+    asset: Asset, statusOpt: Option[AssetStatus], stateOpt: Option[State]): Tuple2[Option[AssetStatus], Option[State]] = {
     val status = statusOpt.getOrElse(asset.getStatus())
     val state = stateOpt.getOrElse(State.findById(asset.state).getOrElse(State.empty))
     if (state.status == State.ANY_STATUS || state.status == status.id) {

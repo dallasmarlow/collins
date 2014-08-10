@@ -4,7 +4,6 @@ import scala.Option.option2Iterable
 
 import models.User
 
-
 /**
  * Exception encountered during authentication phase
  */

@@ -64,13 +64,13 @@ class SoftLayerPlugin(app: Application) extends Plugin with SoftLayer {
     encoder.addParam("content", reason)
     val url = softLayerUrl(encoder.toString())
     val request = RequestBuilder()
-                    .url(url)
-                    .buildGet();
+      .url(url)
+      .buildGet();
 
     makeRequest(request) map { r =>
       val response = Response(r)
       val json = Json.parse(response.contentString)
-      (json \ "error" ) match {
+      (json \ "error") match {
         case JsString(value) => allCatch[Long].opt {
           val TicketExtractor(number) = value
           number.toLong
@@ -158,7 +158,7 @@ class SoftLayerPlugin(app: Application) extends Plugin with SoftLayer {
   }
 
   protected def makeRequest(request: HttpRequest): Future[HttpResponse] = {
-    val client: Service[HttpRequest,HttpResponse] = clientSpec.build()
+    val client: Service[HttpRequest, HttpResponse] = clientSpec.build()
     client(request) ensure {
       client.release()
     }
@@ -179,7 +179,7 @@ class SoftLayerPlugin(app: Application) extends Plugin with SoftLayer {
             case Some(fn) => Success(fn(responseString))
           }
         }
-      } handle { 
+      } handle {
         case e => Failure("IPMI may not be enabled, internal error")
       }
     }.getOrElse(Future(Failure("Asset can not be managed with SoftLayer API")))

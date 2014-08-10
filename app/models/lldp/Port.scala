@@ -10,12 +10,10 @@ object Port {
   implicit object PortFormat extends Format[Port] {
     override def reads(json: JsValue) = Port(
       (json \ "ID").as[PortId],
-      (json \ "DESCRIPTION").as[String]
-    )
+      (json \ "DESCRIPTION").as[String])
     override def writes(port: Port) = JsObject(Seq(
       "ID" -> Json.toJson(port.id),
-      "DESCRIPTION" -> Json.toJson(port.description)
-    ))
+      "DESCRIPTION" -> Json.toJson(port.description)))
   }
 }
 

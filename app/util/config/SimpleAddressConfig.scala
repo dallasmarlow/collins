@@ -5,8 +5,7 @@ import models.shared.AddressPool.poolName
 case class SimpleAddressConfig(
   override val source: TypesafeConfiguration,
   orName: Option[String] = None,
-  orStrict: Option[Boolean] = None
-) extends ConfigAccessor with ConfigSource {
+  orStrict: Option[Boolean] = None) extends ConfigAccessor with ConfigSource {
 
   // Default pool to use, if configured, hidden since we may end up with a naked config which will
   // still end up with the DefaultPoolName

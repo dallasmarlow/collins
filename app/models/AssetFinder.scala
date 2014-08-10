@@ -31,8 +31,7 @@ case class AssetFinder(
   updatedAfter: Option[Date],
   updatedBefore: Option[Date],
   state: Option[State],
-  query: Option[SolrExpression])
-{
+  query: Option[SolrExpression]) {
   def asLogicalBoolean(a: Asset): LogicalBoolean = {
     val tagBool = tag.map((a.tag === _))
     val statusBool = status.map((a.status === _.id))
@@ -44,7 +43,7 @@ case class AssetFinder(
     val stateBool = state.map((a.state === _.id))
     val ops = Seq(tagBool, statusBool, typeBool, createdAfterTs, createdBeforeTs, updatedAfterTs,
       updatedBeforeTs, stateBool).filter(_ != None).map(_.get)
-    ops.reduceRight((a,b) => new BinaryOperatorNodeLogicalBoolean(a, b, "and"))
+    ops.reduceRight((a, b) => new BinaryOperatorNodeLogicalBoolean(a, b, "and"))
   }
 
   /**
@@ -52,7 +51,7 @@ case class AssetFinder(
    * to remote collins instances (see RemoteAssetFinder for why it's not a map)
    */
   def toSeq: Seq[(String, String)] = {
-    val items:Seq[Option[(String, String)]] = (
+    val items: Seq[Option[(String, String)]] = (
       tag.map("tag" -> _) ::
       status.map("status" -> _.name) ::
       assetType.map("type" -> _.name) ::
@@ -61,25 +60,24 @@ case class AssetFinder(
       updatedAfter.map(t => "updatedAfter" -> Formatter.dateFormat(t)) ::
       updatedBefore.map(t => "updatedBefore" -> Formatter.dateFormat(t)) ::
       state.map(s => "state" -> s.name) ::
-      query.map{q => "query" -> "UHOH!!!!"} :: //FIXME: need toCQL traversal
-      Nil
-    )
+      query.map { q => "query" -> "UHOH!!!!" } :: //FIXME: need toCQL traversal
+      Nil)
     items.flatten
   }
 
   def toSolrKeyVals = {
-    val items = tag.map{t => SolrKeyVal("tag", StringValueFormat.createValueFor(t))} ::
-      status.map{t => SolrKeyVal("status" , SolrIntValue(t.id))} ::
-      assetType.map(t => SolrKeyVal("assetType" , SolrIntValue(t.id))) ::
+    val items = tag.map { t => SolrKeyVal("tag", StringValueFormat.createValueFor(t)) } ::
+      status.map { t => SolrKeyVal("status", SolrIntValue(t.id)) } ::
+      assetType.map(t => SolrKeyVal("assetType", SolrIntValue(t.id))) ::
       state.map(t => SolrKeyVal("state", SolrIntValue(t.id))) ::
       query ::
       Nil
-    val cOpt = (createdBefore.map{d =>SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted)}, createdAfter.map{d =>SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted)}) match {
+    val cOpt = (createdBefore.map { d => SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted) }, createdAfter.map { d => SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted) }) match {
       case (None, None) => None
       case (bOpt, aOpt) => Some(SolrKeyRange("created", aOpt, bOpt, true))
     }
-    val uOpt = (updatedBefore.map{d =>SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted)}, updatedAfter.map{d
-      =>SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted)}) match {
+    val uOpt = (updatedBefore.map { d => SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted) }, updatedAfter.map { d => SolrStringValue(Formatter.solrDateFormat(d), StrictUnquoted)
+    }) match {
       case (None, None) => None
       case (bOpt, aOpt) => Some(SolrKeyRange("updated", aOpt, bOpt, true))
     }
@@ -90,5 +88,5 @@ case class AssetFinder(
 
 object AssetFinder {
 
-  val empty = AssetFinder(None,None,None,None,None,None,None,None,None)
+  val empty = AssetFinder(None, None, None, None, None, None, None, None, None)
 }
