@@ -1,8 +1,8 @@
-package util
-package parsers
+package util.parsers
 
 import org.specs2.mutable.Specification
 import org.specs2.specification.Scope
+import util.LldpRepresentation
 
 class LldpParserSpec extends Specification {
 

@@ -1,5 +1,4 @@
-package util
-package power
+package util.power
 
 import play.api.libs.json.Json
 import play.api.libs.json.Format

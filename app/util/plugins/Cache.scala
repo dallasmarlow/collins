@@ -1,5 +1,4 @@
-package util
-package plugins
+package util.plugins
 
 import java.io.File
 

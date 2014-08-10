@@ -1,5 +1,4 @@
-package util
-package plugins
+package util.plugins
 
 import models.Asset
 import models.AssetLifecycle

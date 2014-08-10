@@ -1,5 +1,4 @@
-package models
-package shared
+package models.shared
 
 import play.api.Configuration
 import com.typesafe.config.ConfigFactory

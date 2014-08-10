@@ -1,7 +1,6 @@
-package util
-package power
+package util.power
 
-import config.Configurable
+import util.config.Configurable
 import util.MessageHelper
 
 case class InvalidPowerConfigurationException(message: String, key: Option[String] = None) extends RuntimeException(message)

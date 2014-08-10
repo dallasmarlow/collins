@@ -1,23 +1,32 @@
-package controllers
-package actions
-package asset
-
-import forms._
-
-import collins.validation.StringUtil
-import collins.solr.SolrExpression
-import models.{AssetFinder, AssetType, State, Status => AssetStatus, Truthy}
-import util.{AttributeResolver, MessageHelper}
-import util.AttributeResolver.{ResultTuple => ResolvedAttributes}
-import util.views.Formatter.ISO_8601_FORMAT
-
-import play.api.Logger
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.data.validation.Constraints._
-import play.api.mvc.{AnyContent, Request, Result}
+package controllers.actions.asset
 
 import java.util.Date
+
+import collins.solr.SolrExpression
+import collins.validation.StringUtil
+
+import controllers.actions.RequestDataHolder
+import controllers.forms._
+import models.AssetFinder
+import models.AssetType
+import models.State
+import models.{Status => AssetStatus}
+import models.Truthy
+import play.api.Logger
+import play.api.data.Form
+import play.api.data.Forms.date
+import play.api.data.Forms.list
+import play.api.data.Forms.of
+import play.api.data.Forms.optional
+import play.api.data.Forms.text
+import play.api.data.Forms.tuple
+import play.api.data.validation.Constraints._
+import play.api.mvc.AnyContent
+import play.api.mvc.Request
+import util.AttributeResolver
+import util.MessageHelper
+import util.views.Formatter.ISO_8601_FORMAT
+import util.AttributeResolver.{ResultTuple => ResolvedAttributes}
 
 case class AssetFinderDataHolder(
   assetFinder: AssetFinder,

@@ -1,8 +1,6 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
-import forms._
+import controllers.forms._
 import models.Asset
 import models.AssetLifecycle
 import models.State
@@ -10,7 +8,12 @@ import models.{Status => AssetStatus}
 import play.api.data.Form
 import play.api.data.Forms._
 import util.security.SecuritySpecification
-import validators.ParamValidation
+import controllers.validators.ParamValidation
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.Api
 
 object UpdateStatusAction extends ParamValidation {
   val UpdateForm = Form(tuple(

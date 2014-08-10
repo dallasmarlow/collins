@@ -1,5 +1,4 @@
-package util
-package views
+package util.views
 
 import java.net.URLEncoder
 

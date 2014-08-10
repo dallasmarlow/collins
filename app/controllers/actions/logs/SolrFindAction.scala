@@ -1,13 +1,10 @@
 
-package controllers
-package actions
-package logs
+package controllers.actions.logs
 
 import collins.solr.AssetLogDocType
 import collins.solr.TypedSolrExpression
 import collins.solr.CollinsQueryParser
 import collins.solr.AssetLogSearchQuery
-
 import models.Asset
 import models.AssetLog
 import models.Page
@@ -16,6 +13,11 @@ import models.conversions.AssetLogFormat
 import util.security.SecuritySpecification
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.ResponseData
 
 case class SolrFindAction(
   query: String,

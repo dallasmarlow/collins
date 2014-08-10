@@ -1,15 +1,13 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import scala.annotation.implicitNotFound
-
 import controllers.SecureController
 import controllers.actions.AssetAction
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction
 import models.IpAddresses
 import util.security.SecuritySpecification
+import controllers.ResponseData
 
 // Find the asset associated with an address
 case class FindAssetAction(

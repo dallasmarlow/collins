@@ -1,12 +1,8 @@
-package controllers
-package actions
-package logs
+package controllers.actions.logs
 
 import scala.util.control.Exception.allCatch
-
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
-
 import models.Asset
 import models.AssetLog
 import models.logs.LogFormat
@@ -19,7 +15,12 @@ import util.MessageHelper
 import util.TattlerHelper
 import util.config.Feature
 import util.security.SecuritySpecification
-import validators.ParamValidation
+import controllers.validators.ParamValidation
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.Api
 
 object CreateAction {
   val DefaultMessageType = Feature.defaultLogType

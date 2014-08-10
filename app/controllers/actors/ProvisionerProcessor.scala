@@ -1,5 +1,4 @@
-package controllers
-package actors
+package controllers.actors
 
 import collins.provisioning.ProvisionerRequest
 import collins.shell.CommandResult

@@ -1,5 +1,4 @@
-package collins
-package database
+package collins.database
 
 import models.Model
 import play.api.Application

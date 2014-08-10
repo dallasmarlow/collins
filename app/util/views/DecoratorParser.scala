@@ -1,5 +1,4 @@
-package util
-package views
+package util.views
 
 trait DecoratorParser {
   def apply(key: String, config: DecoratorConfig): DecoratorParser

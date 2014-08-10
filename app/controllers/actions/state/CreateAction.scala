@@ -1,9 +1,6 @@
-package controllers
-package actions
-package state
+package controllers.actions.state
 
 import collins.validation.StringUtil
-
 import models.State
 import models.{Status => AStatus}
 import play.api.data.Form
@@ -11,7 +8,11 @@ import play.api.data.Forms.tuple
 import play.api.data.Forms.ignored
 import util.MessageHelper
 import util.security.SecuritySpecification
-import validators.ParamValidation
+import controllers.validators.ParamValidation
+import controllers.actions.SecureAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.Api
 
 object CreateAction {
   object Messages extends MessageHelper("controllers.AssetStateApi.createState") {

@@ -1,5 +1,4 @@
-package controllers
-package validators
+package controllers.validators
 
 import collins.validation.StringUtil
 

@@ -1,7 +1,6 @@
-package util
-package concurrent
+package util.concurrent
 
-import config.Configurable
+import util.config.Configurable
 
 object ConcurrencyConfig extends Configurable {
   override val namespace = "concurrency"

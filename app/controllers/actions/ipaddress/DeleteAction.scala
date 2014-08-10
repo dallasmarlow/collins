@@ -1,10 +1,7 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import scala.annotation.implicitNotFound
 import scala.math.BigDecimal.int2bigDecimal
-
 import controllers.SecureController
 import controllers.actions.AssetAction
 import controllers.actions.RequestDataHolder
@@ -16,7 +13,8 @@ import play.api.libs.json.JsNumber
 import play.api.libs.json.JsObject
 import util.ApiTattler
 import util.security.SecuritySpecification
-import validators.ParamValidation
+import controllers.validators.ParamValidation
+import controllers.ResponseData
 
 // Delete addressed for an asset, optionally by pool
 case class DeleteAction(

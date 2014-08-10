@@ -1,12 +1,12 @@
-package controllers
-package actions
-package state
+package controllers.actions.state
 
 import scala.annotation.implicitNotFound
+import scala.math.BigDecimal.int2bigDecimal
 
 import collins.validation.StringUtil
 
 import controllers.Api
+import controllers.ResponseData
 import controllers.SecureController
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction

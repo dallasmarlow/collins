@@ -1,5 +1,4 @@
-package util
-package config
+package util.config
 
 object LshwConfig extends Configurable {
   override val namespace = "lshw"

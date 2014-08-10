@@ -1,6 +1,4 @@
-package controllers
-package actions
-package resources
+package controllers.actions.resources
 
 import java.util.concurrent.atomic.AtomicReference
 
@@ -8,10 +6,11 @@ import scala.annotation.implicitNotFound
 
 import collins.intake.IntakeConfig
 
-import asset.ActionAttributeHelper
 import controllers.SecureController
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction
+import controllers.actions.asset.ActionAttributeHelper
+import controllers.validators.ParamValidation
 import models.AssetLifecycle
 import models.AssetMeta.Enum.ChassisTag
 import models.AssetMeta.Enum.RackPosition
@@ -20,7 +19,6 @@ import play.api.data.FormError
 import play.api.data.Forms.tuple
 import util.power.PowerUnits
 import util.security.SecuritySpecification
-import validators.ParamValidation
 
 trait IntakeStage3Form extends ParamValidation {
 

@@ -1,16 +1,16 @@
-package controllers
-package actions
-package state
+package controllers.actions.state
 
-import validators.ParamValidation
-
+import controllers.validators.ParamValidation
 import collins.validation.StringUtil
 import models.State
 import models.{Status => AStatus}
 import util.security.SecuritySpecification
-
 import play.api.data.Form
 import play.api.data.Forms.tuple
+import controllers.actions.SecureAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.Api
 
 /**
  * Update a state

@@ -1,5 +1,4 @@
-package util
-package config
+package util.config
 
 import java.net.MalformedURLException
 import java.net.URL

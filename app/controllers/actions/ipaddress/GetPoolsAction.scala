@@ -1,10 +1,7 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import scala.annotation.implicitNotFound
 import scala.math.BigDecimal.int2bigDecimal
-
 import controllers.SecureController
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction
@@ -16,6 +13,7 @@ import play.api.libs.json.JsNumber
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import util.security.SecuritySpecification
+import controllers.ResponseData
 
 // Get pools, all or just those in use
 case class GetPoolsAction(

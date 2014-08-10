@@ -1,5 +1,4 @@
-package controllers
-package actors
+package controllers.actors
 
 import akka.util.Duration
 import play.api.mvc.AnyContent

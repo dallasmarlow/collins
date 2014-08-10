@@ -1,5 +1,4 @@
-package collins
-package cache
+package collins.cache
 
 import util.config.Configurable
 

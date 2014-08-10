@@ -1,11 +1,7 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import java.sql.SQLException
-
 import collins.validation.StringUtil
-
 import models.Asset
 import models.IpAddresses
 import models.shared.IpAddressConfig
@@ -14,7 +10,13 @@ import play.api.data.Forms._
 import util.ApiTattler
 import util.IpAddress
 import util.security.SecuritySpecification
-import validators.ParamValidation
+import controllers.validators.ParamValidation
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.actions.EphemeralDataHolder
+import controllers.SecureController
+import controllers.Api
 
 case class UpdateAction(
   assetTag: String,

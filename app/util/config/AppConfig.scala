@@ -1,5 +1,4 @@
-package util
-package config
+package util.config
 
 import models.Asset
 import models.User

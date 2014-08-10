@@ -1,5 +1,4 @@
-package collins
-package callbacks
+package collins.callbacks
 
 import play.api.Logger
 import util.config.Configurable

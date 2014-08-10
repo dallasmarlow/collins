@@ -1,5 +1,4 @@
-package collins
-package config
+package collins.config
 
 import play.api.Application
 import play.api.Plugin

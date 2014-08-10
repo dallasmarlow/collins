@@ -1,5 +1,4 @@
-package util
-package security
+package util.security
 
 import org.specs2.mutable.Specification
 

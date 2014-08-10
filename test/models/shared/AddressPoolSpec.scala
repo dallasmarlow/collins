@@ -1,5 +1,4 @@
-package models
-package shared
+package models.shared
 
 import org.specs2.mutable.Specification
 import org.specs2.specification.Scope

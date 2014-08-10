@@ -1,9 +1,6 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
-import forms._
-
+import controllers.forms._
 import models.Asset
 import models.AssetType
 import models.AssetFinder
@@ -13,14 +10,16 @@ import models.State
 import models.{Status => AssetStatus}
 import models.Truthy
 import models.asset.AssetView
-
 import util.AttributeResolver
 import util.config.MultiCollinsConfig
 import util.security.SecuritySpecification
-
 import play.api.mvc.Result
-
 import java.util.concurrent.TimeoutException
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.AssetResultsAction
 
 object FindAction {
   def apply(pageParams: PageParams, spec: SecuritySpecification, handler: SecureController) = {

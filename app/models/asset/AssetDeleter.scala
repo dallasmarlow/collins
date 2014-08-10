@@ -1,5 +1,4 @@
-package models
-package asset
+package models.asset
 
 import org.squeryl.PrimitiveTypeMode.__thisDsl
 import org.squeryl.PrimitiveTypeMode.long2ScalarLong

@@ -1,12 +1,15 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
 import models.Asset
 import play.api.mvc.Result
 import util.RemoteCollinsHost
 import util.security.SecuritySpecification
 import views.html
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.ResponseData
 
 case class GetAction(
   assetTag: String,

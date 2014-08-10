@@ -1,5 +1,4 @@
-package util
-package power
+package util.power
 
 import scala.collection.immutable.SortedSet
 import scala.collection.mutable.HashSet

@@ -1,9 +1,11 @@
-package controllers
-package actions
-package resources
+package controllers.actions.resources
 
 import collins.validation.StringUtil
 
+import controllers.actions.AssetAction
+import controllers.actions.EphemeralDataHolder
+import controllers.actions.RequestDataHolder
+import controllers.actions.SecureAction
 import models.AssetMeta.Enum.ChassisTag
 import util.MessageHelperI
 

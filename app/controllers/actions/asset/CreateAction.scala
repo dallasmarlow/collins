@@ -1,10 +1,7 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
-import forms._
+import controllers.forms._
 import collins.validation.StringUtil
-
 import models.Asset
 import models.AssetLifecycle
 import models.AssetType
@@ -15,6 +12,11 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.Result
 import util.security.SecuritySpecification
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.ResponseData
 
 case class CreateAction(
   _assetTag: Option[String],

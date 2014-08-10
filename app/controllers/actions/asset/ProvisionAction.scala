@@ -1,6 +1,4 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
 import scala.annotation.implicitNotFound
 

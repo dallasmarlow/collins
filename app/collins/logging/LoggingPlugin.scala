@@ -1,5 +1,4 @@
-package collins
-package logging
+package collins.logging
 
 import java.io.File
 

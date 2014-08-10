@@ -1,6 +1,4 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction

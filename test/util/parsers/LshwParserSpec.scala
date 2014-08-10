@@ -1,10 +1,10 @@
-package util
-package parsers
+package util.parsers
 
 import util.config.LshwConfig
 import org.specs2.mutable.Specification
 import org.specs2.matcher.Matcher
 import org.specs2.specification.Scope
+import util.LshwRepresentation
 
 class LshwParserSpec extends Specification {
 

@@ -1,5 +1,4 @@
-package util
-package config
+package util.config
 
 import org.specs2.mutable.Specification
 

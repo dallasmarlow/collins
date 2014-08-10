@@ -1,10 +1,13 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import models.Asset
 import models.IpAddresses
 import util.security.SecuritySpecification
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.SecureController
+import controllers.actions.RequestDataHolder
+import controllers.ResponseData
 
 // Get the addresses associated with an asset
 case class FindByAssetAction(

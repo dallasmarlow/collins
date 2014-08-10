@@ -1,8 +1,5 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
-import forms._
 import scala.annotation.implicitNotFound
 import scala.collection.immutable.DefaultMap
 import scala.collection.mutable.HashMap
@@ -13,6 +10,7 @@ import controllers.SecureController
 import controllers.actions.AssetAction
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction
+import controllers.validators.ParamValidation
 import models.AssetLifecycle
 import models.AssetMeta.Enum.ChassisTag
 import models.AssetMeta.Enum.RackPosition
@@ -23,7 +21,6 @@ import play.api.data.Forms.tuple
 import util.MessageHelper
 import util.power.PowerUnits
 import util.security.SecuritySpecification
-import validators.ParamValidation
 
 object UpdateAction extends ParamValidation {
   object Messages extends MessageHelper("asset.update") {

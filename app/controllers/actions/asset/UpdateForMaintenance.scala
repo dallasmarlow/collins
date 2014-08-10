@@ -1,8 +1,6 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
-import forms._
+import controllers.forms._
 import models.Asset
 import models.State
 import models.{Status => AssetStatus}
@@ -12,6 +10,11 @@ import util.MessageHelper
 import util.plugins.Maintenance
 import util.security.SecuritySpecification
 import collins.validation.StringUtil
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.Api
+import controllers.SecureController
 
 object UpdateForMaintenance {
   object Messages extends MessageHelper("controllers.updateForMaintenance") {

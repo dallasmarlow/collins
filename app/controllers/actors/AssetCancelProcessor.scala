@@ -1,5 +1,4 @@
-package controllers
-package actors
+package controllers.actors
 
 import akka.util.Duration
 import models.MetaWrapper
@@ -10,6 +9,8 @@ import play.api.mvc.{AnyContent, Request}
 import util.plugins.SoftLayer
 import util.concurrent.BackgroundProcess
 import util.plugins.SoftLayer
+import controllers.ResponseData
+import controllers.Api
 
 
 case class AssetCancelProcessor(tag: String, userTimeout: Option[Duration] = None)(implicit req: Request[AnyContent])

@@ -1,5 +1,4 @@
-package util
-package parsers
+package util.parsers
 
 import models.lshw.ServerBase
 import models.lshw.Disk
@@ -12,6 +11,9 @@ import util.config.LshwConfig
 import models.lshw.Memory
 import scala.xml.XML
 import models.lshw.LshwAsset
+import util.LshwRepresentation
+import util.ByteStorageUnit
+import util.BitStorageUnit
 
 
 object SpeedConversions {

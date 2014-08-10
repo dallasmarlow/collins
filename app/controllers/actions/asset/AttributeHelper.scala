@@ -1,6 +1,4 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
 import scala.Option.option2Iterable
 import scala.collection.immutable.DefaultMap

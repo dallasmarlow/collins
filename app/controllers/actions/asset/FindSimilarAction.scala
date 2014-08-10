@@ -1,9 +1,6 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
-import forms._
-
+import controllers.forms._
 import models.Asset
 import models.AssetFinder
 import models.AssetType
@@ -15,7 +12,6 @@ import models.Truthy
 import models.asset.AssetView
 import models.AssetSortType._
 import models.SortDirection._
-
 import play.api.mvc.Result
 import play.api.data.Form
 import play.api.data.Forms._
@@ -23,11 +19,15 @@ import play.api.Logger
 import play.api.mvc.AnyContent
 import play.api.mvc.Request
 import play.api.mvc.Result
-
 import util.MessageHelper
 import util.security.SecuritySpecification
-
 import views.html
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.AssetResultsAction
+import controllers.actions.RequestDataHolder
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
 
 
 case class FindSimilarAction(

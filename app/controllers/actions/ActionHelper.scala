@@ -1,5 +1,4 @@
-package controllers
-package actions
+package controllers.actions
 
 import play.api.mvc.AnyContent
 import play.api.mvc.AnyContentAsEmpty

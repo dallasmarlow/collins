@@ -1,9 +1,9 @@
-package util
-package plugins
+package util.plugins
 
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+import com.twitter.util.Future
 import com.twitter.util.FuturePool
 
 import collins.power.Identify
@@ -15,11 +15,11 @@ import collins.power.PowerState
 import collins.power.RebootHard
 import collins.power.RebootSoft
 import collins.power.Verify
-import collins.power.management.PowerManagement
+import collins.power.management.{PowerManagement => PM}
 import collins.power.management.PowerManagementConfig
 
 import akka.util.Duration
-import akka.util.duration.intToDurationInt
+import akka.util.duration._
 import models.Asset
 import models.IpmiInfo
 import play.api.Application
@@ -61,7 +61,7 @@ object IpmiPowerCommand {
   }
 }
 
-class IpmiPowerManagement(app: Application) extends Plugin with PowerManagement {
+class IpmiPowerManagement(app: Application) extends Plugin with PM {
   protected[this] val executor = Executors.newCachedThreadPool()
   protected[this] val pool = FuturePool(executor)
 

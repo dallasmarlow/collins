@@ -1,5 +1,4 @@
-package util
-package config
+package util.config
 
 trait ConfigSource { self: ConfigAccessor =>
   val source: TypesafeConfiguration

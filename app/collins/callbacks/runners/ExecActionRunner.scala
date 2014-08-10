@@ -1,6 +1,4 @@
-package collins
-package callbacks
-package runners
+package collins.callbacks.runners
 
 import collins.callbacks.CallbackActionRunner
 import collins.callbacks.MethodReplacement

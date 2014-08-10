@@ -1,5 +1,4 @@
-package util
-package parsers
+package util.parsers
 
 import play.api.Logger
 

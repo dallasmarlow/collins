@@ -1,5 +1,4 @@
-package collins
-package callbacks
+package collins.callbacks
 
 import com.typesafe.config.ConfigValueType
 

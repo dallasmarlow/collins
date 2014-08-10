@@ -1,5 +1,4 @@
-package util
-package power
+package util.power
 
 import models.AssetMeta
 import play.api.libs.json.Json

@@ -1,8 +1,7 @@
-package util
-package parsers
+package util.parsers
 
-import config.LldpConfig
-import config.LshwConfig
+import util.config.LldpConfig
+import util.config.LshwConfig
 import helpers.ResourceFinder
 import play.api.Configuration
 

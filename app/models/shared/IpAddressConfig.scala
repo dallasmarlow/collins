@@ -1,5 +1,4 @@
-package models
-package shared
+package models.shared
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue

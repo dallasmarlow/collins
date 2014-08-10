@@ -1,11 +1,10 @@
-package util
-package parsers
+package util.parsers
 
 import scala.xml.Elem
 import scala.xml.NodeSeq
 import scala.xml.XML
 
-import config.LldpConfig
+import util.config.LldpConfig
 import models.lldp.Chassis
 import models.lldp.ChassisId
 import models.lldp.Interface

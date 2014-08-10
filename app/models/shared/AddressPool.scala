@@ -1,5 +1,4 @@
-package models
-package shared
+package models.shared
 
 import util.IpAddress
 import util.IpAddressCalc

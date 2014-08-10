@@ -1,11 +1,7 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import java.sql.SQLException
-
 import scala.annotation.implicitNotFound
-
 import controllers.SecureController
 import controllers.actions.AssetAction
 import controllers.actions.RequestDataHolder
@@ -20,6 +16,7 @@ import play.api.data.Forms.text
 import play.api.data.Forms.tuple
 import util.ApiTattler
 import util.security.SecuritySpecification
+import controllers.ResponseData
 
 // Allocate addresses for an asset
 case class CreateAction(

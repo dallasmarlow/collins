@@ -1,6 +1,4 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
 import collins.power.Identify
 import collins.power.PowerAction
@@ -8,7 +6,6 @@ import collins.power.PowerState
 import collins.power.Verify
 import collins.power.management.PowerManagementConfig
 import collins.shell.CommandResult
-
 import models.Asset
 import play.api.mvc._
 import util.IpmiCommand
@@ -18,6 +15,12 @@ import util.config.AppConfig
 import util.plugins.IpmiPowerCommand
 import util.plugins.PowerManagement
 import util.security.SecuritySpecification
+import controllers.actions.SecureAction
+import controllers.actions.AssetAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.ResponseData
+import controllers.Api
 
 abstract class PowerManagementActionHelper(
   assetTag: String,

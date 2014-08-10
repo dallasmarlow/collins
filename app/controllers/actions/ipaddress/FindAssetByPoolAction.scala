@@ -1,9 +1,6 @@
-package controllers
-package actions
-package ipaddress
+package controllers.actions.ipaddress
 
 import scala.annotation.implicitNotFound
-
 import controllers.SecureController
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction
@@ -12,6 +9,7 @@ import models.IpAddresses
 import play.api.libs.json.JsArray
 import play.api.libs.json.JsObject
 import util.security.SecuritySpecification
+import controllers.ResponseData
 
 // Find all assets in a pool
 case class FindAssetsByPoolAction(

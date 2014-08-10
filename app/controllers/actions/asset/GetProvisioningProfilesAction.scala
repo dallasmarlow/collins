@@ -1,11 +1,7 @@
-package controllers
-package actions
-package asset
+package controllers.actions.asset
 
 import scala.annotation.implicitNotFound
-
 import collins.provisioning.ProvisionerProfile
-
 import controllers.SecureController
 import controllers.actions.AssetAction
 import controllers.actions.RequestDataHolder
@@ -18,6 +14,7 @@ import play.api.libs.json.JsString
 import play.api.libs.json.JsValue
 import util.plugins.Provisioner
 import util.security.SecuritySpecification
+import controllers.ResponseData
 
 case class GetProvisioningProfilesAction(
   spec: SecuritySpecification,

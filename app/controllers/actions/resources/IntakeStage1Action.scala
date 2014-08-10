@@ -1,23 +1,22 @@
-package controllers
-package actions
-package resources
+package controllers.actions.resources
 
-import forms._
-
+import controllers.forms._
 import models.Truthy
 import util.IpmiCommand
 import util.concurrent.BackgroundProcessor
 import util.plugins.IpmiPowerCommand
 import util.plugins.PowerManagement
 import util.security.SecuritySpecification
-
 import collins.power.Identify
 import collins.power.management.PowerManagement
-
 import play.api.data.Form
 import play.api.data.Forms.single
 import play.api.data.Forms.of
 import play.api.mvc.AsyncResult
+import controllers.actions.SecureAction
+import controllers.actions.RequestDataHolder
+import controllers.SecureController
+import controllers.Help
 
 case class IntakeStage1Action(
   assetId: Long,

@@ -1,17 +1,16 @@
-package controllers
-package actions
-package resources
+package controllers.actions.resources
 
-import asset.AssetFinderDataHolder
-import asset.{FindAction => AssetFindAction}
-
+import controllers.actions.asset.{FindAction => AssetFindAction}
 import models.Asset
 import models.Page
 import models.PageParams
 import models.asset.AssetView
 import util.security.SecuritySpecification
-
 import play.api.mvc.Result
+import controllers.actions.asset.AssetFinderDataHolder
+import controllers.actions.RequestDataHolder
+import controllers.actions.ActionHelper
+import controllers.SecureController
 
 case class FindAction(
   pageParams: PageParams,

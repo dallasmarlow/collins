@@ -1,5 +1,4 @@
-package util
-package config
+package util.config
 
 import java.io.File
 import java.util.Timer

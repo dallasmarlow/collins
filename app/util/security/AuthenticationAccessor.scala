@@ -1,5 +1,4 @@
-package util
-package security
+package util.security
 
 trait AuthenticationAccessor {
   def getAuthentication(): AuthenticationProvider

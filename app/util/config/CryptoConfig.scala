@@ -1,6 +1,6 @@
-package util
-package config
+package util.config
 
+import util.CryptoCodec
 import util.MessageHelper
 
 object CryptoConfig extends MessageHelper("crypto") with Configurable {

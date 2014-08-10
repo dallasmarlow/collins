@@ -1,5 +1,4 @@
-package util
-package concurrent
+package util.concurrent
 
 import java.util.BitSet
 import java.util.concurrent.locks.ReentrantReadWriteLock
