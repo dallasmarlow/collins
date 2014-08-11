@@ -71,7 +71,6 @@ abstract class ResponseMatcher(contentType: String) extends Matcher[ResultType.R
 
 trait ResponseMatchHelpers {
   import ResultType.ResultTuple
-  import play.api.libs.json._
 
   def haveStatus(expectedCode: Int) = new Matcher[ResultTuple] {
     def apply[S <: ResultTuple](s: Expectable[S]) = {

@@ -3,7 +3,7 @@ package controllers
 import collins.solr.Solr
 import models.Asset
 import models.Truthy
-import play.api.mvc._
+import play.api.mvc.Results
 import play.api.libs.json.JsString
 
 trait AdminApi {

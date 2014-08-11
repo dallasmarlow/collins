@@ -14,7 +14,8 @@ import models.State
 import models.Status
 import models.Truthy
 import play.api.data.FormError
-import play.api.data.format._
+import play.api.data.format.Formatter
+import play.api.data.format.Formats
 import util.views.Formatter.camelCase
 
 package object forms {

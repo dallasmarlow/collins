@@ -6,7 +6,7 @@ import models.Asset
 import models.IpAddresses
 import models.shared.IpAddressConfig
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.tuple
 import util.ApiTattler
 import util.IpAddress
 import util.security.SecuritySpecification

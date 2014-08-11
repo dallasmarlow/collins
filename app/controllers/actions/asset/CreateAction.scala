@@ -9,7 +9,10 @@ import models.IpmiInfo
 import models.{ Status => AssetStatus }
 import models.Truthy
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.tuple
+import play.api.data.Forms.optional
+import play.api.data.Forms.of
+import play.api.data.Forms.text
 import play.api.mvc.Result
 import util.security.SecuritySpecification
 import controllers.actions.SecureAction

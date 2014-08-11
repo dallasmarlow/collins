@@ -20,7 +20,7 @@ import play.api.data.Forms.of
 import play.api.data.Forms.optional
 import play.api.data.Forms.text
 import play.api.data.Forms.tuple
-import play.api.data.validation.Constraints._
+import play.api.data.validation.Constraints.pattern
 import play.api.mvc.AnyContent
 import play.api.mvc.Request
 import util.AttributeResolver

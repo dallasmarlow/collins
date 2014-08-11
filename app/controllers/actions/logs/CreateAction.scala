@@ -9,8 +9,9 @@ import models.logs.LogFormat
 import models.logs.LogMessageType
 import models.logs.LogSource
 import play.api.data.Form
-import play.api.data.Forms._
-import play.api.libs.json._
+import play.api.data.Forms.tuple
+import play.api.libs.json.JsValue
+import play.api.libs.json.JsUndefined
 import util.MessageHelper
 import util.TattlerHelper
 import util.config.Feature

@@ -1,12 +1,25 @@
-import play.api._
-import play.api.mvc._
 import collins.database.DatabasePlugin
 
 import controllers.ApiResponse
-import util.{ CryptoAccessor, Stats }
-import util.{ BashOutput, HtmlOutput, JsonOutput, OutputType, TextOutput }
+import play.api.Application
+import play.api.GlobalSettings
+import play.api.Logger
+import play.api.Mode
+import play.api.Play
+import play.api.mvc.Handler
+import play.api.mvc.RequestHeader
+import play.api.mvc.Result
+import play.api.mvc.Results
+import util.BashOutput
+import util.CryptoAccessor
+import util.JsonOutput
+import util.OutputType
+import util.Stats
+import util.TextOutput
 import util.config.CryptoConfig
-import util.security.{ AuthenticationAccessor, AuthenticationProvider, AuthenticationProviderConfig }
+import util.security.AuthenticationAccessor
+import util.security.AuthenticationProvider
+import util.security.AuthenticationProviderConfig
 
 object Global extends GlobalSettings with AuthenticationAccessor with CryptoAccessor {
   private[this] val logger = Logger.logger

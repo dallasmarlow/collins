@@ -12,8 +12,10 @@ import org.squeryl.dsl.ast.LogicalBoolean
 import org.squeryl.dsl.ast.OrderByArg
 import org.squeryl.dsl.ast.TypedExpressionNode
 
-import play.api.libs.json._
-import play.api.libs.json.Json.toJson
+import play.api.libs.json.Format
+import play.api.libs.json.JsValue
+import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 import util.IpAddress
 import util.views.Formatter.ISO_8601_FORMAT
 import util.views.Formatter.dateFormat
@@ -32,7 +34,7 @@ object conversions {
         }.getOrElse {
           new Timestamp(0L)
         }
-    override def writes(ts: Timestamp) = toJson(dateFormat(ts))
+    override def writes(ts: Timestamp) = Json.toJson(dateFormat(ts))
   }
   implicit object IpmiFormat extends Format[IpmiInfo] {
     import IpmiInfo.Enum._
@@ -45,14 +47,14 @@ object conversions {
       IpAddress.toLong((json \ IpmiNetmask.toString).as[String]),
       (json \ "ID").asOpt[Long].getOrElse(0L))
     override def writes(ipmi: IpmiInfo) = JsObject(Seq(
-      "ASSET_ID" -> toJson(ipmi.asset_id),
-      "ASSET_TAG" -> toJson(Asset.findById(ipmi.asset_id).map(_.tag).getOrElse("Unknown")),
-      IpmiUsername.toString -> toJson(ipmi.username),
-      IpmiPassword.toString -> toJson(ipmi.password),
-      IpmiGateway.toString -> toJson(ipmi.dottedGateway),
-      IpmiAddress.toString -> toJson(ipmi.dottedAddress),
-      IpmiNetmask.toString -> toJson(ipmi.dottedNetmask),
-      "ID" -> toJson(ipmi.id)))
+      "ASSET_ID" -> Json.toJson(ipmi.asset_id),
+      "ASSET_TAG" -> Json.toJson(Asset.findById(ipmi.asset_id).map(_.tag).getOrElse("Unknown")),
+      IpmiUsername.toString -> Json.toJson(ipmi.username),
+      IpmiPassword.toString -> Json.toJson(ipmi.password),
+      IpmiGateway.toString -> Json.toJson(ipmi.dottedGateway),
+      IpmiAddress.toString -> Json.toJson(ipmi.dottedAddress),
+      IpmiNetmask.toString -> Json.toJson(ipmi.dottedNetmask),
+      "ID" -> Json.toJson(ipmi.id)))
   }
   implicit object IpAddressFormat extends Format[IpAddresses] {
     override def reads(json: JsValue) = IpAddresses(
@@ -63,13 +65,13 @@ object conversions {
       (json \ "POOL").asOpt[String].getOrElse(shared.IpAddressConfig.DefaultPoolName),
       (json \ "ID").asOpt[Long].getOrElse(0L))
     override def writes(ip: IpAddresses) = JsObject(Seq(
-      "ASSET_ID" -> toJson(ip.asset_id),
-      "ASSET_TAG" -> toJson(Asset.findById(ip.asset_id).map(_.tag).getOrElse("Unknown")),
-      "GATEWAY" -> toJson(ip.dottedGateway),
-      "ADDRESS" -> toJson(ip.dottedAddress),
-      "NETMASK" -> toJson(ip.dottedNetmask),
-      "POOL" -> toJson(ip.pool),
-      "ID" -> toJson(ip.id)))
+      "ASSET_ID" -> Json.toJson(ip.asset_id),
+      "ASSET_TAG" -> Json.toJson(Asset.findById(ip.asset_id).map(_.tag).getOrElse("Unknown")),
+      "GATEWAY" -> Json.toJson(ip.dottedGateway),
+      "ADDRESS" -> Json.toJson(ip.dottedAddress),
+      "NETMASK" -> Json.toJson(ip.dottedNetmask),
+      "POOL" -> Json.toJson(ip.pool),
+      "ID" -> Json.toJson(ip.id)))
   }
   implicit object AssetLogFormat extends Format[AssetLog] {
     override def reads(json: JsValue) = AssetLog(
@@ -81,20 +83,20 @@ object conversions {
       (json \ "MESSAGE").as[String],
       (json \ "ID").asOpt[Long].getOrElse(0L))
     override def writes(log: AssetLog) = JsObject(Seq(
-      "ID" -> toJson(log.id),
-      "ASSET_TAG" -> toJson(Asset.findById(log.asset_id).map(_.tag).getOrElse("Unknown")),
-      "CREATED" -> toJson(log.created),
-      "FORMAT" -> toJson(log.format.toString),
-      "SOURCE" -> toJson(log.source.toString),
-      "TYPE" -> toJson(log.message_type.toString),
+      "ID" -> Json.toJson(log.id),
+      "ASSET_TAG" -> Json.toJson(Asset.findById(log.asset_id).map(_.tag).getOrElse("Unknown")),
+      "CREATED" -> Json.toJson(log.created),
+      "FORMAT" -> Json.toJson(log.format.toString),
+      "SOURCE" -> Json.toJson(log.source.toString),
+      "TYPE" -> Json.toJson(log.message_type.toString),
       "MESSAGE" -> (if (log.isJson()) {
         try {
           Json.parse(log.message)
         } catch {
-          case e => toJson("Error parsing JSON: %s".format(e.getMessage))
+          case e => Json.toJson("Error parsing JSON: %s".format(e.getMessage))
         }
       } else {
-        toJson(log.message)
+        Json.toJson(log.message)
       })))
   }
 }

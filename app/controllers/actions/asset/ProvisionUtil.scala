@@ -19,7 +19,10 @@ import models.AssetLifecycle
 import models.{ Status => AStatus }
 import models.Truthy
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.tuple
+import play.api.data.Forms.text
+import play.api.data.Forms.optional
+import play.api.data.Forms.of
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Promise
 import play.api.mvc.Result

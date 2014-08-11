@@ -7,7 +7,9 @@ import collins.power.Verify
 import collins.power.management.PowerManagementConfig
 import collins.shell.CommandResult
 import models.Asset
-import play.api.mvc._
+import play.api.mvc.Result
+import play.api.mvc.AsyncResult
+import play.api.mvc.Results
 import util.IpmiCommand
 import util.UserTattler
 import util.concurrent.BackgroundProcessor

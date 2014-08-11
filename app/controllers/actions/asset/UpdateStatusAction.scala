@@ -6,7 +6,9 @@ import models.AssetLifecycle
 import models.State
 import models.{ Status => AssetStatus }
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.tuple
+import play.api.data.Forms.optional
+import play.api.data.Forms.of
 import util.security.SecuritySpecification
 import controllers.validators.ParamValidation
 import controllers.actions.RequestDataHolder

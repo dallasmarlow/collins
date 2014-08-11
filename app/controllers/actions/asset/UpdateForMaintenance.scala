@@ -5,7 +5,9 @@ import models.Asset
 import models.State
 import models.{ Status => AssetStatus }
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.tuple
+import play.api.data.Forms.of
+import play.api.data.Forms.text
 import util.MessageHelper
 import util.plugins.Maintenance
 import util.security.SecuritySpecification
