@@ -1,6 +1,6 @@
 package controllers.actions.asset
 
-import controllers.forms._
+import controllers.Forms._
 import collins.power.PowerAction
 import util.security.SecuritySpecification
 import play.api.data.Form

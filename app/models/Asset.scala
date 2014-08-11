@@ -2,8 +2,8 @@ package models
 
 import models.asset.AssetView
 import models.asset.AllAttributes
-import models.asset.conversions._
-import models.conversions._
+import models.asset.Conversions._
+import models.Conversions._
 import util.AttributeResolver
 import util.LldpRepresentation
 import util.LshwRepresentation

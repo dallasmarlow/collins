@@ -9,7 +9,7 @@ import play.api.libs.json.JsString
 import play.api.libs.json.JsUndefined
 import play.api.libs.json.JsValue
 
-package object conversions {
+package object Conversions {
 
   implicit def jsValue2oldJsValue(js: JsValue): JsValueWrapper = new JsValueWrapper(js)
 

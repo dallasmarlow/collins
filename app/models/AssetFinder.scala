@@ -19,7 +19,7 @@ import collins.solr.SolrStringValue
 import collins.solr.StrictUnquoted
 import collins.solr.StringValueFormat
 
-import models.conversions.dateToTimestamp
+import models.Conversions.dateToTimestamp
 import util.views.Formatter
 
 case class AssetFinder(

@@ -20,7 +20,7 @@ import util.IpAddress
 import util.views.Formatter.ISO_8601_FORMAT
 import util.views.Formatter.dateFormat
 
-object conversions {
+object Conversions {
   implicit def dateToTimestamp(date: Date) = new DateToTimestamp(date)
   implicit def ops2bo(o: Option[String]) = new LogicalBooleanFromString(o)
   implicit def reOrLike[E <% StringExpression[String]](s: E) = new PossibleRegex(s)

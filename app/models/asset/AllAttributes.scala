@@ -8,8 +8,6 @@ import models.LldpHelper
 import models.LshwHelper
 import models.MetaWrapper
 import models.PowerHelper
-import models.conversions.IpAddressFormat
-import models.conversions.IpmiFormat
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.JsValue
@@ -51,7 +49,7 @@ case class AllAttributes(
   power: PowerUnits,
   mvs: Seq[MetaWrapper]) {
 
-  import models.conversions._
+  import models.Conversions._
   import util.power.PowerUnit.PowerUnitFormat
 
   def exposeCredentials(showCreds: Boolean = false) = {

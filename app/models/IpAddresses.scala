@@ -17,7 +17,7 @@ case class IpAddresses(
   netmask: Long,
   pool: String,
   id: Long = 0) extends IpAddressable {
-  import models.conversions._
+  import models.Conversions._
   override def asJson: String = toJsValue.toString
   def toJsValue = Json.toJson(this)
 }

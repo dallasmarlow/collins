@@ -18,7 +18,7 @@ import play.api.data.format.Formatter
 import play.api.data.format.Formats
 import util.views.Formatter.camelCase
 
-package object forms {
+package object Forms {
 
   implicit def statusFormat = new Formatter[Status] {
     def bind(key: String, data: Map[String, String]) = {

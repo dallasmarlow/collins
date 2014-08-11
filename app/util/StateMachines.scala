@@ -3,10 +3,9 @@ package util
 import config.Feature
 
 import models.{ Asset, AssetMeta, AssetMetaValue, IpAddresses, IpmiInfo, State, Status }
-import models.conversions._
+import models.Conversions._
 
 import java.util.Date
-import java.sql._
 
 case class AssetStateMachine(asset: Asset) {
 

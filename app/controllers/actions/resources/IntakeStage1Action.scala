@@ -1,6 +1,6 @@
 package controllers.actions.resources
 
-import controllers.forms._
+import controllers.Forms._
 import models.Truthy
 import util.IpmiCommand
 import util.concurrent.BackgroundProcessor

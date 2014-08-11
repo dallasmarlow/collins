@@ -3,7 +3,6 @@ package controllers.actions.ipaddress
 import controllers.actions.RequestDataHolder
 import controllers.actions.SecureAction
 import models.IpAddresses
-import models.conversions.IpAddressFormat
 import models.shared.IpAddressConfig
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -11,7 +10,7 @@ import util.IpAddress
 
 trait AddressActionHelper { self: SecureAction =>
   class AddressDecorator(addresses: Seq[IpAddresses]) {
-    import models.conversions._
+    import models.Conversions._
     def toJson = JsObject(Seq("ADDRESSES" -> Json.toJson(addresses)))
   }
 

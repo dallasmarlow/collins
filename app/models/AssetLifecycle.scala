@@ -1,6 +1,6 @@
 package models
 
-import conversions.dateToTimestamp
+import models.Conversions.dateToTimestamp
 import models.AssetMeta.Enum.RackPosition
 import models.{ Status => AStatus }
 import models.logs.LogFormat

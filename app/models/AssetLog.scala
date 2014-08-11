@@ -1,6 +1,6 @@
 package models
 
-import conversions.AssetLogFormat
+import Conversions.AssetLogFormat
 import java.sql.Timestamp
 import java.util.Date
 import org.squeryl.PrimitiveTypeMode.__thisDsl
@@ -21,8 +21,8 @@ import logs.LogMessageType
 import logs.LogMessageType.LogMessageType
 import logs.LogSource
 import logs.LogSource.LogSource
-import models.conversions.dateToTimestamp
-import models.conversions.orderByString2oba
+import models.Conversions.dateToTimestamp
+import models.Conversions.orderByString2oba
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.Json

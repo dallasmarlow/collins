@@ -6,7 +6,7 @@ import collins.solr.SolrExpression
 import collins.validation.StringUtil
 
 import controllers.actions.RequestDataHolder
-import controllers.forms._
+import controllers.Forms._
 import models.AssetFinder
 import models.AssetType
 import models.State

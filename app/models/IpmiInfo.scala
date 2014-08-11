@@ -20,7 +20,7 @@ case class IpmiInfo(
   address: Long,
   netmask: Long,
   id: Long = 0) extends IpAddressable {
-  import models.conversions._
+  import models.Conversions._
   override def validate() {
     super.validate()
     List(username, password).foreach { s =>

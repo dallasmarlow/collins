@@ -1,6 +1,6 @@
 package controllers.actions.asset
 
-import controllers.forms._
+import controllers.Forms._
 import models.Asset
 import models.AssetLifecycle
 import models.State

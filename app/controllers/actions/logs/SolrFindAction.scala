@@ -9,7 +9,7 @@ import models.Asset
 import models.AssetLog
 import models.Page
 import models.PageParams
-import models.conversions.AssetLogFormat
+import models.Conversions.AssetLogFormat
 import util.security.SecuritySpecification
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json

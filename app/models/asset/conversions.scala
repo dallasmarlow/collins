@@ -9,7 +9,7 @@ import models.AssetType
 import models.State
 import models.State.StateFormat
 import models.Status
-import models.conversions.TimestampFormat
+import models.Conversions.TimestampFormat
 import play.api.libs.json.Format
 import play.api.libs.json.JsNumber
 import play.api.libs.json.JsObject
@@ -17,7 +17,7 @@ import play.api.libs.json.JsString
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 
-object conversions {
+object Conversions {
   import models.State.StateFormat
   implicit object AssetFormat extends Format[AssetView] {
     override def reads(json: JsValue) = Asset(
