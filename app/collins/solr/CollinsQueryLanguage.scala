@@ -3,7 +3,6 @@ package collins.solr
 import models.AssetMeta
 import models.AssetMeta.ValueType
 import models.AssetMeta.ValueType._
-import models.IpmiInfo.Enum._
 import models.Truthy
 
 /**

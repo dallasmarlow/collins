@@ -3,7 +3,7 @@ package collins.solr
 
 import java.util.Date
 
-import Solr.AssetSolrDocument
+import collins.solr.Solr.AssetSolrDocument
 import models.AssetLog
 
 import util.views.Formatter

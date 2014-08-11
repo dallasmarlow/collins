@@ -10,7 +10,6 @@ import scala.collection.mutable.HashMap
 import com.tumblr.play.interop.PrivilegedHelper
 
 object PermissionsHelper {
-  import scala.collection.JavaConverters._
   def fromFile(filename: String): Privileges = {
     val p = PrivilegedHelper.fromFile(filename)
     require(p != null, "Invalid yaml file")

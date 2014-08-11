@@ -1,7 +1,7 @@
 package collins.solr
 
 import java.util.Date
-import Solr._
+import collins.solr.Solr._
 import models.{ Asset, AssetFinder, AssetType, AssetMeta, AssetSearchParameters, IpAddresses, IpmiInfo, State, Status, AssetMetaValue }
 import helpers.ApplicationSpecification
 import util.views.Formatter

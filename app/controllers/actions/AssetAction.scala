@@ -1,18 +1,18 @@
 package controllers.actions
 
-import asset.AssetFinderDataHolder
+import java.util.concurrent.atomic.AtomicReference
+
+import controllers.Api
+import controllers.Permissions
+import controllers.ResponseData
 import models.Asset
 import models.Page
 import models.asset.AssetView
 import models.asset.RemoteAsset
-import util.config.Feature
-import java.util.concurrent.atomic.AtomicReference
-import play.api.libs.json.JsObject
 import play.api.libs.json.JsArray
+import play.api.libs.json.JsObject
 import play.api.mvc.Result
-import controllers.ResponseData
-import controllers.Api
-import controllers.Permissions
+import util.config.Feature
 
 // Helpers for actions
 trait AssetAction {

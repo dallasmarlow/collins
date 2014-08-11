@@ -4,7 +4,7 @@ import java.beans.PropertyChangeEvent
 
 import org.apache.solr.client.solrj.SolrServer
 
-import akka.actor._
+import akka.actor.ActorRef
 import collins.callbacks.CallbackActionHandler
 import models.Asset
 import models.AssetLog

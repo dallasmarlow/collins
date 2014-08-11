@@ -10,9 +10,9 @@ import collins.solr.SolrAndOp
 import collins.solr.EmptySolrQuery
 import collins.solr.StringValueFormat
 
-import asset.AssetView
-import asset.BasicRemoteAsset
-import asset.DetailedRemoteAsset
+import models.asset.AssetView
+import models.asset.BasicRemoteAsset
+import models.asset.DetailedRemoteAsset
 import play.api.Logger
 import play.api.Play.current
 import play.api.cache.Cache

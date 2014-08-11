@@ -1,7 +1,7 @@
 package models
 
-import asset.AssetView
-import conversions._
+import models.asset.AssetView
+import models.conversions._
 import util.CryptoCodec
 import util.InternalTattler
 import util.config.Feature

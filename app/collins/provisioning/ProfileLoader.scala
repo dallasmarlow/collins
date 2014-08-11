@@ -30,8 +30,6 @@ case class ProfileLoader(profiles: Set[ProvisionerProfile])
 }
 
 object ProfileLoader {
-  import scala.collection.JavaConverters._
-
   def apply(): ProfileLoader = {
     val profileFile = ProvisionerConfig.profilesFile
     val profiles = fromFile(new IoFile(profileFile))

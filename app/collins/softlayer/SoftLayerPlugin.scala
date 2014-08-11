@@ -15,11 +15,15 @@ import com.twitter.finagle.http.RequestBuilder
 import com.twitter.finagle.http.Response
 import com.twitter.util.Future
 
-import collins.power.management._
 import models.Asset
 import play.api.Application
 import play.api.Plugin
-import play.api.libs.json._
+import play.api.libs.json.Json
+import play.api.libs.json.JsString
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsArray
+import play.api.libs.json.JsBoolean
 
 class SoftLayerPlugin(app: Application) extends Plugin with SoftLayer {
   type ClientSpec = ClientBuilder.Complete[HttpRequest, HttpResponse]

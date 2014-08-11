@@ -2,9 +2,9 @@ package collins.solr
 
 import java.util.Date
 import play.api.PlayException
-import scala.util.parsing.combinator._
+import scala.util.parsing.combinator.JavaTokenParsers
 import util.views.Formatter
-import Solr.AssetSolrDocument
+import collins.solr.Solr.AssetSolrDocument
 
 class CollinsQueryException(m: String) extends PlayException("CQL", m)
 

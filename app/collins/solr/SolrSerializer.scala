@@ -4,8 +4,7 @@ import java.util.Date
 
 import scala.Option.option2Iterable
 
-import Solr.AssetSolrDocument
-import collins.solr.UpperCaseString.string2UpperCaseString
+import collins.solr.Solr.AssetSolrDocument
 import util.views.Formatter
 
 abstract class SolrSerializer[T](val docType: SolrDocType) {

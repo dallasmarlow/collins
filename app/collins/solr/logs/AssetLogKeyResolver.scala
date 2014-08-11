@@ -1,9 +1,9 @@
 package collins.solr
 
-import SolrKeyFlag.NotSortable
-import SolrKeyFlag.SingleValued
-import SolrKeyFlag.Sortable
-import SolrKeyFlag.Static
+import collins.solr.SolrKeyFlag.NotSortable
+import collins.solr.SolrKeyFlag.SingleValued
+import collins.solr.SolrKeyFlag.Sortable
+import collins.solr.SolrKeyFlag.Static
 import collins.solr.SolrKeyFlag.namedboolean2boolean
 import collins.solr.UpperCaseString.string2UpperCaseString
 import models.AssetMeta.ValueType.Integer

@@ -1,9 +1,9 @@
 package models
 
 import java.sql.Timestamp
-import AssetSortType.Name
-import SortDirection.SortAsc
-import SortDirection.SortDesc
+import models.AssetSortType.Name
+import models.SortDirection.SortAsc
+import models.SortDirection.SortDesc
 import helpers.ApplicationSpecification
 import org.specs2.specification.Scope
 

@@ -1,7 +1,7 @@
 package models
 
-import asset.AssetView
-import shared.{ AddressPool, IpAddressConfig }
+import models.asset.AssetView
+import models.shared.{ AddressPool, IpAddressConfig }
 import util.CryptoCodec
 import util.IpAddress
 import util.config.Configurable
@@ -20,7 +20,7 @@ case class IpmiInfo(
   address: Long,
   netmask: Long,
   id: Long = 0) extends IpAddressable {
-  import conversions._
+  import models.conversions._
   override def validate() {
     super.validate()
     List(username, password).foreach { s =>

@@ -1,14 +1,22 @@
 package collins.solr
 
-import akka.actor._
-import akka.util.duration._
+import akka.actor.Props
 
 import java.util.Date
 
-import models.{ Asset, AssetFinder, AssetLog, AssetMeta, AssetMetaValue, AssetType, IpAddresses, MetaWrapper, Page, PageParams, Status, Truthy }
+import models.Asset
+import models.AssetFinder
+import models.AssetLog
+import models.AssetMeta
+import models.AssetMetaValue
+import models.AssetType
+import models.IpAddresses
+import models.MetaWrapper
+import models.Page
+import models.PageParams
+import models.Status
+import models.Truthy
 import models.asset.AssetView
-import models.IpmiInfo.Enum._
-import models.SortDirection._
 
 import org.apache.solr.client.solrj.{ SolrServer, SolrQuery }
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
@@ -17,19 +25,18 @@ import org.apache.solr.core.CoreContainer
 import org.apache.solr.client.solrj.impl.{ HttpSolrServer, XMLResponseParser }
 
 import play.api.{ Application, Logger, Play, PlayException, Plugin }
-import play.api.libs.concurrent._
-import play.api.libs.concurrent.Akka._
+import play.api.libs.concurrent.Akka
 import play.api.Play.current
 
 import util.AttributeResolver
 import util.plugins.Callback
 import util.views.Formatter
 
-import AssetMeta.ValueType
-import AssetMeta.ValueType._
+import models.AssetMeta.ValueType
+import models.AssetMeta.ValueType._
 
-import CollinsQueryDSL._
-import Solr.AssetSolrDocument
+import collins.solr.CollinsQueryDSL._
+import collins.solr.Solr.AssetSolrDocument
 
 class SolrPlugin(app: Application) extends Plugin {
 

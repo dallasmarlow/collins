@@ -1,8 +1,8 @@
 package models
 
-import asset.AssetView
-import shared.AddressPool
-import shared.IpAddressConfig
+import models.asset.AssetView
+import models.shared.AddressPool
+import models.shared.IpAddressConfig
 
 import play.api.libs.json.Json
 import util.IpAddress
@@ -17,7 +17,7 @@ case class IpAddresses(
   netmask: Long,
   pool: String,
   id: Long = 0) extends IpAddressable {
-  import conversions._
+  import models.conversions._
   override def asJson: String = toJsValue.toString
   def toJsValue = Json.toJson(this)
 }

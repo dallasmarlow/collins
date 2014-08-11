@@ -1,7 +1,7 @@
 package models
 
 import conversions.dateToTimestamp
-import AssetMeta.Enum.RackPosition
+import models.AssetMeta.Enum.RackPosition
 import models.{ Status => AStatus }
 import models.logs.LogFormat
 import models.logs.LogSource
@@ -56,7 +56,6 @@ object AssetLifecycle {
   type Status[T] = Either[Throwable, T]
 
   def createAsset(tag: String, assetType: AssetType, generateIpmi: Boolean, status: Option[AStatus]): Status[AssetIpmi] = {
-    import IpmiInfo.Enum._
     try {
       val _status = status.getOrElse(Status.Incomplete.get)
       val res = Asset.inTransaction {

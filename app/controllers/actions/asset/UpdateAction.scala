@@ -47,8 +47,8 @@ case class UpdateAction(
   with AssetAction
   with ActionAttributeHelper {
 
-  import UpdateAction.Messages._
-  import UpdateAction.UpdateForm
+  import controllers.actions.asset.UpdateAction.Messages._
+  import controllers.actions.asset.UpdateAction.UpdateForm
 
   override def invalidAttributeMessage(s: String) = message("attribute.invalid")
 

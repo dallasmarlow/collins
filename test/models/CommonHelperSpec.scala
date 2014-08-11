@@ -1,6 +1,6 @@
 package models
 
-import conversions._
+import models.conversions._
 import java.util.Date
 import helpers.ResourceFinder
 

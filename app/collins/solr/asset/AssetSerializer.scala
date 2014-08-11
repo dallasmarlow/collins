@@ -3,9 +3,8 @@ package collins.solr
 
 import java.util.Date
 
-import Solr._
-import SolrKeyFlag._
-import collins.solr._
+import collins.solr.Solr.AssetSolrDocument
+import collins.solr.SolrKeyFlag._
 import models.Asset
 import models.AssetMeta
 import models.AssetMeta.ValueType

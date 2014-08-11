@@ -1,10 +1,9 @@
 package collins.solr
 
-import SolrKeyFlag._
+import collins.solr.SolrKeyFlag._
 import models.AssetMeta
 import models.AssetMeta.ValueType
 import models.AssetMeta.ValueType._
-import models.IpmiInfo.Enum._
 import play.api.Logger
 
 //some light DSL's for making solr key flags easier to read
@@ -121,7 +120,7 @@ trait EnumKey { self: SolrKey =>
 }
 
 trait SolrKeyResolver {
-  import SolrKeyResolver._
+  import collins.solr.SolrKeyResolver._
   def apply(rawKey: UpperCaseString): Option[SolrKey] = allDocKeys.find { _ matches rawKey } orElse docSpecificKey(rawKey)
 
   def either(rawkey: UpperCaseString) = apply(rawkey) match {

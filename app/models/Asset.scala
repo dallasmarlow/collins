@@ -1,9 +1,9 @@
 package models
 
-import asset.AssetView
-import asset.AllAttributes
-import asset.conversions._
-import conversions._
+import models.asset.AssetView
+import models.asset.AllAttributes
+import models.asset.conversions._
+import models.conversions._
 import util.AttributeResolver
 import util.LldpRepresentation
 import util.LshwRepresentation
@@ -19,7 +19,7 @@ import collins.solr.CQLQuery
 import collins.solr.AssetDocType
 import collins.solr.AssetSearchQuery
 import shared.QueryLogConfig
-import AssetSortType.AssetSortType
+import models.AssetSortType.AssetSortType
 
 import collins.validation.Pattern.isAlphaNumericString
 

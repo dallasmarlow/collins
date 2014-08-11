@@ -1,7 +1,7 @@
 package models
 
-import asset.AssetView
-import asset.RemoteAsset
+import models.asset.AssetView
+import models.asset.RemoteAsset
 import java.sql.Timestamp
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -14,7 +14,7 @@ case class MockRemoteAsset(
   id: Long = 42L,
   state: Int = 0) extends RemoteAsset {
 
-  import asset.conversions._
+  import models.asset.conversions._
   def asset_type: Int = AssetType.ServerNode.get.id
   def status: Int = Status.Allocated.get.id
   def created: Timestamp = new Timestamp(System.currentTimeMillis)

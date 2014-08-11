@@ -11,7 +11,6 @@ import models.{ Status => AssetStatus }
 import models.Truthy
 import models.asset.AssetView
 import models.AssetSortType._
-import models.SortDirection._
 import play.api.mvc.Result
 import play.api.data.Form
 import play.api.data.Forms._
