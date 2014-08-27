@@ -1,6 +1,6 @@
 package controllers
 
-import models.{AssetType,State,Status,Truthy}
+import models.{AssetType, State, Status, Truthy}
 import util.views.Formatter.camelCase
 
 import collins.power.PowerAction

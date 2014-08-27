@@ -50,7 +50,7 @@ trait AssetAction {
   def assetIntakeAllowed[T <: AssetView](asset: T): Option[String] = {
     if (!asset.isNew)
       Some(AssetMessages.intakeError("new", asset))
-    else if (!asset.isServerNode)
+    else if (!asset.isServerNode || !asset.isVirtualServerNode)
       Some(AssetMessages.intakeError("type", asset))
     else if (!Feature.intakeSupported)
       Some(AssetMessages.intakeError("disabled", asset))

@@ -71,6 +71,8 @@ case class FindSimilarAction(
       Logger.logger.debug(only.toString)
       val finder = AssetFinder.empty.copy(
         status = if(only.map{_.isTruthy}.getOrElse(true)) AssetStatus.Unallocated else None,
+
+        // todo: support virtual server nodes here too
         assetType = AssetType.ServerNode
       )
       Logger.logger.debug(finder.status.toString)

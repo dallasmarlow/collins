@@ -17,9 +17,19 @@ case class AssetType(name: String, label: String, id: Int = 0) extends Validated
 }
 
 object AssetType extends Schema with AnormAdapter[AssetType] {
-
   override val tableDef = table[AssetType]("asset_type")
-  val reservedNames = List("SERVER_NODE","SERVER_CHASSIS","RACK","SWITCH","ROUTER","POWER_CIRCUIT","POWER_STRIP","DATA_CENTER","CONFIGURATION")
+  val reservedNames = List(
+    "SERVER_NODE",
+    "SERVER_CHASSIS",
+    "VIRTUAL_SERVER_NODE",
+    "RACK",
+    "SWITCH",
+    "ROUTER",
+    "POWER_CIRCUIT",
+    "POWER_STRIP",
+    "DATA_CENTER",
+    "CONFIGURATION")
+
   on(tableDef)(a => declare(
     a.id is(autoIncremented,primaryKey),
     a.name is(unique)
@@ -71,8 +81,10 @@ object AssetType extends Schema with AnormAdapter[AssetType] {
   def typeNames: Set[String] = find().map(_.name).toSet
 
   def isServerNode(at: AssetType): Boolean = ServerNode.map(_.id).filter(_.equals(at.id)).isDefined
+  def isVirtualServerNode(at: AssetType): Boolean = VirtualServerNode.map(_.id).filter(_.equals(at.id)).isDefined
 
   def ServerNode = findByName("SERVER_NODE")
+  def VirtualServerNode = findByName("VIRTUAL_SERVER_NODE")
   def Configuration = findByName("CONFIGURATION")
   def isSystemType(atype: AssetType) = reservedNames.contains(atype.name.toUpperCase)
 

@@ -19,11 +19,11 @@ trait Resources extends Controller {
     Ok(html.resources.index(AssetMeta.getViewable())).withHeaders("Content-Language" -> "en")
   }(Permissions.Resources.Index)
 
-
   def displayCreateForm(assetType: String) = SecureAction { implicit req =>
     AssetType.findByName(assetType) match {
       case None =>
         Redirect(app.routes.Resources.index).flashing("error" -> "Invalid asset type specified")
+      // todo: prevent virtual servers from being created as well
       case Some(atype) => AssetType.ServerNode.filter(_.id.equals(atype.id)).isDefined match {
         case false => Ok(html.resources.create(atype))
         case true =>

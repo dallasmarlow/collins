@@ -90,8 +90,6 @@ case class CreateAction(
         "error" -> rd.error.getOrElse("A tag must be specified")
       ))
   }
-    
-  
 
   protected def handleSuccess(asset: Asset, ipmi: Option[IpmiInfo]): Result = isHtml match {
     case true =>
