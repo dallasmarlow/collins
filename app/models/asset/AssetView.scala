@@ -32,6 +32,7 @@ trait AssetView {
 
   def isServerNode(): Boolean = isAssetType(AssetType.ServerNode)
   def isVirtualServerNode(): Boolean = isAssetType(AssetType.VirtualServerNode)
+  def isServerType(): Boolean = isAssetType(AssetType.ServerNode) || isAssetType(AssetType.VirtualServerNode)
   def isConfiguration(): Boolean = isAssetType(AssetType.Configuration)
 
   // Status values
