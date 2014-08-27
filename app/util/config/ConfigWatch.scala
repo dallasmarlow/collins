@@ -50,8 +50,8 @@ object ConfigWatch extends AppConfig {
 
   def start() {
     logger.info("Scheduling ConfigWatch timer")
-    val startAfter = if (AppConfig.isDev) 10000L else 30000L
-    val runEvery = if (AppConfig.isDev) 10000L else 30000L
+    val startAfter = if (AppConfig.isDev) 60000L else 180000L
+    val runEvery = if (AppConfig.isDev) 60000L else 180000L
     try {
       // start a timer task in 30 seconds that checks the file times every 30 seconds
       timer.schedule(new ConfigWatchTask(allWatches), startAfter, runEvery)
