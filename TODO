@@ -4,3 +4,5 @@ asset meta that needs to be fixed.
 Need to refactor the ruby client before we opensource
 
 Need to refactor controllers: AssetWebApi, IpAddressApi, IpmiApi, TagApi
+
+Need to update docs with info about virtual server nodes and make required contact length configurable
